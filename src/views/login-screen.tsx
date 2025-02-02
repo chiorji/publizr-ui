@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
 import { Github, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('user@domain.com');
+  const [password, setPassword] = useState('password');
   const [isLoading, setIsLoading] = useState(false);
 
   interface OAuthLoginProps {
@@ -26,6 +27,7 @@ const LoginScreen = () => {
     setIsLoading(true);
     // Here you would implement your email login logic
     setTimeout(() => setIsLoading(false), 1000);
+    navigate("/dashboard");
   };
 
   return (
@@ -48,7 +50,7 @@ const LoginScreen = () => {
               <img 
                 src="/api/placeholder/20/20" 
                 alt="Google logo" 
-                className="w-5 h-5"
+                className="w-5 h-5" 
               />
               Continue with Google
             </button>

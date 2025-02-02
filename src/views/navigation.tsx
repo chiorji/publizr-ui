@@ -8,9 +8,9 @@ const Navigation = () => {
     <nav className="border-b min-w-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
+          <div className="flex items-center text-blue-600">
             <Link to="/" className="flex items-center">
-              <Edit3 className="h-8 w-8 text-blue-600" />
+              <Edit3 className="h-8 w-8" />
               <span className="ml-2 text-xl font-bold">Publisher</span>
             </Link>
           </div>
