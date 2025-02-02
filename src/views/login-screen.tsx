@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
 import { Github, Mail } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { RootState } from '../app/store';
+import { setIsAuthenticated } from '../app/features/users-slice';
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state: RootState) => state.users);
   const [email, setEmail] = useState('user@domain.com');
   const [password, setPassword] = useState('password');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    console.log({isAuthenticated})
+  })
 
   // interface OAuthLoginProps {
   //   provider: 'google' | 'github';
@@ -26,8 +35,13 @@ const LoginScreen = () => {
     e.preventDefault();
     setIsLoading(true);
     // Here you would implement your email login logic
-    setTimeout(() => setIsLoading(false), 1000);
-    navigate("/dashboard");
+    setTimeout(() => {
+      setIsLoading(false)
+      if (email === 'user@domain.com' && password === 'password') {
+        dispatch(setIsAuthenticated(true));
+        navigate('/dashboard');
+      }
+    }, 1000);
   };
 
   return (
