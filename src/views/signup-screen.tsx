@@ -58,28 +58,28 @@ const SignupScreen = () => {
     setTimeout(() => setIsLoading(false), 1000);
   };
 
-  interface OAuthProvider {
-    provider: 'google' | 'github';
-  }
+  // interface OAuthProvider {
+  //   provider: 'google' | 'github';
+  // }
 
-  const handleOAuthSignup = (provider: OAuthProvider['provider']): void => {
-    setIsLoading(true);
-    console.log(`Signing up with ${provider}`);
-    setTimeout(() => setIsLoading(false), 1000);
-  };
+  // const handleOAuthSignup = (provider: OAuthProvider['provider']): void => {
+  //   setIsLoading(true);
+  //   console.log(`Signing up with ${provider}`);
+  //   setTimeout(() => setIsLoading(false), 1000);
+  // };
 
   return (
     <div className="min-h-screen min-w-screen bg-gray-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>
+          {/* <CardDescription>
             Choose your preferred signup method
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent className="space-y-4">
           {/* OAuth Buttons */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <button
               onClick={() => handleOAuthSignup('google')}
               disabled={isLoading}
@@ -110,7 +110,7 @@ const SignupScreen = () => {
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-white px-2 text-gray-500">Or continue with email</span>
             </div>
-          </div>
+          </div> */}
 
           {/* Email Signup Form */}
           <form onSubmit={handleEmailSignup} className="space-y-4">

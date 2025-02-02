@@ -9,16 +9,16 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('password');
   const [isLoading, setIsLoading] = useState(false);
 
-  interface OAuthLoginProps {
-    provider: 'google' | 'github';
-  }
+  // interface OAuthLoginProps {
+  //   provider: 'google' | 'github';
+  // }
 
-  const handleOAuthLogin = ({ provider }: OAuthLoginProps) => {
-    setIsLoading(true);
-    // Here you would implement your OAuth login logic for the specific provider
-    console.log(`Logging in with ${provider}`);
-    setTimeout(() => setIsLoading(false), 1000);
-  };
+  // const handleOAuthLogin = ({ provider }: OAuthLoginProps) => {
+  //   setIsLoading(true);
+  //   // Here you would implement your OAuth login logic for the specific provider
+  //   console.log(`Logging in with ${provider}`);
+  //   setTimeout(() => setIsLoading(false), 1000);
+  // };
 
   interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> {}
 
@@ -35,13 +35,13 @@ const LoginScreen = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-          <CardDescription>
+          {/* <CardDescription>
             Choose your preferred login method
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent className="space-y-4">
           {/* OAuth Buttons */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <button
               onClick={() => handleOAuthLogin({ provider: 'google' })}
               disabled={isLoading}
@@ -63,16 +63,16 @@ const LoginScreen = () => {
               <Github className="w-5 h-5" />
               Continue with GitHub
             </button>
-          </div>
+          </div> */}
 
-          <div className="relative">
+          {/* <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
-          </div>
+          </div> */}
 
           {/* Email/Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
