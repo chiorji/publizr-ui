@@ -7,7 +7,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
     <div className="md:flex">
       <div className="md:w-2/3">
         <img
-          src={post.imageUrl}
+          src={post.image_url as string}
           alt={post.title}
           className="h-48 w-full object-cover md:h-full"
         />
@@ -34,7 +34,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
           </div>
           <div className="flex items-center text-sm text-gray-500 mt-2">
             <Clock className="h-4 w-4 mr-2" />
-            {post.readTime}
+            {post.read_time}
           </div>
         </div>
       </div>
