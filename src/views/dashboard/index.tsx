@@ -52,9 +52,9 @@ const Dashboard = () => {
               key={post.id}
               className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
             >
-              {post.imageUrl && (
+              {post.image_url && (
                 <img
-                  src={post.imageUrl}
+                  src={post.image_url as string}
                   alt={post.title}
                   className="w-full h-48 object-cover"
                 />

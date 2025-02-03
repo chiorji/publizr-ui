@@ -1,23 +1,27 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Image, Tags, AlertCircle } from 'lucide-react';
 import { NewPostFormData, Errors, PostCategoryDefinition } from '../../types/post-types';
+import { useCreatePostMutation } from '../../app/api/post-slice';
 
 const BlogCreationForm = () => {
   const [formData, setFormData] = useState<NewPostFormData>({
-    title: '',
-    subtitle: '',
-    category: '',
-    tags: [],
-    content: '',
-    coverImage: null,
-    isDraft: true
+    title: 'Post title',
+    subtitle: 'Post subtitle or excerpt',
+    category: 'Architecture',
+    tags: ['programming', 'hacking'],
+    content: 'Here lies the post content. Lorem ipsum dolor sit amet tempor invidunt ut labore et dolore magna aliqu sapiente consequ sed diam nonumy eirmod tempor invidunt ut labore et dol',
+    image_url: null,
+    is_draft: false
   });
-  
+
+  const navigate = useNavigate();
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Errors>({});
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
+  const [createHandler, { isLoading }] = useCreatePostMutation();
 
   const categories: PostCategoryDefinition[] = [
     'Technology',
@@ -26,7 +30,9 @@ const BlogCreationForm = () => {
     'Career',
     'Productivity',
     'Tutorial',
-    'Other'
+    'Architecture',
+    'Best Practices',
+    'Development'
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -44,7 +50,7 @@ const BlogCreationForm = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, coverImage: file }));
+      setFormData(prev => ({ ...prev, cover_image: file }));
       // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -73,7 +79,7 @@ const BlogCreationForm = () => {
   };
 
   const validateForm = (): Errors => {
-      const newErrors: Errors = {};
+    const newErrors: Errors = {};
     if (!formData.title.trim()) newErrors.title = 'Title is required';
     if (!formData.content.trim()) newErrors.content = 'Content is required';
     if (!formData.category) newErrors.category = 'Category is required';
@@ -83,9 +89,29 @@ const BlogCreationForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length === 0) {
-      // Here you would typically send the data to your backend
+
+      createHandler(formData).then((response) => {
+        if (response && response.data) {
+          console.log('Post created successfully:', response);
+          // Reset form and clear errors
+          setFormData({
+            title: '',
+            subtitle: '',
+            category: '' as PostCategoryDefinition,
+            tags: [],
+            content: '',
+            image_url: null,
+            is_draft: false
+          });
+          setErrors({});
+          navigate('/posts')
+        }
+      }).catch((e) => {
+        console.error('Failed to create post' + e);
+        setErrors((prev: Errors) => ({ ...prev, serverError: 'Failed to create post. Please try again later.' }));
+      });
       console.log('Form submitted:', formData);
     } else {
       setErrors(newErrors);
@@ -100,7 +126,6 @@ const BlogCreationForm = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Title Input */}
             <div className="space-y-2">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title *
@@ -122,7 +147,6 @@ const BlogCreationForm = () => {
               )}
             </div>
 
-            {/* Subtitle Input */}
             <div className="space-y-2">
               <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700">
                 Subtitle
@@ -138,7 +162,6 @@ const BlogCreationForm = () => {
               />
             </div>
 
-            {/* Category Selection */}
             <div className="space-y-2">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Category *
@@ -163,7 +186,6 @@ const BlogCreationForm = () => {
               )}
             </div>
 
-            {/* Tags Input */}
             <div className="space-y-2">
               <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
                 Tags
@@ -204,7 +226,6 @@ const BlogCreationForm = () => {
               </div>
             </div>
 
-            {/* Cover Image Upload */}
             <div className="space-y-2">
               <label htmlFor="cover-image" className="block text-sm font-medium text-gray-700">
                 Cover Image
@@ -222,7 +243,7 @@ const BlogCreationForm = () => {
                         type="button"
                         onClick={() => {
                           setPreview(null);
-                          setFormData(prev => ({ ...prev, coverImage: null }));
+                          setFormData(prev => ({ ...prev, cover_image: null }));
                         }}
                         className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
                       >
@@ -258,7 +279,6 @@ const BlogCreationForm = () => {
               </div>
             </div>
 
-            {/* Content Editor */}
             <div className="space-y-2">
               <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                 Content *
@@ -280,18 +300,19 @@ const BlogCreationForm = () => {
               )}
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
-                onClick={() => setFormData(prev => ({ ...prev, isDraft: true }))}
-                className="px-4 py-2 rounded-md bg-red-100 hover:bg-red-200 text-white"
+                disabled={isLoading}
+                onClick={() => setFormData(prev => ({ ...prev, is_draft: true }))}
+                className="px-4 py-2 rounded-md bg-red-400 hover:bg-red-600 text-white"
               >
                 Save as Draft
               </button>
               <button
                 type="submit"
-                onClick={() => setFormData(prev => ({ ...prev, isDraft: false }))}
+                disabled={isLoading}
+                onClick={() => setFormData(prev => ({ ...prev, is_draft: false }))}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
                 Publish

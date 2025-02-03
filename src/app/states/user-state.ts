@@ -6,10 +6,7 @@ export const userSlice = createSlice({
   name: 'userSlice',
   initialState: {
     user: {} as User,
-    isAuthenticated: false,
-    error: null as string | null,
-    isLoading: false,
-    isFetching: false,
+    isAuthenticated: false
   },
   reducers: {
     setCurrentUser: (state, action: PayloadAction<User>) => {

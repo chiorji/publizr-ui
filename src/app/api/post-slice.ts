@@ -1,17 +1,17 @@
 import { apiSlice } from '../api-slice';
-import { Post } from '../../types/post-types';
+import { Post, NewPostFormData } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllPosts: builder.query<Post[], void>({
-      query: () =>  'api/posts'
+      query: () => 'api/posts'
     }),
 
     getPostById: builder.query<Post, string | number>({
       query: (id) => `api/posts/${id}`
     }),
 
-    createPost: builder.mutation<void, Post>({
+    createPost: builder.mutation<void, NewPostFormData>({
       query: (payload) => ({
         url: 'api/posts',
         method: 'POST',
@@ -36,7 +36,7 @@ export const postSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
+export const {
   useGetAllPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
