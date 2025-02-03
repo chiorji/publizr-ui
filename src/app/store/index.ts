@@ -2,8 +2,8 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist'
 import logger from 'redux-logger';
-import postsReducer from '../features/posts-slice'
-import userReducer, { userSlice } from '../features/users-slice'
+import postsReducer from '../states/post-state'
+import userReducer, { userSlice } from '../states/user-state'
 import { apiSlice } from '../api-slice';
 
 const middlewares = [apiSlice.middleware];

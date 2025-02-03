@@ -1,4 +1,4 @@
-import { Post } from './post-repository'; // Adjust the import path as necessary
+import { Post } from './post-types'; // Adjust the import path as necessary
 
 export interface User {
   id: number;
@@ -11,4 +11,11 @@ export interface User {
   updated_at: Date;
   last_login: Date;
   last_active: Date;
+}
+
+export  interface CreateAccountFormData {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }

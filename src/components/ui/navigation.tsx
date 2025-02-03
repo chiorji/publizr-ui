@@ -2,7 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Edit3 } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
-import { setIsAuthenticated } from '../../app/features/users-slice';
+import { setIsAuthenticated } from '../../app/states/user-state';
 
 
 const Navigation = () => {

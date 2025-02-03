@@ -12,7 +12,6 @@ export const BLACKLISTED_AFTER_AUTHENTICATION = [
   '/signup',
 ]
 
-
 export const useRedirectIfRequireAuth = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.users);
   const location = useLocation();

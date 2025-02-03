@@ -1,5 +1,5 @@
 import { Calendar, Clock, User } from 'lucide-react';
-import { Post, posts } from '../../repository/post-repository';
+import { Post, posts } from '../../types/post-types';
 import { useParams } from 'react-router-dom';
 
 const BlogDetail = () => {

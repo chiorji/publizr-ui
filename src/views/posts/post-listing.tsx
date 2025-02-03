@@ -1,5 +1,5 @@
 import { ChevronRight } from 'lucide-react';
-import { posts } from '../../repository/post-repository';
+import { posts } from '../../types/post-types';
 import FeaturedPost from './featured-post';
 import PostCard from './post-card';
 

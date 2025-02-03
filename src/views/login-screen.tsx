@@ -3,14 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
 import { Github, Mail } from 'lucide-react';
-import { setIsAuthenticated } from '../app/features/users-slice';
+import { setIsAuthenticated } from '../app/states/user-state';
+import { useLoginMutation } from '../app/api/user-slice';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('user@domain.com');
   const [password, setPassword] = useState('password');
-  const [isLoading, setIsLoading] = useState(false);
+  const [signInHandler, { isLoading }] = useLoginMutation();
 
   // interface OAuthLoginProps {
   //   provider: 'google' | 'github';
@@ -23,19 +24,18 @@ const LoginScreen = () => {
   //   setTimeout(() => setIsLoading(false), 1000);
   // };
 
-  interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> {}
+  interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> { }
 
   const handleEmailLogin = (e: EmailLoginEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    // Here you would implement your email login logic
-    setTimeout(() => {
-      setIsLoading(false)
-      if (email === 'user@domain.com' && password === 'password') {
+    signInHandler({ email, password }).then((response) => {
+      if (response && response.data) {
         dispatch(setIsAuthenticated(true));
         navigate('/dashboard');
       }
-    }, 1000);
+    }).catch((e) => {
+      console.error('Failed to log in' + e);
+    });
   };
 
   return (
@@ -98,7 +98,7 @@ const LoginScreen = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="text-sm font-medium text-gray-700">
@@ -131,7 +131,7 @@ const LoginScreen = () => {
         <CardFooter>
           <p className="text-sm text-gray-600 text-center w-full">
             Don't have an account?{' '}
-            <Link to="/signup"  className="text-blue-600 hover:underline">
+            <Link to="/signup" className="text-blue-600 hover:underline">
               Sign up
             </Link>
           </p>

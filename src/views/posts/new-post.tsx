@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Image, Tags, AlertCircle } from 'lucide-react';
-import { NewPostFormData, Errors, PostCategoryDefinition } from '../../repository/post-repository';
+import { NewPostFormData, Errors, PostCategoryDefinition } from '../../types/post-types';
 
 const BlogCreationForm = () => {
   const [formData, setFormData] = useState<NewPostFormData>({

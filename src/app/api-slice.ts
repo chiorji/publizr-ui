@@ -4,9 +4,8 @@ const baseUrl = 'http://localhost:8080'
 export const apiSlice = createApi({
   reducerPath: 'apiSlice',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${baseUrl}api/`,
+    baseUrl: `${baseUrl}/`,
     prepareHeaders: (headers) => {
-      headers.set('', '');
       headers.set('Authorization', `Bearer `);
       headers.set('Content-Type', 'application/json');
       return headers;

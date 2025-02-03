@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { Post } from '../../repository/post-repository';
+import { Post } from '../../types/post-types';
 
 export const postSlice = createSlice({
   name: 'postSlice',

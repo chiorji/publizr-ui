@@ -1,6 +1,6 @@
 import { Calendar, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Post } from '../../repository/post-repository';
+import { Post } from '../../types/post-types';
 
 const PostCard = ({ post }: { post: Post }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">

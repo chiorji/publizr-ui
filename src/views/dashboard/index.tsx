@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { posts } from '../../repository/post-repository';
+import { posts } from '../../types/post-types';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
