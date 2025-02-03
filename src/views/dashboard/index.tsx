@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { posts } from '../../types/post-types';
+import { useDeletePostMutation } from '../../app/api/post-slice';
 
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, [])
+  const [deleteHandler, { isLoading }] = useDeletePostMutation();
 
+  const handlerPostDeletion = (id: string | number) => {
+    deleteHandler(id).then((response) => {
+      if (response && response.data) {
+        console.log('Post deleted successfully');
+      }
+    }).catch((error) => {
+      console.log('Failed to delete post');
+      console.error(error);
+    });
+  };
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
@@ -70,10 +75,20 @@ const Dashboard = () => {
                     {post.status}
                   </span>
                   <div className="flex space-x-2 text-white">
-                    <button className="p-2 bg-gray-400 text-white hover:bg-gray-800 rounded-sm" onClick={(e) => e.preventDefault()}>
+                    <button
+                      disabled
+                      className="p-2 bg-gray-400 text-white hover:bg-gray-800 rounded-sm"
+                      onClick={(e) => e.preventDefault()}
+                    >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="p-2 bg-red-400 hover:bg-red-600 rounded-sm" onClick={(e) => e.preventDefault()}>
+                    <button
+                      className="p-2 bg-red-400 hover:bg-red-600 rounded-sm"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handlerPostDeletion(post.id)
+                      }}
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

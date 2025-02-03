@@ -31,6 +31,7 @@ const Navigation = () => {
             <Link to="/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
             {isAuthenticated && (
               <>
+              <Link to="/dashboard/new-post" className="text-gray-600 hover:text-gray-900">New Post</Link>
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
                 <Link to="#" onClick={handleLogout} className="text-white rounded-sm hover:bg-red-600 bg-red-500 p-2 px-4">Logout</Link>
               </>
