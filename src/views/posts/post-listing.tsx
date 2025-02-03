@@ -11,17 +11,17 @@ const BlogListing = () => {
       ))}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.filter(post => !post.featured).map(post => (
+        {posts.slice(0, 9).filter(post => !post.featured).map(post => (
           <PostCard key={post.id} post={post} />
         ))}
       </div>
 
-      <div className="mt-12 text-center">
+      {posts.length > 9 && <div className="mt-12 text-center">
         <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
           Load More Posts
           <ChevronRight className="ml-2 h-5 w-5" />
         </button>
-      </div>
+      </div>}
     </div>
   );
 };

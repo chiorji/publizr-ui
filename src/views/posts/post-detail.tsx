@@ -3,10 +3,10 @@ import { Post, posts } from '../../repository/post-repository';
 import { useParams } from 'react-router-dom';
 
 const BlogDetail = () => {
-  const {slug} = useParams();
+  const { slug } = useParams();
 
   const post: Post = posts.find((post) => post.id === Number(slug)) as Post;
-  
+
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
       <div className="relative h-96 mb-8">

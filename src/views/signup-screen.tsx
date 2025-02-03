@@ -3,13 +3,8 @@ import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
 import { Github, Mail } from 'lucide-react';
 import PasswordStrengthIndicator from '../components/ui/password-strength-indicator';
-import { useRedirect } from '../hooks';
-import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
 
 const SignupScreen = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.users);
-  useRedirect(isAuthenticated, '/dashboard');
   
   const [formData, setFormData] = useState({
     fullName: '',

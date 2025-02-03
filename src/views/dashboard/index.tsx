@@ -20,7 +20,7 @@ const Dashboard = () => {
           <p className="text-gray-500">Manage your blog posts</p>
         </div>
         <Link
-          to="/posts/new"
+          to="/dashboard/new-post"
           className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
         >
           <Plus className="w-5 h-5 mr-2" />

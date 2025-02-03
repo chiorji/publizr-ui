@@ -1,8 +1,8 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { Edit3 } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, persistor } from '../app/store';
-import { setIsAuthenticated } from '../app/features/users-slice';
+import { RootState, persistor } from '../../app/store';
+import { setIsAuthenticated } from '../../app/features/users-slice';
 
 
 const Navigation = () => {
@@ -31,8 +31,8 @@ const Navigation = () => {
             <Link to="/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
             {isAuthenticated && (
               <>
-                <Link to="#" onClick={handleLogout} className="text-gray-600 hover:text-gray-900">Logout</Link>
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
+                <Link to="#" onClick={handleLogout} className="text-white rounded-sm hover:bg-red-600 bg-red-500 p-2 px-4">Logout</Link>
               </>
             )}
             {!isAuthenticated && (

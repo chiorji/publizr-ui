@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import Navigation from './views/navigation'
+import Navigation from './components/ui/navigation'
 import HomePage from './views/home-page'
 import LoginScreen from './views/login-screen'
 import SignupScreen from './views/signup-screen'
@@ -7,10 +7,10 @@ import PostListing from './views/posts/post-listing'
 import PostDetail from './views/posts/post-detail'
 import Dashboard from './views/dashboard';
 import NewPost from './views/posts/new-post';
-import { useRedirect } from './hooks'
+import { useRedirectIfRequireAuth } from './hooks'
 
 const App = () => {
-  useRedirect();
+  useRedirectIfRequireAuth();
 
   return (
     <div className="min-h-screen bg-white">
@@ -22,8 +22,8 @@ const App = () => {
         <Route path="/posts" element={<PostListing />} />
         <Route path="/posts/:slug" element={<PostDetail />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/posts/new" element={<NewPost />} />
-        <Route path="/*" element={<div className='text-xl text-red-400 text-center p-8'>
+        <Route path="/dashboard/new-post" element={<NewPost />} />
+        <Route path="/*" element={<div className='text-xl text-red-400 text-center p-8 min-h-screen text-center'>
           <h1>Page not found</h1>
           <p className='text-gray-800'>The page you're looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
           <p className='text-gray-800'>Please try your search again or contact the administrator.</p>
