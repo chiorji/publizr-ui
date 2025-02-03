@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Github, Mail } from 'lucide-react';
 import { setIsAuthenticated } from '../app/states/user-state';
 import { useLoginMutation } from '../app/api/user-slice';
+import { OAuthProvider } from '../types/user-types';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -13,16 +14,9 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('password');
   const [signInHandler, { isLoading }] = useLoginMutation();
 
-  // interface OAuthLoginProps {
-  //   provider: 'google' | 'github';
-  // }
-
-  // const handleOAuthLogin = ({ provider }: OAuthLoginProps) => {
-  //   setIsLoading(true);
-  //   // Here you would implement your OAuth login logic for the specific provider
-  //   console.log(`Logging in with ${provider}`);
-  //   setTimeout(() => setIsLoading(false), 1000);
-  // };
+  const handleOAuthLogin = ({ provider }: OAuthProvider) => {
+    console.log(`Logging in with ${provider}`);
+  };
 
   interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> { }
 
@@ -43,23 +37,19 @@ const LoginScreen = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-          {/* <CardDescription>
+          <CardDescription>
             Choose your preferred login method
-          </CardDescription> */}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* OAuth Buttons */}
-          {/* <div className="space-y-2">
+
+          <div className="space-y-2">
             <button
               onClick={() => handleOAuthLogin({ provider: 'google' })}
               disabled={isLoading}
               className="w-full flex items-center justify-center gap-2 bg-white text-gray-700 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 disabled:opacity-50"
             >
-              <img 
-                src="/api/placeholder/20/20" 
-                alt="Google logo" 
-                className="w-5 h-5" 
-              />
+             <Mail className="w-5 h-5" />
               Continue with Google
             </button>
 
@@ -71,18 +61,17 @@ const LoginScreen = () => {
               <Github className="w-5 h-5" />
               Continue with GitHub
             </button>
-          </div> */}
+          </div>
 
-          {/* <div className="relative">
+          <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
-          </div> */}
+          </div>
 
-          {/* Email/Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-gray-700">

@@ -19,3 +19,7 @@ export  interface CreateAccountFormData {
   password: string;
   confirmPassword: string;
 }
+
+export interface OAuthProvider {
+  provider: 'google' | 'github';
+}
