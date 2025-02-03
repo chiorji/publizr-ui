@@ -1,6 +1,6 @@
 const Card = ({ className = '', ...props }) => (
   <div
-    className={`rounded-lg border bg-white text-gray-950 shadow-sm ${className}`}
+    className={`rounded-lg bg-white text-gray-950 shadow-sm ${className}`}
     {...props}
   />
 );

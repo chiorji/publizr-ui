@@ -97,7 +97,7 @@ const HomePage = () => {
             <div className="inline-flex rounded-md shadow">
               <button
                 onClick={() => navigate('/signup')}
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-white hover:bg-blue-50"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-white text-blue-600 hover:bg-blue-50"
               >
                 Get started
                 <ChevronRight className="ml-2 h-5 w-5" />

@@ -63,17 +63,17 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-2">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${post.status === 'published'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'
                       }`}
                   >
                     {post.status}
                   </span>
-                  <div className="flex space-x-2">
-                    <button className="p-1 hover:text-blue-600">
+                  <div className="flex space-x-2 text-white">
+                    <button className="p-2 bg-gray-400 text-white hover:bg-gray-800 rounded-sm" onClick={(e) => e.preventDefault()}>
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="p-1 hover:text-red-600">
+                    <button className="p-2 bg-red-400 hover:bg-red-600 rounded-sm" onClick={(e) => e.preventDefault()}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
