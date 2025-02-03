@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 const PostCard = ({ post }: { post: Post }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
     <img
-      src={post.imageUrl}
+      src={post.image_url as string}
       alt={post.title}
       className="w-full h-48 object-cover"
     />
@@ -31,7 +31,7 @@ const PostCard = ({ post }: { post: Post }) => (
         </div>
         <div className="flex items-center text-sm text-gray-500 mt-2">
           <Clock className="h-4 w-4 mr-2" />
-          {post.readTime}
+          {post.read_time}
         </div>
       </div>
     </div>
