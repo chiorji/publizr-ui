@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
 
-export const AUTH_PATHS = [
-  '/dashboard',
-  '/posts'
+export const REQUIRE_AUTH_PATHS = [
+  '/dashboard'
 ];
 
 export const useRedirect = () => {
@@ -14,7 +13,8 @@ export const useRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated && !AUTH_PATHS.includes(location.pathname)) {
+
+    if ((isAuthenticated && !REQUIRE_AUTH_PATHS.includes(location.pathname)) || (!isAuthenticated && REQUIRE_AUTH_PATHS.includes(location.pathname))) {
       navigate(-1);
     }
   }, [location.pathname]);

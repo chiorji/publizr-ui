@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
-import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist'
 import logger from 'redux-logger';
 import postsReducer from '../features/posts-slice'
 import userReducer, { userSlice } from '../features/users-slice'
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../api-slice';
 
 const middlewares = [apiSlice.middleware];
 if (process.env.NODE_ENV !== 'production') {
@@ -37,7 +37,7 @@ export const store = configureStore({
     }).concat(middlewares),
 });
 
-
+export const persistor = persistStore(store);
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

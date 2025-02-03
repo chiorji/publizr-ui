@@ -1,8 +1,9 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { Edit3 } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../app/store';
+import { RootState, persistor } from '../app/store';
 import { setIsAuthenticated } from '../app/features/users-slice';
+
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -11,7 +12,9 @@ const Navigation = () => {
 
   const handleLogout = () => {
     dispatch(setIsAuthenticated(false));
-    navigate('/');
+    persistor.flush().then(() => {
+      navigate('/');
+    });
   };
 
   return (
