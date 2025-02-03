@@ -20,15 +20,15 @@ const Dashboard = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">My Posts</h1>
-          <p className="text-gray-500">Manage your blog posts</p>
+          <h1 className="text-4xl font-bold text-gray-900">My Pubs</h1>
+          <p className="text-gray-500">Manage your publications</p>
         </div>
         <Link
           to="/dashboard/new-post"
           className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
         >
           <Plus className="w-5 h-5 mr-2" />
-          Create New Post
+          Create New Pub
         </Link>
       </div>
 

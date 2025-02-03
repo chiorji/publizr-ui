@@ -1,5 +1,4 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { Edit3 } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
 import { setIsAuthenticated } from '../../app/states/user-state';
@@ -23,15 +22,14 @@ const Navigation = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center text-blue-600">
             <Link to="/" className="flex items-center">
-              <Edit3 className="h-8 w-8" />
-              <span className="ml-2 text-xl font-bold">Publisher</span>
+              <span className="ml-2 text-3xl font-bold">Publizr</span>
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
+            <Link to="/posts" className="text-gray-600 hover:text-gray-900">Pubs</Link>
             {isAuthenticated && (
               <>
-              <Link to="/dashboard/new-post" className="text-gray-600 hover:text-gray-900">New Post</Link>
+              <Link to="/dashboard/new-post" className="text-gray-600 hover:text-gray-900">New Pub</Link>
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
                 <Link to="#" onClick={handleLogout} className="text-white rounded-sm hover:bg-gray-600 bg-gray-500 p-2 px-4">Logout</Link>
               </>
