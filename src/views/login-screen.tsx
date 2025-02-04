@@ -6,6 +6,7 @@ import { Github, Mail } from 'lucide-react';
 import { setIsAuthenticated } from '../app/states/user-state';
 import { useLoginMutation } from '../app/api/user-slice';
 import { OAuthProvider } from '../types/user-types';
+import { persistor } from '../app/store';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -22,14 +23,18 @@ const LoginScreen = () => {
 
   const handleEmailLogin = (e: EmailLoginEvent) => {
     e.preventDefault();
-    signInHandler({ email, password }).then((response) => {
-      if (response && response.data) {
-        dispatch(setIsAuthenticated(true));
-        navigate('/dashboard');
-      }
-    }).catch((e) => {
-      console.error('Failed to log in' + e);
-    });
+    persistor.flush().then(() => {
+      dispatch(setIsAuthenticated(true));
+      navigate('/dashboard');
+    })
+    // signInHandler({ email, password }).then((response) => {
+    //   if (response && response.data) {
+    //     dispatch(setIsAuthenticated(true));
+    //     navigate('/dashboard');
+    //   }
+    // }).catch((e) => {
+    //   console.error('Failed to log in' + e);
+    // });
   };
 
   return (

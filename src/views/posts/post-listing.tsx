@@ -7,12 +7,12 @@ const BlogListing = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {posts.filter(post => post.featured).map(post => (
-        <FeaturedPost key={post.id} post={post} />
+        <FeaturedPost key={post.post_id} post={post} />
       ))}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.slice(0, 9).filter(post => !post.featured).map(post => (
-          <PostCard key={post.id} post={post} />
+          <PostCard key={post.post_id} post={post} />
         ))}
       </div>
 

@@ -7,7 +7,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
     <div className="md:flex">
       <div className="md:w-2/3">
         <img
-          src={post.image_url as string}
+          src={post.poster_card}
           alt={post.title}
           className="h-48 w-full object-cover md:h-full"
         />
@@ -17,7 +17,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
           {post.category}
         </div>
         <Link
-          to={`/posts/${post.id}`}
+          to={`/posts/${post.post_id}`}
           className="block mt-2 text-2xl font-semibold text-gray-900 hover:text-blue-600 transition-colors"
         >
           {post.title}
@@ -26,16 +26,16 @@ const FeaturedPost = ({ post }: { post: Post }) => (
         <div className="mt-4">
           <div className="flex items-center text-sm text-gray-500">
             <User className="h-4 w-4 mr-2" />
-            {post.author}
+            {post.author_id}
           </div>
           <div className="flex items-center text-sm text-gray-500 mt-2">
             <Calendar className="h-4 w-4 mr-2" />
-            {new Date(post.date).toLocaleDateString()}
+            {new Date(post.posted_on).toLocaleDateString()}
           </div>
-          <div className="flex items-center text-sm text-gray-500 mt-2">
+          {post.read_time && <div className="flex items-center text-sm text-gray-500 mt-2">
             <Clock className="h-4 w-4 mr-2" />
             {post.read_time}
-          </div>
+          </div>}
         </div>
       </div>
     </div>

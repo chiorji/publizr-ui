@@ -1,20 +1,16 @@
-import { Post } from './post-types'; // Adjust the import path as necessary
-
+export type USER_ROLE = 'ADMIN' | 'AUTHOR';
 export interface User {
   id: number;
-  name: string;
+  username: string;
   email: string;
   image_url: string;
-  role: 'admin' | 'user';
-  posts: Post[];
+  role: USER_ROLE,
   created_at: Date;
   updated_at: Date;
-  last_login: Date;
-  last_active: Date;
 }
 
 export  interface CreateAccountFormData {
-  fullName: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;

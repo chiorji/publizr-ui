@@ -11,7 +11,7 @@ const SignupScreen = () => {
   const navigate = useNavigate();
   const [signupHandler, { isLoading }] = useSignupMutation();
   const [formData, setFormData] = useState<CreateAccountFormData>({
-    fullName: 'Orji Chigbogu',
+    username: 'orji',
     email: 'bright@user.com',
     password: '@12Password',
     confirmPassword: '@12Password',
@@ -117,7 +117,7 @@ const SignupScreen = () => {
                 id="fullName"
                 name="fullName"
                 type="text"
-                value={formData.fullName}
+                value={formData.username}
                 onChange={handleInputChange}
                 placeholder="John Doe"
                 required

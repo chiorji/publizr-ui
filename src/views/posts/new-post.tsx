@@ -3,18 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Image, Tags, AlertCircle } from 'lucide-react';
-import { NewPostFormData, Errors, PostCategoryDefinition } from '../../types/post-types';
+import { NewPostFormData, Errors } from '../../types/post-types';
 import { useCreatePostMutation } from '../../app/api/post-slice';
 
 const BlogCreationForm = () => {
   const [formData, setFormData] = useState<NewPostFormData>({
+    author_id: 1,
     title: 'Post title',
-    subtitle: 'Post subtitle or excerpt',
+    excerpt: 'Post subtitle or excerpt',
     category: 'Architecture',
-    tags: ['programming', 'hacking'],
+    tags: 'programming, hacking',
     content: 'Here lies the post content. Lorem ipsum dolor sit amet tempor invidunt ut labore et dolore magna aliqu sapiente consequ sed diam nonumy eirmod tempor invidunt ut labore et dol',
-    image_url: null,
-    is_draft: false
+    poster_card: '',
+    status: 'DRAFT',
+    featured: false
   });
 
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const BlogCreationForm = () => {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [createHandler, { isLoading }] = useCreatePostMutation();
 
-  const categories: PostCategoryDefinition[] = [
+  const categories: string[] = [
     'Technology',
     'Programming',
     'Design',
@@ -65,7 +67,7 @@ const BlogCreationForm = () => {
     if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
       setFormData((prev: NewPostFormData) => ({
         ...prev,
-        tags: [...prev.tags, currentTag.trim()]
+        tags: prev.tags.concat(currentTag.trim())
       }));
       setCurrentTag('');
     }
@@ -74,7 +76,7 @@ const BlogCreationForm = () => {
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.split(',').filter(tag => tag !== tagToRemove).join(', ')
     }));
   };
 
@@ -98,12 +100,14 @@ const BlogCreationForm = () => {
           // Reset form and clear errors
           setFormData({
             title: '',
-            subtitle: '',
-            category: '' as PostCategoryDefinition,
-            tags: [],
+            excerpt: '',
+            category: '',
+            tags: '',
             content: '',
-            image_url: null,
-            is_draft: false
+            poster_card: '',
+            status: 'DRAFT',
+            author_id: 1,
+            featured: false
           });
           setErrors({});
           navigate('/posts')
@@ -148,17 +152,17 @@ const BlogCreationForm = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700">
-                Subtitle
+              <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700">
+                Excerpt
               </label>
               <input
                 type="text"
-                id="subtitle"
-                name="subtitle"
-                value={formData.subtitle}
+                id="excerpt"
+                name="excerpt"
+                value={formData.excerpt}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter a subtitle (optional)"
+                placeholder="Enter an excerpt (optional)"
               />
             </div>
 
@@ -208,7 +212,7 @@ const BlogCreationForm = () => {
                 </button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {formData.tags.map(tag => (
+                {formData.tags.split(', ').map(tag => (
                   <span
                     key={tag}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
@@ -304,7 +308,7 @@ const BlogCreationForm = () => {
               <button
                 type="button"
                 disabled={isLoading}
-                onClick={() => setFormData(prev => ({ ...prev, is_draft: true }))}
+                onClick={() => setFormData(prev => ({ ...prev, status: 'Draft' }))}
                 className="px-4 py-2 rounded-md bg-red-400 hover:bg-red-600 text-white"
               >
                 Save as Draft
@@ -312,7 +316,7 @@ const BlogCreationForm = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                onClick={() => setFormData(prev => ({ ...prev, is_draft: false }))}
+                onClick={() => setFormData(prev => ({ ...prev, status: 'Published' }))}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
                 Publish

@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 const PostCard = ({ post }: { post: Post }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
     <img
-      src={post.image_url as string}
+      src={post.poster_card as string}
       alt={post.title}
       className="w-full h-48 object-cover"
     />
@@ -14,7 +14,7 @@ const PostCard = ({ post }: { post: Post }) => (
         {post.category}
       </div>
       <Link
-        to={`/posts/${post.id}`}
+        to={`/posts/${post.post_id}`}
         className="block mt-2 text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors"
       >
         {post.title}
@@ -23,16 +23,16 @@ const PostCard = ({ post }: { post: Post }) => (
       <div className="mt-4">
         <div className="flex items-center text-sm text-gray-500">
           <User className="h-4 w-4 mr-2" />
-          {post.author}
+          {post.author_id}
         </div>
         <div className="flex items-center text-sm text-gray-500 mt-2">
           <Calendar className="h-4 w-4 mr-2" />
-          {new Date(post.date).toLocaleDateString()}
+          {new Date(post.posted_on).toLocaleDateString()}
         </div>
-        <div className="flex items-center text-sm text-gray-500 mt-2">
+        {post.read_time && <div className="flex items-center text-sm text-gray-500 mt-2">
           <Clock className="h-4 w-4 mr-2" />
           {post.read_time}
-        </div>
+        </div>}
       </div>
     </div>
   </div>
