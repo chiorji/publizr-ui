@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 const PostCard = ({ post }: { post: Post }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
     <img
-      src={post.poster_card as string}
+      src={post.poster_card}
       alt={post.title}
       className="w-full h-48 object-cover"
     />
@@ -23,7 +23,7 @@ const PostCard = ({ post }: { post: Post }) => (
       <div className="mt-4">
         <div className="flex items-center text-sm text-gray-500">
           <User className="h-4 w-4 mr-2" />
-          {post.author_id}
+          {post.username}
         </div>
         <div className="flex items-center text-sm text-gray-500 mt-2">
           <Calendar className="h-4 w-4 mr-2" />

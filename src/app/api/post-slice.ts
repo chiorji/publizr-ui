@@ -3,6 +3,10 @@ import { Post, NewPostFormData } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getPostOverview: builder.query<Post[], void> ({
+      query: () => 'api/posts/overview'
+    }),
+
     getAllPosts: builder.query<Post[], void>({
       query: () => 'api/posts'
     }),
@@ -37,6 +41,7 @@ export const postSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetPostOverviewQuery,
   useGetAllPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,

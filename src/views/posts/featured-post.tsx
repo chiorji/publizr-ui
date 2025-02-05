@@ -26,7 +26,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
         <div className="mt-4">
           <div className="flex items-center text-sm text-gray-500">
             <User className="h-4 w-4 mr-2" />
-            {post.author_id}
+            {post.username}
           </div>
           <div className="flex items-center text-sm text-gray-500 mt-2">
             <Calendar className="h-4 w-4 mr-2" />
