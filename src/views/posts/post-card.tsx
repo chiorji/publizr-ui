@@ -21,7 +21,7 @@ const PostCard = ({ post }: { post: Post }) => (
       </Link>
       <p className="mt-3 text-gray-500">{post.excerpt}</p>
       <div className="mt-4">
-        <div className="flex items-center text-sm text-gray-500">
+        <div className="flex items-center text-sm text-gray-500 uppercase">
           <User className="h-4 w-4 mr-2" />
           {post.username}
         </div>
@@ -33,8 +33,14 @@ const PostCard = ({ post }: { post: Post }) => (
           <Clock className="h-4 w-4 mr-2" />
           {post.read_time}
         </div>}
+        <div className="flex items-center text-sm text-gray-800 mt-2"></div>
+          {post?.tags.split(',').map((tag, index) => (
+            <span key={index} className="mr-2 bg-gray-200 text-gray-600 rounded-full px-2 py-1 text-sm">
+              {"#"}{tag.trim()}
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
   </div>
 );
 

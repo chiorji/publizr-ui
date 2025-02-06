@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 const FeaturedPost = ({ post }: { post: Post }) => (
   <div className="relative rounded-lg overflow-hidden bg-white shadow-lg mb-8">
     <div className="md:flex">
-      <div className="md:w-2/3">
+      <div className="md:w-2/3 max-h-[500px]">
         <img
           src={post.poster_card}
           alt={post.title}
@@ -24,7 +24,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
         </Link>
         <p className="mt-3 text-gray-500">{post.excerpt}</p>
         <div className="mt-4">
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-gray-500 uppercase">
             <User className="h-4 w-4 mr-2" />
             {post.username}
           </div>
