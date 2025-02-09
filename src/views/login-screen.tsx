@@ -23,18 +23,16 @@ const LoginScreen = () => {
 
   const handleEmailLogin = (e: EmailLoginEvent) => {
     e.preventDefault();
-    persistor.flush().then(() => {
-      dispatch(setIsAuthenticated(true));
-      navigate('/dashboard');
-    })
-    // signInHandler({ email, password }).then((response) => {
-    //   if (response && response.data) {
-    //     dispatch(setIsAuthenticated(true));
-    //     navigate('/dashboard');
-    //   }
-    // }).catch((e) => {
-    //   console.error('Failed to log in' + e);
-    // });
+    signInHandler({ email, password }).then((response) => {
+      if (response && response.data) {
+        persistor.flush().then(() => {
+          dispatch(setIsAuthenticated(true));
+          navigate('/dashboard');
+        })
+      }
+    }).catch((e) => {
+      console.error('Failed to log in' + e);
+    });
   };
 
   return (

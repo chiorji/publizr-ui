@@ -1,19 +1,19 @@
 import { apiSlice } from '../api-slice';
-import { User, CreateAccountFormData } from '../../types/user-types';
+import { CreateAccountFormData, LoginResponse } from '../../types/user-types';
 
 export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<User, { email: string, password: string }>({
+    login: builder.mutation<LoginResponse, { email: string, password: string }>({
       query: (body) => ({
-        url: 'api/users/authenticate',
+        url: 'api/users/login',
         method: 'POST',
         body,
       }),
     }),
 
-    signup: builder.mutation<void, Omit<CreateAccountFormData, 'confirmPassword'>>({
+    signup: builder.mutation<LoginResponse, Omit<CreateAccountFormData, 'confirmPassword'>>({
       query: (payload) => ({
-        url: 'api/users',
+        url: 'api/users/signup',
         method: 'POST',
         body: payload,
       }),

@@ -9,7 +9,7 @@ export interface User {
   updated_at: Date;
 }
 
-export  interface CreateAccountFormData {
+export interface CreateAccountFormData {
   username: string;
   email: string;
   password: string;
@@ -18,4 +18,10 @@ export  interface CreateAccountFormData {
 
 export interface OAuthProvider {
   provider: 'google' | 'github';
+}
+
+export interface LoginResponse {
+  success: boolean
+  token: string
+  data: User
 }
