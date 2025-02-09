@@ -26,10 +26,10 @@ const Navigation = () => {
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
+            <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
             {isAuthenticated && (
               <>
-              <Link to="/dashboard/new-post" className="text-gray-600 hover:text-gray-900">New Post</Link>
+              <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
                 <Link to="#" onClick={handleLogout} className="text-white rounded-sm hover:bg-gray-600 bg-gray-500 p-2 px-4">Logout</Link>
               </>

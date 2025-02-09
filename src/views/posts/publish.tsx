@@ -6,7 +6,7 @@ import { Image, Tags, AlertCircle } from 'lucide-react';
 import { NewPostFormData, Errors } from '../../types/post-types';
 import { useCreatePostMutation } from '../../app/api/post-slice';
 
-const BlogCreationForm = () => {
+const Publish = () => {
   const [formData, setFormData] = useState<NewPostFormData>({
     author_id: 1,
     title: 'Post title',
@@ -329,4 +329,4 @@ const BlogCreationForm = () => {
   );
 };
 
-export default BlogCreationForm;
+export default Publish;

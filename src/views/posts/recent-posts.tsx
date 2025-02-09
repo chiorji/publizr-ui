@@ -1,17 +1,17 @@
 import { ChevronRight } from 'lucide-react';
 import FeaturedPost from './featured-post';
 import PostCard from './post-card';
-import { useGetPostOverviewQuery } from '../../app/api/post-slice';
+import { useRecentQuery } from '../../app/api/post-slice';
 import { useMemo } from 'react';
 import { useRandomImage } from '../../hooks/use-image';
 import { Link } from 'react-router-dom';
 
-const PostsOverview = () => {
-  const { data } = useGetPostOverviewQuery();
+const RecentPosts = () => {
+  const { data } = useRecentQuery();
 
   const posts = useMemo(() => {
-    if (!data) return [];
-    return data.map(post => ({
+    if (!data?.data) return [];
+    return data?.data.map(post => ({
       ...post,
       poster_card: useRandomImage()
     }));
@@ -39,4 +39,4 @@ const PostsOverview = () => {
   );
 };
 
-export default PostsOverview;
+export default RecentPosts;

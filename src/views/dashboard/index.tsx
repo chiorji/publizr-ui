@@ -1,11 +1,20 @@
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { posts } from '../../types/post-types';
-import { useDeletePostMutation } from '../../app/api/post-slice';
+import { useAllQuery, useDeletePostMutation } from '../../app/api/post-slice';
+import { useMemo } from 'react';
+import { useRandomImage } from '../../hooks/use-image';
 
 const Dashboard = () => {
+const {data, isLoading} = useAllQuery();
+  const [deleteHandler] = useDeletePostMutation();
 
-  const [deleteHandler, { isLoading }] = useDeletePostMutation();
+  const posts = useMemo(() => {
+    if (!data?.data) return [];
+    return data?.data.map(post => ({
+     ...post,
+      poster_card: useRandomImage()
+    }));
+  }, [data?.data])
 
   const handlerPostDeletion = (id: string | number) => {
     deleteHandler(id).then((response) => {
@@ -48,17 +57,17 @@ const Dashboard = () => {
         </div>
       )}
 
-      {!isLoading && !!posts.length && (
+      {!isLoading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <Link
-              to={`/posts/${post.id}`}
-              key={post.id}
+              to={`/posts/${post.post_id}`}
+              key={post.post_id}
               className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
             >
-              {post.image_url && (
+              {post.poster_card && (
                 <img
-                  src={post.image_url as string}
+                  src={post.poster_card as string}
                   alt={post.title}
                   className="w-full h-48 object-cover"
                 />
@@ -86,7 +95,7 @@ const Dashboard = () => {
                       className="p-2 bg-red-400 hover:bg-red-600 rounded-sm"
                       onClick={(e) => {
                         e.preventDefault()
-                        handlerPostDeletion(post.id)
+                        handlerPostDeletion(post.post_id)
                       }}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -95,7 +104,7 @@ const Dashboard = () => {
                 </div>
                 <h3 className="font-medium text-gray-900">{post.title}</h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  {new Date(post.date).toLocaleDateString()}
+                  {new Date(post.posted_on).toLocaleDateString()}
                 </p>
               </div>
             </Link>

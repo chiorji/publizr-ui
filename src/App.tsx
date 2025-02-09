@@ -6,9 +6,9 @@ import SignupScreen from './views/signup-screen'
 import PostListing from './views/posts/post-listing'
 import PostDetail from './views/posts/post-detail'
 import Dashboard from './views/dashboard';
-import NewPost from './views/posts/new-post';
+import Publish from './views/posts/publish';
 import { useRedirectIfRequireAuth } from './hooks'
-import PostsOverview from './views/posts/posts-overview'
+import RecentPosts from './views/posts/recent-posts'
 import { Suspense } from 'react'
 
 const NotFound = () => {
@@ -32,11 +32,11 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/signup" element={<SignupScreen />} />
-          <Route path="/posts" element={<PostsOverview />} />
-          <Route path="/posts/all" element={<PostListing />} />
+          <Route path="/posts/recent" element={<RecentPosts />} />
+          <Route path="/posts" element={<PostListing />} />
           <Route path="/posts/:slug" element={<PostDetail />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/new-post" element={<NewPost />} />
+          <Route path="/dashboard/publish" element={<Publish />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/404" element={<NotFound />} />
         </Routes>

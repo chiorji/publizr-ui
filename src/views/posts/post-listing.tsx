@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useGetAllPostsQuery } from '../../app/api/post-slice';
+import { useAllQuery } from '../../app/api/post-slice';
 import { useMemo } from 'react';
 import { useRandomImage } from '../../hooks/use-image';
 
-const BlogListing = () => {
-  const { data, isLoading } = useGetAllPostsQuery();
+const PostListing = () => {
+  const { data, isLoading } = useAllQuery();
 
   const posts = useMemo(() => {
-    if (!data) return [];
-    return data.map(post => ({
+    if (!data?.data) return [];
+    return data?.data.map(post => ({
       ...post,
       poster_card: useRandomImage()
     }));
@@ -37,4 +37,4 @@ const BlogListing = () => {
   );
 };
 
-export default BlogListing;
+export default PostListing;

@@ -1,17 +1,17 @@
 import { apiSlice } from '../api-slice';
-import { Post, NewPostFormData } from '../../types/post-types';
+import { Post, NewPostFormData, GetPostByIdResponse, GetPostsResponse } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getPostOverview: builder.query<Post[], void> ({
-      query: () => 'api/posts/overview'
+    recent: builder.query<GetPostsResponse, void> ({
+      query: () => 'api/posts/recent'
     }),
 
-    getAllPosts: builder.query<Post[], void>({
+    all: builder.query<GetPostsResponse, void>({
       query: () => 'api/posts'
     }),
 
-    getPostById: builder.query<Post, string | number>({
+    byId: builder.query<GetPostByIdResponse, string | number>({
       query: (id) => `api/posts/${id}`
     }),
 
@@ -41,9 +41,9 @@ export const postSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetPostOverviewQuery,
-  useGetAllPostsQuery,
-  useGetPostByIdQuery,
+  useRecentQuery,
+  useAllQuery,
+  useByIdQuery,
   useCreatePostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,

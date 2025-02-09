@@ -5,17 +5,19 @@ import { Post } from '../../types/post-types';
 export const postSlice = createSlice({
   name: 'postSlice',
   initialState: {
-    posts: [] as Post[],
+    total: 0,
+    message: "",
+    data: [] as Post[],
   },
   reducers: {
     setPosts: (state, action: PayloadAction<Post[]>) => {
-      state.posts = action.payload;
+      state.data = action.payload;
     },
   },
 });
 
 export const { setPosts } = postSlice.actions;
 
-export const selectAllPosts = (state: { post: ReturnType<typeof postSlice.reducer> }) => state.post.posts;
+export const selectAllPosts = (state: { post: ReturnType<typeof postSlice.reducer> }) => state.post.data;
 
 export default postSlice.reducer;

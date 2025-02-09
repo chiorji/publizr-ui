@@ -2,17 +2,17 @@ import { useMemo } from 'react';
 import { Calendar, Clock, User } from 'lucide-react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useRandomImage } from '../../hooks/use-image';
-import { useGetPostByIdQuery } from '../../app/api/post-slice';
+import { useByIdQuery } from '../../app/api/post-slice';
 import { Post } from '../../types/post-types';
 
 const BlogDetail = () => {
   const { slug } = useParams();
 
-  const { data, isError, isLoading } = useGetPostByIdQuery(Number(slug));
+  const { data, isError, isLoading } = useByIdQuery(Number(slug));
 
   const post = useMemo(() => {
-    if (!data) return {} as Post;
-    return { ...data, poster_card: useRandomImage() };
+    if (!data?.data) return {} as Post;
+    return { ...data?.data, poster_card: useRandomImage() };
   }, [data]);
 
   if (isLoading) {
