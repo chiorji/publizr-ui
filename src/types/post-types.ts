@@ -33,12 +33,9 @@ export interface Errors {
   [key: string]: string | undefined;
 }
 
-export interface GetPostsResponse {
-  data: Post[]
+export interface GetResponse<T> {
+  success: boolean
   message: string
-  total: number
-}
-
-export type GetPostByIdResponse = Omit<GetPostsResponse, "data"> & {
-  data: Post
+  data: T
+  size: number
 }

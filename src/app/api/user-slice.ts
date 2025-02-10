@@ -1,9 +1,9 @@
 import { apiSlice } from '../api-slice';
-import { CreateAccountFormData, LoginResponse } from '../../types/user-types';
+import { CreateAccountFormData, User, LoginSignupResponse} from '../../types/user-types';
 
 export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, { email: string, password: string }>({
+    login: builder.mutation<LoginSignupResponse<User>, { email: string, password: string }>({
       query: (body) => ({
         url: 'api/users/login',
         method: 'POST',
@@ -11,7 +11,7 @@ export const userSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    signup: builder.mutation<LoginResponse, Omit<CreateAccountFormData, 'confirmPassword'>>({
+    signup: builder.mutation<LoginSignupResponse<User>, Omit<CreateAccountFormData, 'confirmPassword'>>({
       query: (payload) => ({
         url: 'api/users/signup',
         method: 'POST',
@@ -29,5 +29,4 @@ export const userSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useResetPasswordMutation } =
-  userSlice;
+export const { useLoginMutation, useSignupMutation, useResetPasswordMutation } = userSlice;

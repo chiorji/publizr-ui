@@ -1,3 +1,5 @@
+import { GetResponse } from "./post-types";
+
 export type USER_ROLE = 'ADMIN' | 'AUTHOR';
 export interface User {
   id: number;
@@ -16,8 +18,6 @@ export interface CreateAccountFormData {
   confirmPassword: string;
 }
 
-export interface LoginResponse {
-  success: boolean
-  token: string
-  data: User
+export interface LoginSignupResponse<T> extends GetResponse<T> {
+  token?: string;
 }
