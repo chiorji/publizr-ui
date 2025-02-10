@@ -1,8 +1,8 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
-import { setIsAuthenticated } from '../../app/states/user-state';
-
+import { setCurrentUser, setIsAuthenticated, setToken } from '../../app/states/user-state';
+import { User } from '../../types/user-types';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -10,9 +10,11 @@ const Navigation = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.users);
 
   const handleLogout = () => {
-    dispatch(setIsAuthenticated(false));
     persistor.flush().then(() => {
-      navigate('/');
+      dispatch(setIsAuthenticated(false));
+      dispatch(setCurrentUser({} as User));
+      dispatch(setToken(""));
+      navigate('/posts');
     });
   };
 
