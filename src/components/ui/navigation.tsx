@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
 import { setCurrentUser, setIsAuthenticated, setToken } from '../../app/states/user-state';
@@ -7,6 +7,7 @@ import { User } from '../../types/user-types';
 const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const { isAuthenticated } = useSelector((state: RootState) => state.users);
 
   const handleLogout = () => {
@@ -31,7 +32,7 @@ const Navigation = () => {
             <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
             {isAuthenticated && (
               <>
-              <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>
+                {!/dashboard/.test(pathname) && <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>}
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
                 <Link to="#" onClick={handleLogout} className="text-red-400 hover:text-red-600">Logout</Link>
                 <img src={'/laptop.jpg'} alt="User Avatar" className="w-8 h-8 rounded-full object-cover" />

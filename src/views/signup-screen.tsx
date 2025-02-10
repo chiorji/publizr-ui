@@ -1,20 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
 import { Mail } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
 import PasswordStrengthIndicator from '../components/ui/password-strength-indicator';
 import { CreateAccountFormData } from '../types/user-types';
 import { useSignupMutation } from '../app/api/user-slice';
-import { setIsAuthenticated } from '../app/states/user-state';
+import { setCurrentUser, setIsAuthenticated, setToken } from '../app/states/user-state';
 
 const SignupScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const [signupHandler, { isLoading }] = useSignupMutation();
   const [formData, setFormData] = useState<CreateAccountFormData>({
-    username: 'orji',
-    email: 'bright@user.com',
+    username: 'john doe',
+    email: 'johndoe@doe.com',
     password: '@12Password',
     confirmPassword: '@12Password',
   });
@@ -58,8 +58,9 @@ const SignupScreen = () => {
     signupHandler(payload).then((response) => {
       if (response && response.data) {
         dispatch(setIsAuthenticated(true))
+        dispatch(setCurrentUser(response.data.data));
+        dispatch(setToken(response.data.token ?? ""));
         navigate('/dashboard');
-        console.log('User created successfully');
       }
     }).catch((e) => {
       console.error('Failed to sign up ' + e);
