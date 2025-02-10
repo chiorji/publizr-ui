@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
 import { Mail } from 'lucide-react';
-import { setIsAuthenticated } from '../app/states/user-state';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
+import { setIsAuthenticated, setCurrentUser, setToken } from '../app/states/user-state';
 import { useLoginMutation } from '../app/api/user-slice';
 import { persistor } from '../app/store';
 
@@ -22,6 +22,8 @@ const LoginScreen = () => {
       if (response && response.data) {
         persistor.flush().then(() => {
           dispatch(setIsAuthenticated(true));
+          dispatch(setCurrentUser(response.data.data));
+          dispatch(setToken(response.data.token ?? ""));
           navigate('/dashboard');
         })
       }

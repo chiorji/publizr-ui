@@ -6,7 +6,8 @@ export const userSlice = createSlice({
   name: 'userSlice',
   initialState: {
     user: {} as User,
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: null as string | null
   },
   reducers: {
     setCurrentUser: (state, action: PayloadAction<User>) => {
@@ -14,11 +15,14 @@ export const userSlice = createSlice({
     },
     setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
+    },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
     }
   },
 });
 
-export const { setCurrentUser, setIsAuthenticated } = userSlice.actions;
+export const { setCurrentUser, setIsAuthenticated, setToken } = userSlice.actions;
 
 export const selectAllPosts = (state: { user: ReturnType<typeof userSlice.reducer> }) => state.user.user;
 
