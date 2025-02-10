@@ -31,7 +31,8 @@ const Navigation = () => {
               <>
               <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>
                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
-                <Link to="#" onClick={handleLogout} className="text-white rounded-sm hover:bg-gray-600 bg-gray-500 p-2 px-4">Logout</Link>
+                <Link to="#" onClick={handleLogout} className="text-red-400 hover:text-red-600">Logout</Link>
+                <img src={'/laptop.jpg'} alt="User Avatar" className="w-8 h-8 rounded-full object-cover" />
               </>
             )}
             {!isAuthenticated && (

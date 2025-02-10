@@ -16,10 +16,6 @@ export interface CreateAccountFormData {
   confirmPassword: string;
 }
 
-export interface OAuthProvider {
-  provider: 'google' | 'github';
-}
-
 export interface LoginResponse {
   success: boolean
   token: string
