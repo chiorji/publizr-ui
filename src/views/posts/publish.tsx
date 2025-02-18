@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Image, Tags, AlertCircle } from 'lucide-react';
+import { Tags, AlertCircle } from 'lucide-react';
 import { NewPostFormData, Errors } from '../../types/post-types';
 import { useCreatePostMutation } from '../../app/api/post-slice';
 
@@ -11,7 +11,7 @@ const Publish = () => {
     author_id: 1,
     title: 'Post title',
     excerpt: 'Post subtitle or excerpt',
-    category: 'Architecture',
+    category: 'Technology',
     tags: 'programming, hacking',
     content: 'Here lies the post content. Lorem ipsum dolor sit amet tempor invidunt ut labore et dolore magna aliqu sapiente consequ sed diam nonumy eirmod tempor invidunt ut labore et dol',
     poster_card: '',
@@ -22,7 +22,6 @@ const Publish = () => {
   const navigate = useNavigate();
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Errors>({});
-  const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [createHandler, { isLoading }] = useCreatePostMutation();
 
   const categories: string[] = [
@@ -43,28 +42,14 @@ const Publish = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev: Errors) => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData(prev => ({ ...prev, cover_image: file }));
-      // Create preview URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleTagAdd = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
+    if (currentTag && !formData.tags.includes(currentTag)) {
       setFormData((prev: NewPostFormData) => ({
         ...prev,
         tags: prev.tags.concat(currentTag.trim())
@@ -76,7 +61,7 @@ const Publish = () => {
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.split(',').filter(tag => tag !== tagToRemove).join(', ')
+      tags: prev.tags.split(',').filter(tag => tag.trim() !== tagToRemove).join(',')
     }));
   };
 
@@ -94,10 +79,12 @@ const Publish = () => {
 
     if (Object.keys(newErrors).length === 0) {
 
-      createHandler(formData).then((response) => {
+      createHandler({
+        ...formData,
+        tags: formData.tags
+      }).then((response) => {
         if (response && response.data) {
           console.log('Post created successfully:', response);
-          // Reset form and clear errors
           setFormData({
             title: '',
             excerpt: '',
@@ -212,7 +199,7 @@ const Publish = () => {
                 </button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {formData.tags.split(', ').map(tag => (
+                {formData.tags.split(',').map((tag: string) => (
                   <span
                     key={tag}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
@@ -229,60 +216,6 @@ const Publish = () => {
                 ))}
               </div>
             </div>
-
-            <div className="space-y-2">
-              <label htmlFor="cover-image" className="block text-sm font-medium text-gray-700">
-                Cover Image
-              </label>
-              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                <div className="space-y-1 text-center">
-                  {preview ? (
-                    <div className="relative">
-                      <img
-                        src={typeof preview === 'string' ? preview : undefined}
-                        alt="Preview"
-                        className="mx-auto h-32 w-auto"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPreview(null);
-                          setFormData(prev => ({ ...prev, cover_image: null }));
-                        }}
-                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <Image className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="flex text-sm text-gray-600">
-                        <label
-                          htmlFor="cover-image"
-                          className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500"
-                        >
-                          <span>Upload a file</span>
-                          <input
-                            id="cover-image"
-                            name="cover-image"
-                            type="file"
-                            accept="image/*"
-                            className="sr-only"
-                            onChange={handleImageUpload}
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
-                      </div>
-                      <p className="text-xs text-gray-500">
-                        PNG, JPG, GIF up to 10MB
-                      </p>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
             <div className="space-y-2">
               <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                 Content *
