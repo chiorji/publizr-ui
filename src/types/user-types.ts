@@ -7,8 +7,8 @@ export interface User {
   email: string;
   image_url: string;
   role: USER_ROLE,
-  created_at: Date;
-  updated_at: Date;
+  created_at: number;
+  updated_at: number;
 }
 
 export interface CreateAccountFormData {

@@ -5,8 +5,8 @@ export interface Post {
   title: string
   excerpt: string
   content: string
-  posted_on: string
-  last_updated: string
+  posted_on: number
+  last_updated: number
   category: string
   tags: string
   poster_card: string
