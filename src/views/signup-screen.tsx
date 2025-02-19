@@ -56,8 +56,8 @@ const SignupScreen = () => {
     e.preventDefault();
     const { confirmPassword, ...payload } = formData;
     signupHandler(payload).then((response) => {
-      if (response && response.data) {
-        dispatch(setIsAuthenticated(true))
+      if (response?.data) {
+        dispatch(setIsAuthenticated(true));
         dispatch(setCurrentUser(response.data.data));
         dispatch(setToken(response.data.token ?? ""));
         navigate('/dashboard');

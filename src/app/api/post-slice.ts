@@ -29,7 +29,7 @@ export const postSlice = apiSlice.injectEndpoints({
 
     updatePost: builder.mutation<void, Partial<Post>>({
       query: (payload) => ({
-        url: 'api/posts',
+        url: `api/posts/update/${payload.id}`,
         method: 'PUT',
         body: payload,
       }),
@@ -37,7 +37,7 @@ export const postSlice = apiSlice.injectEndpoints({
 
     deletePost: builder.mutation<void, string | number>({
       query: (id) => ({
-        url: `api/posts/${id}`,
+        url: `api/posts/delete/${id}`,
         method: 'DELETE',
       }),
     }),

@@ -1,10 +1,10 @@
+import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import FeaturedPost from './featured-post';
 import PostCard from './post-card';
 import { useRecentQuery } from '../../app/api/post-slice';
 import { useMemo } from 'react';
-import { useRandomImage } from '../../hooks/use-image';
-import { Link } from 'react-router-dom';
+import { getRandomImagePlaceholder } from '../../lib';
 
 const RecentPosts = () => {
   const { data } = useRecentQuery();
@@ -13,19 +13,19 @@ const RecentPosts = () => {
     if (!data?.data) return [];
     return data?.data.map(post => ({
       ...post,
-      poster_card: useRandomImage()
+      poster_card: getRandomImagePlaceholder()
     }));
   }, [data]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {posts?.filter(post => post.featured).map(post => (
-        <FeaturedPost key={post.post_id} post={post} />
+        <FeaturedPost key={post.id} post={post} />
       ))}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts?.filter(post => !post.featured).map(post => (
-          <PostCard key={post.post_id} post={post} />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
 

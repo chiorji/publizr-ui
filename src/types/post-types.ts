@@ -1,7 +1,7 @@
 export interface Post {
   username: string
   author_id: number
-  post_id: number
+  id: number
   title: string
   excerpt: string
   content: string

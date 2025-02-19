@@ -19,7 +19,7 @@ const LoginScreen = () => {
   const handleEmailLogin = (e: EmailLoginEvent) => {
     e.preventDefault();
     signInHandler({ email, password }).then((response) => {
-      if (response && response.data) {
+      if (response?.data) {
         persistor.flush().then(() => {
           dispatch(setIsAuthenticated(true));
           dispatch(setCurrentUser(response.data.data));

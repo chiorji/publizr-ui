@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { useByAuthorIdQuery, useDeletePostMutation } from '../../app/api/post-slice';
-import { useRandomImage } from '../../hooks/use-image';
+import { getRandomImagePlaceholder } from '../../lib';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { Post } from '../../types/post-types';
 
 const Dashboard = () => {
-  const user = useSelector((state: RootState) => state.users?.user);
+  const user = useSelector((state: RootState) => state.users.user);
 
   const [deleteHandler] = useDeletePostMutation();
   const { data, isLoading } = useByAuthorIdQuery(user.id, {
@@ -19,7 +19,7 @@ const Dashboard = () => {
     if (!data?.data) return [];
     return data.data.map((post: Post) => ({
       ...post,
-      poster_card: useRandomImage()
+      poster_card: getRandomImagePlaceholder()
     }));
   }, [data?.data])
 
@@ -32,6 +32,7 @@ const Dashboard = () => {
       console.log('Failed to delete post ' + error);
     });
   };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
@@ -39,7 +40,7 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold text-gray-900">My Publications</h1>
           <p className="text-gray-500">Manage your publications</p>
         </div>
-        {!(posts.length == 0) && <Link
+        {posts.length != 0 && <Link
           to="/dashboard/publish"
           className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
         >
@@ -68,13 +69,13 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <Link
-              to={`/posts/${post.post_id}`}
-              key={post.post_id}
+              to={`/posts/${post.id}`}
+              key={post.id}
               className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
             >
               {post.poster_card && (
                 <img
-                  src={post.poster_card as string}
+                  src={post.poster_card}
                   alt={post.title}
                   className="w-full h-48 object-cover"
                 />
@@ -102,7 +103,7 @@ const Dashboard = () => {
                       className="p-2 bg-red-400 hover:bg-red-600 rounded-sm"
                       onClick={(e) => {
                         e.preventDefault()
-                        handlerPostDeletion(post.post_id)
+                        handlerPostDeletion(post.id)
                       }}
                     >
                       <Trash2 className="w-4 h-4" />

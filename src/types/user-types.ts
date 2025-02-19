@@ -19,5 +19,6 @@ export interface CreateAccountFormData {
 }
 
 export interface LoginSignupResponse<T> extends GetResponse<T> {
-  token?: string;
+  data: T;
+  token: string;
 }

@@ -9,6 +9,16 @@ export const userSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
+      // TODO: properly type the response
+      transformResponse: (response: LoginSignupResponse<User>): LoginSignupResponse<User> => {
+        return {
+          success: response.success,
+          message: response.message,
+          size: response.size,
+          data: (response.data as any).data,
+          token: (response.data as any).token,
+        }
+      }
     }),
 
     signup: builder.mutation<LoginSignupResponse<User>, Omit<CreateAccountFormData, 'confirmPassword'>>({
@@ -17,6 +27,16 @@ export const userSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: payload,
       }),
+      // TODO: properly type the response
+      transformResponse: (response: LoginSignupResponse<User>): LoginSignupResponse<User> => {
+        return {
+          success: response.success,
+          message: response.message,
+          size: response.size,
+          data: (response.data as any).data,
+          token: (response.data as any).token,
+        }
+      }
     }),
 
     resetPassword: builder.mutation<void, { code: string; newPassword: string }>({

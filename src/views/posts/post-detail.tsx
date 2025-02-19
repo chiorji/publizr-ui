@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Calendar, Clock, User } from 'lucide-react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useRandomImage } from '../../hooks/use-image';
+import { getRandomImagePlaceholder } from '../../lib';
 import { useByIdQuery } from '../../app/api/post-slice';
 import { Post } from '../../types/post-types';
 
@@ -12,14 +12,14 @@ const BlogDetail = () => {
 
   const post = useMemo(() => {
     if (!data?.data) return {} as Post;
-    return { ...data?.data, poster_card: useRandomImage() };
+    return { ...data?.data, poster_card: getRandomImagePlaceholder() };
   }, [data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if ((!isLoading && !isError) && !post) {
+  if (!isError && !post) {
     return <Navigate to="/404" />;
   }
 
@@ -60,7 +60,7 @@ const BlogDetail = () => {
         </div>
 
         <div className="mt-8 flex gap-2">
-          {post.tags.split(',').map((tag) => (
+          {post.tags?.split(',').map((tag) => (
             <span
               key={tag}
               className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"

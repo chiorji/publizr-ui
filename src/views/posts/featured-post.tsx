@@ -17,7 +17,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
           {post.category}
         </div>
         <Link
-          to={`/posts/${post.post_id}`}
+          to={`/posts/${post.id}`}
           className="block mt-2 text-2xl font-semibold text-gray-900 hover:text-blue-600 transition-colors"
         >
           {post.title}

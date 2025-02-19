@@ -14,7 +14,7 @@ const PostCard = ({ post }: { post: Post }) => (
         {post.category}
       </div>
       <Link
-        to={`/posts/${post.post_id}`}
+        to={`/posts/${post.id}`}
         className="block mt-2 text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors"
       >
         {post.title}
@@ -35,7 +35,7 @@ const PostCard = ({ post }: { post: Post }) => (
         </div>}
         <div className="flex items-center text-sm text-gray-800 mt-2"></div>
           {post?.tags.split(',').map((tag, index) => (
-            <span key={index} className="mr-2 bg-gray-200 text-gray-600 rounded-full px-2 py-1 text-sm">
+            <span key={post.id + index} className="mr-2 bg-gray-200 text-gray-600 rounded-full px-2 py-1 text-sm">
               {"#"}{tag.trim()}
             </span>
           ))}
