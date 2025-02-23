@@ -241,27 +241,27 @@ const Publish = () => {
             <div className="mb-4">
               <label className="block text-gray-700">Status</label>
               <div className="flex items-center space-x-4">
-                <label className="flex items-center">
+                <label className={`flex items-center px-4 py-2 border rounded-lg cursor-pointer ${formData.status === 'Draft' ? 'bg-yellow-100 text-yellow-800' : 'bg-white text-gray-700'}`}>
                   <input
                     type="radio"
                     name="status"
                     value="Draft"
                     checked={formData.status === 'Draft'}
                     onChange={() => setFormData(prev => ({ ...prev, status: 'Draft' }))}
-                    className="form-radio"
+                    className="hidden"
                   />
-                  <span className="ml-2">Draft</span>
+                  <span>Draft</span>
                 </label>
-                <label className="flex items-center">
+                <label className={`flex items-center px-4 py-2 border rounded-lg cursor-pointer ${formData.status === 'Published' ? 'bg-green-100 text-green-800' : 'bg-white text-gray-700'}`}>
                   <input
                     type="radio"
                     name="status"
                     value="Published"
                     checked={formData.status === 'Published'}
                     onChange={() => setFormData(prev => ({ ...prev, status: 'Published' }))}
-                    className="form-radio"
+                    className="hidden"
                   />
-                  <span className="ml-2">Published</span>
+                  <span>Publish</span>
                 </label>
               </div>
             </div>
