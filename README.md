@@ -47,7 +47,7 @@ This screen provides a way to create a new post
 [src/views/posts/post-listing.tsx](src/views/posts/post-listing.tsx)
 When an author makes a post, this screen is where the author can see all the post he has made, both `published` and `draft` posts.
 
-![Publications listing](./public/screenshot/1-authors-post-listing.png)
+![Publications listing](./public/screenshot/01-author-post-dashboard.png)
 
 ## Logged in user's basic information
 A thumbnail for loggedin users, showing their profile avatar, username, and a logout button
