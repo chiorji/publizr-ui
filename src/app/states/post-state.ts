@@ -7,7 +7,7 @@ export const postSlice = createSlice({
   initialState: {
     total: 0,
     message: "",
-    data: [] as Post[],
+    data: [] as Post[]
   },
   reducers: {
     setPosts: (state, action: PayloadAction<Post[]>) => {

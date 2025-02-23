@@ -1,5 +1,5 @@
 import { apiSlice } from '../api-slice';
-import { Post, NewPostFormData, GetResponse } from '../../types/post-types';
+import { Post, GetResponse, NewPostRequest } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -19,7 +19,7 @@ export const postSlice = apiSlice.injectEndpoints({
       query: (id) => `api/posts/${id}`
     }),
 
-    createPost: builder.mutation<void, NewPostFormData>({
+    createPost: builder.mutation<void, NewPostRequest>({
       query: (payload) => ({
         url: 'api/posts/publish',
         method: 'POST',

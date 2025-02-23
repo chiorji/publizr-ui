@@ -5,17 +5,19 @@ import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Tags, AlertCircle } from 'lucide-react';
 import { NewPostFormData, Errors } from '../../types/post-types';
 import { useCreatePostMutation } from '../../app/api/post-slice';
+import { RootState } from '../../app/store';
+import { useSelector } from 'react-redux';
 
 const Publish = () => {
+  const user = useSelector((state: RootState) => state.users.user);
   const [formData, setFormData] = useState<NewPostFormData>({
-    author_id: 1,
-    title: 'Post title',
-    excerpt: 'Post subtitle or excerpt',
-    category: 'Technology',
-    tags: 'programming, hacking',
-    content: 'Here lies the post content. Lorem ipsum dolor sit amet tempor invidunt ut labore et dolore magna aliqu sapiente consequ sed diam nonumy eirmod tempor invidunt ut labore et dol',
+    title: '',
+    excerpt: '',
+    category: '',
+    tags: [],
+    content: '',
     poster_card: '',
-    status: 'DRAFT',
+    status: 'Draft',
     featured: false
   });
 
@@ -47,12 +49,14 @@ const Publish = () => {
     }
   };
 
-  const handleTagAdd = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  interface HandleTagAddEvent extends React.MouseEvent<HTMLButtonElement> { }
+
+  const handleTagAdd = (e: HandleTagAddEvent) => {
     e.preventDefault();
-    if (currentTag && !formData.tags.includes(currentTag)) {
-      setFormData((prev: NewPostFormData) => ({
+    if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
+      setFormData(prev => ({
         ...prev,
-        tags: prev.tags.concat(currentTag.trim())
+        tags: [...prev.tags, currentTag.trim()]
       }));
       setCurrentTag('');
     }
@@ -61,7 +65,7 @@ const Publish = () => {
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.split(',').filter(tag => tag.trim() !== tagToRemove).join(',')
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
     }));
   };
 
@@ -81,19 +85,18 @@ const Publish = () => {
 
       createHandler({
         ...formData,
-        tags: formData.tags
+        tags: formData.tags.join(', '),
+        author_id: user.id
       }).then((response) => {
         if (response && response.data) {
-          console.log('Post created successfully:', response);
           setFormData({
             title: '',
             excerpt: '',
             category: '',
-            tags: '',
+            tags: [],
             content: '',
             poster_card: '',
-            status: 'DRAFT',
-            author_id: 1,
+            status: 'Draft',
             featured: false
           });
           setErrors({});
@@ -103,7 +106,6 @@ const Publish = () => {
         console.error('Failed to create post' + e);
         setErrors((prev: Errors) => ({ ...prev, serverError: 'Failed to create post. Please try again later.' }));
       });
-      console.log('Form submitted:', formData);
     } else {
       setErrors(newErrors);
     }
@@ -199,7 +201,7 @@ const Publish = () => {
                 </button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
-                {formData.tags.split(',').map((tag: string) => (
+                {formData.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
@@ -236,20 +238,38 @@ const Publish = () => {
                 </Alert>
               )}
             </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Status</label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Draft"
+                    checked={formData.status === 'Draft'}
+                    onChange={() => setFormData(prev => ({ ...prev, status: 'Draft' }))}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Draft</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Published"
+                    checked={formData.status === 'Published'}
+                    onChange={() => setFormData(prev => ({ ...prev, status: 'Published' }))}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Published</span>
+                </label>
+              </div>
+            </div>
 
             <div className="flex justify-end space-x-4">
               <button
-                type="button"
-                disabled={isLoading}
-                onClick={() => setFormData(prev => ({ ...prev, status: 'Draft' }))}
-                className="px-4 py-2 rounded-md bg-red-400 hover:bg-red-600 text-white"
-              >
-                Save as Draft
-              </button>
-              <button
                 type="submit"
                 disabled={isLoading}
-                onClick={() => setFormData(prev => ({ ...prev, status: 'Published' }))}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
                 Publish

@@ -1,3 +1,5 @@
+export type PostStatus = 'Draft' | 'Published' | 'Archived';
+
 export interface Post {
   username: string
   author_id: number
@@ -15,6 +17,17 @@ export interface Post {
   read_time?: number
 }
 export interface NewPostFormData {
+  title: string
+  content: string
+  category: string
+  poster_card: string
+  featured: boolean
+  tags: string[]
+  status: PostStatus
+  excerpt?: string
+}
+
+export interface NewPostRequest {
   title: string
   content: string
   author_id: number
