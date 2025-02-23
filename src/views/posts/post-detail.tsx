@@ -28,11 +28,11 @@ const BlogDetail = () => {
       <img
         src={post.poster_card}
         alt={post.title}
-        className="w-full h-full object-cover rounded-xl"
+        className="w-full h-[350px] object-cover rounded-xl"
       />
 
       <div className="prose lg:prose-xl max-w-none">
-        <h1 className="text-4xl font-bold mb-4 text-blue-600">{post.title}</h1>
+        <h1 className="text-4xl font-bold my-4 text-blue-600">{post.title}</h1>
 
         <div className="flex flex-wrap gap-4 mb-8 text-gray-600">
           <div className="flex items-center uppercase">
