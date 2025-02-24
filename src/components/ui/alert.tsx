@@ -1,9 +1,9 @@
 
 import { ReactNode } from 'react';
 import { AlertCircle, Info, CheckCircle2, XCircle } from 'lucide-react';
-
-interface AlertIconProps {
-  variant: 'destructive' | 'success' | 'warning' | 'default';
+export type AlertVariant = 'destructive' | 'success' | 'warning' | 'default';
+export interface AlertIconProps {
+  variant: AlertVariant;
 }
 
 const getAlertIcon = (variant: AlertIconProps['variant']) => {
@@ -19,8 +19,8 @@ const getAlertIcon = (variant: AlertIconProps['variant']) => {
   }
 };
 
-interface AlertStylesProps {
-  variant: 'destructive' | 'success' | 'warning' | 'default';
+export interface AlertStylesProps {
+  variant: AlertVariant;
 }
 
 const getAlertStyles = (variant: AlertStylesProps['variant']): string => {
@@ -38,9 +38,9 @@ const getAlertStyles = (variant: AlertStylesProps['variant']): string => {
   }
 };
 
-interface AlertProps {
+export interface AlertProps {
   children: ReactNode;
-  variant?: 'destructive' | 'success' | 'warning' | 'default';
+  variant?: AlertVariant;
   className?: string;
   [key: string]: any;
 }
@@ -67,4 +67,4 @@ const AlertDescription = ({ className = '', ...props }) => (
   />
 );
 
-export { Alert, AlertDescription };
+export { Alert, AlertDescription, getAlertStyles, getAlertIcon };
