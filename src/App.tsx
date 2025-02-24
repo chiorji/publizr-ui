@@ -10,16 +10,7 @@ import Publish from './views/posts/publish';
 import { useRedirectIfRequireAuth } from './hooks'
 import RecentPosts from './views/posts/recent-posts'
 import { Suspense } from 'react'
-
-const NotFound = () => {
-  return (
-    <div className='text-xl text-red-400 text-center p-8 min-h-screen text-center'>
-      <h1 className='text-6xl'>Page not found</h1>
-      <p className='text-gray-800'>The page you're looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-      <p className='text-gray-800'>Please try your search again or contact the administrator.</p>
-    </div>
-  );
-}
+import { NotFound } from './components/ui/404'
 
 const App = () => {
   useRedirectIfRequireAuth();
