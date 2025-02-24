@@ -3,20 +3,24 @@ import { Post, GetResponse, NewPostRequest } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    recent: builder.query<GetResponse<Post[]>, void> ({
-      query: () => 'api/posts/recent'
+    recent: builder.query<GetResponse<Post[]>, null> ({
+      query: () => 'api/posts/recent',
+      providesTags: ['posts']
     }),
 
-    all: builder.query<GetResponse<Post[]>, void>({
-      query: () => 'api/posts'
+    all: builder.query<GetResponse<Post[]>, null>({
+      query: () => 'api/posts',
+      providesTags: ['posts']
     }),
 
     byAuthorId: builder.query<GetResponse<Post[]>, number>({
-      query: (id) => `api/posts/author/${id}`
+      query: (id) => `api/posts/author/${id}`,
+      providesTags: ['posts']
     }),
 
     byId: builder.query<GetResponse<Post>, string | number>({
-      query: (id) => `api/posts/${id}`
+      query: (id) => `api/posts/${id}`,
+      providesTags: ['posts']
     }),
 
     createPost: builder.mutation<void, NewPostRequest>({
@@ -25,6 +29,7 @@ export const postSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: payload,
       }),
+      invalidatesTags: ['posts']
     }),
 
     updatePost: builder.mutation<void, Partial<Post>>({
@@ -33,6 +38,7 @@ export const postSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: payload,
       }),
+      invalidatesTags: ['posts']
     }),
 
     deletePost: builder.mutation<void, string | number>({
@@ -40,6 +46,7 @@ export const postSlice = apiSlice.injectEndpoints({
         url: `api/posts/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['posts']
     }),
   }),
 });

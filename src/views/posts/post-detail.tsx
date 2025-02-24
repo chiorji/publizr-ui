@@ -6,7 +6,10 @@ import { useByIdQuery } from '../../app/api/post-slice';
 
 const BlogDetail = () => {
   const { slug } = useParams();
-  const { data, isLoading } = useByIdQuery(Number(slug));
+  const { data, isLoading } = useByIdQuery(Number(slug), {
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   const post = useMemo(() => {
     if (!data?.data) return null;

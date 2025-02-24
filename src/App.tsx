@@ -5,7 +5,7 @@ import LoginScreen from './views/login-screen'
 import SignupScreen from './views/signup-screen'
 import PostListing from './views/posts/post-listing'
 import PostDetail from './views/posts/post-detail'
-import Dashboard from './views/dashboard';
+import Dashboard from './views/dashboard/dashboard';
 import Publish from './views/posts/publish';
 import { useRedirectIfRequireAuth } from './hooks'
 import RecentPosts from './views/posts/recent-posts'

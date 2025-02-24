@@ -6,5 +6,8 @@ type ToastContextValue = {
   close: (id: number) => void;
 };
 
-export const ToastContext = createContext<ToastContextValue | null>(null);
+export const ToastContext = createContext<ToastContextValue>({
+  open: () => {},
+  close: () => {},
+});
 export const useToast = () => useContext(ToastContext);

@@ -2,17 +2,20 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { useByAuthorIdQuery, useDeletePostMutation } from '../../app/api/post-slice';
-import { getRandomImagePlaceholder } from '../../lib';
+import { getRandomImagePlaceholder, processRequestError } from '../../lib';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { Post } from '../../types/post-types';
+import { useToast } from '../../components/ui/toast/toast-context';
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.users.user);
-
+  const toast = useToast();
   const [deleteHandler] = useDeletePostMutation();
   const { data, isLoading } = useByAuthorIdQuery(user.id, {
-    skip: !user.id
+    skip: !user.id,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true
   });
 
   const posts = useMemo(() => {
@@ -24,12 +27,16 @@ const Dashboard = () => {
   }, [data?.data])
 
   const handlerPostDeletion = (id: string | number) => {
-    deleteHandler(id).then((response) => {
-      if (response && response.data) {
-        console.log('Post deleted successfully');
-      }
+    deleteHandler(id).unwrap().then(() => {
+      toast.open({
+        message: 'Post deleted successfully',
+        variant: "success",
+      })
     }).catch((error) => {
-      console.log('Failed to delete post ' + error);
+      toast.open({
+        message: processRequestError(error, 'Error deleting post'),
+        variant: "destructive",
+      });
     });
   };
 
@@ -65,7 +72,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {!isLoading && (
+      {(!isLoading && posts) && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <Link

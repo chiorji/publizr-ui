@@ -5,7 +5,10 @@ import { getRandomImagePlaceholder } from '../../lib';
 import { EmptyContent } from '../../components/ui/empty-content';
 
 const PostListing = () => {
-  const { data, isLoading } = useAllQuery();
+  const { data, isLoading } = useAllQuery(null, {
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   const posts = useMemo(() => {
     if (!data?.data) return null;

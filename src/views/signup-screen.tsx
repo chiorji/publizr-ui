@@ -7,16 +7,20 @@ import PasswordStrengthIndicator from '../components/ui/password-strength-indica
 import { CreateAccountFormData } from '../types/user-types';
 import { useSignupMutation } from '../app/api/user-slice';
 import { setCurrentUser, setIsAuthenticated, setToken } from '../app/states/user-state';
+import { useToast } from '../components/ui/toast/toast-context';
+import { processRequestError } from '../lib';
+import { persistor } from '../app/store';
 
 const SignupScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
+  const toast = useToast()
   const [signupHandler, { isLoading }] = useSignupMutation();
   const [formData, setFormData] = useState<CreateAccountFormData>({
-    username: 'john doe',
-    email: 'johndoe@doe.com',
-    password: '@12Password',
-    confirmPassword: '@12Password',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const [passwordStrength, setPasswordStrength] = useState({
@@ -55,15 +59,24 @@ const SignupScreen = () => {
   const handleEmailSignup = (e: EmailSignupEvent): void => {
     e.preventDefault();
     const { confirmPassword, ...payload } = formData;
-    signupHandler(payload).then((response) => {
+    signupHandler(payload).unwrap().then((response) => {
       if (response?.data) {
-        dispatch(setIsAuthenticated(true));
-        dispatch(setCurrentUser(response.data.data));
-        dispatch(setToken(response.data.token ?? ""));
-        navigate('/dashboard');
+        persistor.flush().then(() => {
+          dispatch(setIsAuthenticated(true));
+          dispatch(setCurrentUser(response.data));
+          dispatch(setToken(response.token ?? ""));
+          navigate('/dashboard');
+          toast?.open({
+            message: response.message,
+            variant: "success",
+          });
+        })
       }
     }).catch((e) => {
-      console.error('Failed to sign up ' + e);
+      toast?.open({
+        message: processRequestError(e, 'Failed to sign up. Please try again later.'),
+        variant: "destructive",
+      });
     });
   };
 

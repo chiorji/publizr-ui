@@ -7,6 +7,8 @@ import { NewPostFormData, Errors } from '../../types/post-types';
 import { useCreatePostMutation } from '../../app/api/post-slice';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
+import { useToast } from '../../components/ui/toast/toast-context';
+import { processRequestError } from '../../lib';
 
 const Publish = () => {
   const user = useSelector((state: RootState) => state.users.user);
@@ -20,7 +22,7 @@ const Publish = () => {
     status: 'Draft',
     featured: false
   });
-
+  const toast = useToast();
   const navigate = useNavigate();
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Errors>({});
@@ -87,24 +89,28 @@ const Publish = () => {
         ...formData,
         tags: formData.tags.join(', '),
         author_id: user.id
-      }).then((response) => {
-        if (response && response.data) {
-          setFormData({
-            title: '',
-            excerpt: '',
-            category: '',
-            tags: [],
-            content: '',
-            poster_card: '',
-            status: 'Draft',
-            featured: false
-          });
-          setErrors({});
-          navigate('/posts')
-        }
+      }).unwrap().then(() => {
+        setFormData({
+          title: '',
+          excerpt: '',
+          category: '',
+          tags: [],
+          content: '',
+          poster_card: '',
+          status: 'Draft',
+          featured: false
+        });
+        setErrors({});
+        toast.open({
+          message: 'Post created successfully',
+          variant: "success",
+        });
+        navigate('/dashboard')
       }).catch((e) => {
-        console.error('Failed to create post' + e);
-        setErrors((prev: Errors) => ({ ...prev, serverError: 'Failed to create post. Please try again later.' }));
+        toast.open({
+          message: processRequestError(e, 'Failed to create post. Please try again later.'),
+          variant: "destructive",
+        });
       });
     } else {
       setErrors(newErrors);

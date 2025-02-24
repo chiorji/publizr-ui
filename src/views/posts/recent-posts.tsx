@@ -8,7 +8,10 @@ import { getRandomImagePlaceholder } from '../../lib';
 import { EmptyContent } from '../../components/ui/empty-content';
 
 const RecentPosts = () => {
-  const { data, isLoading } = useRecentQuery();
+  const { data, isLoading } = useRecentQuery(null, {
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   const posts = useMemo(() => {
     if (!data?.data) return null;
@@ -19,10 +22,10 @@ const RecentPosts = () => {
   }, [data]);
 
   if(isLoading) return <h1>Loading...</h1>
-  if(!posts) return <EmptyContent />
+  if(!data || !posts) return <EmptyContent />
 
   const featuredPost = posts.find(post => post.featured);
-  const nonFeaturedPost = posts.filter(post => !post.featured);
+  const nonFeaturedPost = posts.filter(post => post.id != featuredPost?.id).slice(0, 6);
   
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -36,9 +39,9 @@ const RecentPosts = () => {
         ))}
       </div>
 
-      {posts.length >= 9 && <div className="mt-12 text-center">
+      {data.size >= 6 && <div className="mt-12 text-center">
         <Link to="/posts" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-          Load More Posts
+          View All Posts
           <ChevronRight className="ml-2 h-5 w-5" />
         </Link>
       </div>}

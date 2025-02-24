@@ -8,13 +8,14 @@ export const apiSlice = createApi({
     baseUrl: `${baseUrl}/`,
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
-      if (state.users.token) {
-        headers.set('Authorization', `Bearer ${state.users.token}`);
+      const token = state.users.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
       }
       headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ['Users', 'Posts'],
+  tagTypes: ['users', 'posts'],
 });
