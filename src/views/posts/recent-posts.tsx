@@ -5,6 +5,7 @@ import FeaturedPost from './featured-post';
 import PostCard from './post-card';
 import { useRecentQuery } from '../../app/api/post-slice';
 import { getRandomImagePlaceholder } from '../../lib';
+import { EmptyContent } from '../../components/ui/empty-content';
 
 const RecentPosts = () => {
   const { data } = useRecentQuery();
@@ -19,6 +20,8 @@ const RecentPosts = () => {
 
   const featuredPost = posts.find(post => post.featured);
   const nonFeaturedPost = posts.filter(post => !post.featured);
+
+  if(!posts.length) return <EmptyContent />
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

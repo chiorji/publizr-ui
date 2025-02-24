@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAllQuery } from '../../app/api/post-slice';
 import { getRandomImagePlaceholder } from '../../lib';
+import { EmptyContent } from '../../components/ui/empty-content';
 
 const PostListing = () => {
   const { data, isLoading } = useAllQuery();
@@ -15,7 +16,7 @@ const PostListing = () => {
   }, [data]);
 
   if (isLoading) return <div>Loading</div>;
-  if (!isLoading && posts.length === 0) return <div>No posts</div>;
+  if (!isLoading && posts.length === 0) return <EmptyContent />;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
