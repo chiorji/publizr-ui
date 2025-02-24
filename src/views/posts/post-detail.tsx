@@ -3,25 +3,18 @@ import { Calendar, Clock, User } from 'lucide-react';
 import { Navigate, useParams } from 'react-router-dom';
 import { getRandomImagePlaceholder } from '../../lib';
 import { useByIdQuery } from '../../app/api/post-slice';
-import { Post } from '../../types/post-types';
 
 const BlogDetail = () => {
   const { slug } = useParams();
-
-  const { data, isError, isLoading } = useByIdQuery(Number(slug));
+  const { data, isLoading } = useByIdQuery(Number(slug));
 
   const post = useMemo(() => {
-    if (!data?.data) return {} as Post;
+    if (!data?.data) return null;
     return { ...data?.data, poster_card: getRandomImagePlaceholder() };
   }, [data]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isError && !post) {
-    return <Navigate to="/404" />;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (!post) return <Navigate to="/404" />;
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">

@@ -8,7 +8,7 @@ const PostListing = () => {
   const { data, isLoading } = useAllQuery();
 
   const posts = useMemo(() => {
-    if (!data?.data) return [];
+    if (!data?.data) return null;
     return data?.data.map(post => ({
       ...post,
       poster_card: getRandomImagePlaceholder()
@@ -16,12 +16,12 @@ const PostListing = () => {
   }, [data]);
 
   if (isLoading) return <div>Loading</div>;
-  if (!isLoading && posts.length === 0) return <EmptyContent />;
+  if (!posts) return <EmptyContent />;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <ul className="space-y-4 text-gray-600">
-        {posts?.map(post => (
+        {posts.map(post => (
           <li key={post.id} className="p-4 border border-gray-200 rounded-lg">
             <Link to={`/posts/${post.id}`} className="flex items-center space-x-4">
               <img src={post.poster_card} alt={post.title} className="w-16 h-16 object-cover rounded-sm" />

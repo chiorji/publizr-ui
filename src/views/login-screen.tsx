@@ -6,29 +6,39 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../compone
 import { setIsAuthenticated, setCurrentUser, setToken } from '../app/states/user-state';
 import { useLoginMutation } from '../app/api/user-slice';
 import { persistor } from '../app/store';
+import { processRequestError } from '../lib';
+import { useToast } from '../components/ui/toast/toast-context';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('amaka@orji.com');
-  const [password, setPassword] = useState('password');
-  const [signInHandler, { isLoading }] = useLoginMutation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const toast = useToast();
+  const [signInHandler, { isLoading, error }] = useLoginMutation();
 
   interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> { }
 
   const handleEmailLogin = (e: EmailLoginEvent) => {
     e.preventDefault();
-    signInHandler({ email, password }).then((response) => {
+    signInHandler({ email, password }).unwrap().then((response) => {
       if (response?.data) {
         persistor.flush().then(() => {
           dispatch(setIsAuthenticated(true));
-          dispatch(setCurrentUser(response.data.data));
-          dispatch(setToken(response.data.token ?? ""));
+          dispatch(setCurrentUser(response.data));
+          dispatch(setToken(response.token ?? ""));
           navigate('/dashboard');
+          toast?.open({
+            message: response.message,
+            variant: "success",
+          });
         })
       }
-    }).catch((e) => {
-      console.error('Failed to log in' + e);
+    }).catch(() => {
+      toast?.open({
+        message: processRequestError(error),
+        variant: "destructive",
+      });
     });
   };
 
@@ -70,10 +80,10 @@ const LoginScreen = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete='current-password'
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
             <button
               type="submit"
               disabled={isLoading}

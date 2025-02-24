@@ -8,21 +8,22 @@ import { getRandomImagePlaceholder } from '../../lib';
 import { EmptyContent } from '../../components/ui/empty-content';
 
 const RecentPosts = () => {
-  const { data } = useRecentQuery();
+  const { data, isLoading } = useRecentQuery();
 
   const posts = useMemo(() => {
-    if (!data?.data) return [];
+    if (!data?.data) return null;
     return data?.data.map(post => ({
       ...post,
       poster_card: getRandomImagePlaceholder()
     }));
   }, [data]);
 
+  if(isLoading) return <h1>Loading...</h1>
+  if(!posts) return <EmptyContent />
+
   const featuredPost = posts.find(post => post.featured);
   const nonFeaturedPost = posts.filter(post => !post.featured);
-
-  if(!posts.length) return <EmptyContent />
-
+  
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {featuredPost && (
