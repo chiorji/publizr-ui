@@ -1,4 +1,4 @@
-import { GetResponse } from "./post-types";
+import { GetResponse } from "./index";
 
 export type USER_ROLE = 'ADMIN' | 'AUTHOR';
 export interface User {

@@ -1,5 +1,6 @@
 import { apiSlice } from '../api-slice';
-import { Post, GetResponse } from '../../types/post-types';
+import { Post } from '../../types/post-types';
+import { GetResponse } from '../../types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

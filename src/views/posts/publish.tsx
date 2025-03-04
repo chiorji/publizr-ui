@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Image, Tags, AlertCircle } from 'lucide-react';
-import { NewPostFormData, Errors, NewPostRequest } from '../../types/post-types';
+import { NewPostFormData, NewPostErrors, NewPostRequest } from '../../types/post-types';
 import { usePublishPostMutation } from '../../app/api-upload';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import { useToast } from '../../components/ui/toast/toast-context';
 import { processRequestError } from '../../lib';
+import { useGetAllCategories } from '../../hooks/category-hook';
 
 const Publish = () => {
   const user = useSelector((state: RootState) => state.users.user);
@@ -16,7 +17,7 @@ const Publish = () => {
   const [formData, setFormData] = useState<NewPostFormData>({
     title: 'Hello',
     excerpt: 'excerpt',
-    category: 'Technology',
+    category: 1,
     tags: ['java'],
     content: 'Content',
     poster_card: null,
@@ -26,21 +27,9 @@ const Publish = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [currentTag, setCurrentTag] = useState('');
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<NewPostErrors>({});
   const [createHandler, { isLoading }] = usePublishPostMutation();
-
-  const categories: string[] = [
-    'Technology',
-    'Programming',
-    'Design',
-    'Career',
-    'Productivity',
-    'Tutorial',
-    'Architecture',
-    'Best Practices',
-    'Development'
-  ];
-
+  const { data: categories } = useGetAllCategories();
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -60,7 +49,7 @@ const Publish = () => {
       [name]: value
     }));
     if (errors[name]) {
-      setErrors((prev: Errors) => ({ ...prev, [name]: undefined }));
+      setErrors((prev: NewPostErrors) => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -84,11 +73,12 @@ const Publish = () => {
     }));
   };
 
-  const validateForm = (): Errors => {
-    const newErrors: Errors = {};
+  const validateForm = (): NewPostErrors => {
+    const newErrors: NewPostErrors = {};
     if (!formData.title.trim()) newErrors.title = 'Title is required';
     if (!formData.content.trim()) newErrors.content = 'Content is required';
     if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.poster_card) newErrors.poster_card = "Please provide cover image for post"
     return newErrors;
   };
 
@@ -108,7 +98,7 @@ const Publish = () => {
         setFormData({
           title: '',
           excerpt: '',
-          category: '',
+          category: 1,
           tags: [],
           content: '',
           poster_card: null,
@@ -189,7 +179,7 @@ const Publish = () => {
               >
                 <option value="">Select a category</option>
                 {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category.value} value={category.value}>{category.label}</option>
                 ))}
               </select>
               {errors.category && (

@@ -19,7 +19,7 @@ export interface Post {
 export interface NewPostFormData {
   title: string
   content: string
-  category: string
+  category: number
   poster_card: null | File
   featured: boolean
   tags: string[]
@@ -27,28 +27,13 @@ export interface NewPostFormData {
   excerpt?: string
 }
 
-export interface NewPostRequest {
-  title: string
-  content: string
+export interface NewPostRequest extends NewPostFormData {
   author_id: number
-  category: string
-  poster_card: null | File
-  featured: boolean
-  tags: string
-  status: string
-  excerpt?: string
 }
 
-export interface Errors {
+export interface NewPostErrors {
   title?: string;
   content?: string;
   category?: string;
   [key: string]: string | undefined;
-}
-
-export interface GetResponse<T> {
-  success: boolean
-  message: string
-  data: T
-  size: number
 }
