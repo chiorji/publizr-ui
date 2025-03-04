@@ -14,7 +14,7 @@ export interface Post {
   url: string
   status: string
   featured: boolean
-  read_time?: number
+  read_time: number
 }
 export interface NewPostFormData {
   title: string

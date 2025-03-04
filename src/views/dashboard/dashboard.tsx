@@ -1,27 +1,14 @@
-import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { useByAuthorIdQuery, useDeletePostMutation } from '../../app/api/post-slice';
+import { useDeletePostMutation } from '../../app/api/post-slice';
 import { processRequestError } from '../../lib';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { useToast } from '../../components/ui/toast/toast-context';
+import { useGetPostsByAuthorId } from '../../hooks/posts';
 
 const Dashboard = () => {
-  const user = useSelector((state: RootState) => state.users.user);
   const toast = useToast();
   const [deleteHandler] = useDeletePostMutation();
-  const { data, isLoading } = useByAuthorIdQuery(user.id, {
-    skip: !user.id,
-    refetchOnReconnect: true,
-    refetchOnMountOrArgChange: true
-  });
-
-  const posts = useMemo(() =>  !data?.data ? [] : data.data, [data?.data]);
-
-  useEffect(() => {
-    console.table(posts);
-  }, [posts]);
+  const { data, size, isLoading } = useGetPostsByAuthorId();
 
   const handlerPostDeletion = (id: string | number) => {
     deleteHandler(id).unwrap().then(() => {
@@ -44,7 +31,7 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold text-gray-900">My Publications</h1>
           <p className="text-gray-500">Manage your publications</p>
         </div>
-        {posts.length != 0 && <Link
+        {size != 0 && <Link
           to="/dashboard/publish"
           className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
         >
@@ -55,7 +42,7 @@ const Dashboard = () => {
 
       {isLoading && <div className="text-center py-12 text-red-400">Loading...</div>}
 
-      {!isLoading && posts.length === 0 && (
+      {!isLoading && size === 0 && (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <h3 className="text-lg font-medium text-gray-900 mb-2">No posts yet</h3>
           <p className="text-gray-500 mb-4">Get started by creating your first post</p>
@@ -69,9 +56,9 @@ const Dashboard = () => {
         </div>
       )}
 
-      {(!isLoading && posts) && (
+      {(!isLoading && data) && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
+          {data.map((post) => (
             <Link
               to={`/posts/${post.id}`}
               key={post.id}

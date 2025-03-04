@@ -20,7 +20,7 @@ const Publish = () => {
     tags: ['java'],
     content: 'Content',
     poster_card: null,
-    status: 'Draft',
+    status: 'Published',
     featured: false
   });
   const toast = useToast();
@@ -101,6 +101,7 @@ const Publish = () => {
       (Object.keys(formData) as (keyof NewPostFormData)[]).forEach((k) => {
         payload.append(k, formData[k] as any);
       });
+      payload.delete("tags");
       payload.append("tags", formData.tags.join(', '))
       payload.append("author_id", `${user.id}`);
       createHandler(payload as unknown as NewPostRequest).unwrap().then(() => {
