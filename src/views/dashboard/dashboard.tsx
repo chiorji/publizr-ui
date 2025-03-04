@@ -1,11 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { useByAuthorIdQuery, useDeletePostMutation } from '../../app/api/post-slice';
-import { getRandomImagePlaceholder, processRequestError } from '../../lib';
+import { processRequestError } from '../../lib';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { Post } from '../../types/post-types';
 import { useToast } from '../../components/ui/toast/toast-context';
 
 const Dashboard = () => {
@@ -18,13 +17,11 @@ const Dashboard = () => {
     refetchOnMountOrArgChange: true
   });
 
-  const posts = useMemo(() => {
-    if (!data?.data) return [];
-    return data.data.map((post: Post) => ({
-      ...post,
-      poster_card: getRandomImagePlaceholder()
-    }));
-  }, [data?.data])
+  const posts = useMemo(() =>  !data?.data ? [] : data.data, [data?.data]);
+
+  useEffect(() => {
+    console.table(posts);
+  }, [posts]);
 
   const handlerPostDeletion = (id: string | number) => {
     deleteHandler(id).unwrap().then(() => {
@@ -80,9 +77,9 @@ const Dashboard = () => {
               key={post.id}
               className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
             >
-              {post.poster_card && (
+              {post.url && (
                 <img
-                  src={post.poster_card}
+                  src={post.url}
                   alt={post.title}
                   className="w-full h-48 object-cover"
                 />

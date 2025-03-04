@@ -5,6 +5,7 @@ import logger from 'redux-logger';
 import postsReducer from '../states/post-state'
 import userReducer, { userSlice } from '../states/user-state'
 import { apiSlice } from '../api-slice';
+import { apiUploadSlice } from '../api-upload';
 
 const middlewares = [apiSlice.middleware];
 if (process.env.NODE_ENV !== 'production') {
@@ -14,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 const reducers = combineReducers({
   [userSlice.reducerPath]: userReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
+  [apiUploadSlice.reducerPath]: apiUploadSlice.reducer,
   posts: postsReducer,
   users: userReducer,
 });

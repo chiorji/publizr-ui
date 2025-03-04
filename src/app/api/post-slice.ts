@@ -1,5 +1,5 @@
 import { apiSlice } from '../api-slice';
-import { Post, GetResponse, NewPostRequest } from '../../types/post-types';
+import { Post, GetResponse } from '../../types/post-types';
 
 export const postSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,15 +21,6 @@ export const postSlice = apiSlice.injectEndpoints({
     byId: builder.query<GetResponse<Post>, string | number>({
       query: (id) => `api/posts/${id}`,
       providesTags: ['posts']
-    }),
-
-    createPost: builder.mutation<void, NewPostRequest>({
-      query: (payload) => ({
-        url: 'api/posts/publish',
-        method: 'POST',
-        body: payload,
-      }),
-      invalidatesTags: ['posts']
     }),
 
     updatePost: builder.mutation<void, Partial<Post>>({
@@ -55,7 +46,6 @@ export const {
   useRecentQuery,
   useAllQuery,
   useByIdQuery,
-  useCreatePostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
   useByAuthorIdQuery

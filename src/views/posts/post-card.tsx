@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 const PostCard = ({ post }: { post: Post }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
     <img
-      src={post.poster_card}
+      src={post.url}
       alt={post.title}
       className="w-full h-48 object-cover"
     />

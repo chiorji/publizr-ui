@@ -7,7 +7,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
     <div className="md:flex">
       <div className="md:w-2/3 max-h-[500px]">
         <img
-          src={post.poster_card}
+          src={post.url}
           alt={post.title}
           className="h-48 w-full object-cover md:h-full"
         />

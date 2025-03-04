@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Calendar, Clock, User } from 'lucide-react';
 import { Navigate, useParams } from 'react-router-dom';
-import { getRandomImagePlaceholder } from '../../lib';
 import { useByIdQuery } from '../../app/api/post-slice';
 
 const BlogDetail = () => {
@@ -12,8 +11,7 @@ const BlogDetail = () => {
   });
 
   const post = useMemo(() => {
-    if (!data?.data) return null;
-    return { ...data?.data, poster_card: getRandomImagePlaceholder() };
+    return !data?.data ? null : data.data;
   }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
@@ -22,7 +20,7 @@ const BlogDetail = () => {
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
       <img
-        src={post.poster_card}
+        src={post.url}
         alt={post.title}
         className="w-full h-[350px] object-cover rounded-xl"
       />

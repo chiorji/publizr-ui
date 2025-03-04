@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAllQuery } from '../../app/api/post-slice';
-import { getRandomImagePlaceholder } from '../../lib';
 import { EmptyContent } from '../../components/ui/empty-content';
 
 const PostListing = () => {
@@ -10,13 +9,7 @@ const PostListing = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  const posts = useMemo(() => {
-    if (!data?.data) return null;
-    return data?.data.map(post => ({
-      ...post,
-      poster_card: getRandomImagePlaceholder()
-    }));
-  }, [data]);
+  const posts = useMemo(() => !data?.data ? null : data.data, [data]);
 
   if (isLoading) return <div>Loading</div>;
   if (!posts) return <EmptyContent />;
@@ -27,7 +20,7 @@ const PostListing = () => {
         {posts.map(post => (
           <li key={post.id} className="p-4 border border-gray-200 rounded-lg">
             <Link to={`/posts/${post.id}`} className="flex items-center space-x-4">
-              <img src={post.poster_card} alt={post.title} className="w-16 h-16 object-cover rounded-sm" />
+              <img src={post.url} alt={post.title} className="w-16 h-16 object-cover rounded-sm" />
               <div>
                 <span className="text-lg font-bold">{post.title}</span>
                 <p className="text-sm text-gray-500">By {post.username}</p>

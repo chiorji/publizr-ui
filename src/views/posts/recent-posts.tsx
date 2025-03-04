@@ -4,7 +4,6 @@ import { ChevronRight } from 'lucide-react';
 import FeaturedPost from './featured-post';
 import PostCard from './post-card';
 import { useRecentQuery } from '../../app/api/post-slice';
-import { getRandomImagePlaceholder } from '../../lib';
 import { EmptyContent } from '../../components/ui/empty-content';
 
 const RecentPosts = () => {
@@ -13,13 +12,7 @@ const RecentPosts = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  const posts = useMemo(() => {
-    if (!data?.data) return null;
-    return data?.data.map(post => ({
-      ...post,
-      poster_card: getRandomImagePlaceholder()
-    }));
-  }, [data]);
+  const posts = useMemo(() => !data?.data ? null : data.data, [data]);
 
   if(isLoading) return <h1>Loading...</h1>
   if(!data || !posts) return <EmptyContent />

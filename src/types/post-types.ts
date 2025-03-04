@@ -11,7 +11,7 @@ export interface Post {
   last_updated: number
   category: string
   tags: string
-  poster_card: string
+  url: string
   status: string
   featured: boolean
   read_time?: number
@@ -20,7 +20,7 @@ export interface NewPostFormData {
   title: string
   content: string
   category: string
-  poster_card: string
+  poster_card: null | File
   featured: boolean
   tags: string[]
   status: PostStatus
@@ -32,7 +32,7 @@ export interface NewPostRequest {
   content: string
   author_id: number
   category: string
-  poster_card: string
+  poster_card: null | File
   featured: boolean
   tags: string
   status: string

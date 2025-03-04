@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Tags, AlertCircle } from 'lucide-react';
-import { NewPostFormData, Errors } from '../../types/post-types';
-import { useCreatePostMutation } from '../../app/api/post-slice';
+import { Image, Tags, AlertCircle } from 'lucide-react';
+import { NewPostFormData, Errors, NewPostRequest } from '../../types/post-types';
+import { usePublishPostMutation } from '../../app/api-upload';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import { useToast } from '../../components/ui/toast/toast-context';
@@ -12,13 +12,14 @@ import { processRequestError } from '../../lib';
 
 const Publish = () => {
   const user = useSelector((state: RootState) => state.users.user);
+  const [preview, setPreview] = useState<string | ArrayBuffer | null>('');
   const [formData, setFormData] = useState<NewPostFormData>({
-    title: '',
-    excerpt: '',
-    category: '',
-    tags: [],
-    content: '',
-    poster_card: '',
+    title: 'Hello',
+    excerpt: 'excerpt',
+    category: 'Technology',
+    tags: ['java'],
+    content: 'Content',
+    poster_card: null,
     status: 'Draft',
     featured: false
   });
@@ -26,7 +27,7 @@ const Publish = () => {
   const navigate = useNavigate();
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Errors>({});
-  const [createHandler, { isLoading }] = useCreatePostMutation();
+  const [createHandler, { isLoading }] = usePublishPostMutation();
 
   const categories: string[] = [
     'Technology',
@@ -40,7 +41,19 @@ const Publish = () => {
     'Development'
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, poster_card: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev: NewPostFormData) => ({
       ...prev,
@@ -84,19 +97,20 @@ const Publish = () => {
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
-
-      createHandler({
-        ...formData,
-        tags: formData.tags.join(', '),
-        author_id: user.id
-      }).unwrap().then(() => {
+      const payload = new FormData();
+      (Object.keys(formData) as (keyof NewPostFormData)[]).forEach((k) => {
+        payload.append(k, formData[k] as any);
+      });
+      payload.append("tags", formData.tags.join(', '))
+      payload.append("author_id", `${user.id}`);
+      createHandler(payload as unknown as NewPostRequest).unwrap().then(() => {
         setFormData({
           title: '',
           excerpt: '',
           category: '',
           tags: [],
           content: '',
-          poster_card: '',
+          poster_card: null,
           status: 'Draft',
           featured: false
         });
@@ -224,6 +238,60 @@ const Publish = () => {
                 ))}
               </div>
             </div>
+
+            <div className="space-y-2">
+              <label htmlFor="cover-image" className="block text-sm font-medium text-gray-700">
+                Cover Image
+              </label>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div className="space-y-1 text-center">
+                  {preview ? (
+                    <div className="relative">
+                      <img
+                        src={typeof preview === 'string' ? preview : undefined}
+                        alt="Preview"
+                        className="mx-auto h-32 w-auto"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPreview(null);
+                          setFormData(prev => ({ ...prev, poster_card: null }));
+                        }}
+                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Image className="mx-auto h-12 w-12 text-gray-400" />
+                      <div className="flex text-sm text-gray-600">
+                        <label
+                          htmlFor="cover-image"
+                          className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500"
+                        >
+                          <span>Upload a file</span>
+                          <input
+                            id="cover-image"
+                            name="cover-image"
+                            type="file"
+                            accept="image/*"
+                            className="sr-only"
+                            onChange={handleImageUpload}
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        PNG, JPG, GIF up to 10MB
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                 Content *
