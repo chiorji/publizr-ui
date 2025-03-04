@@ -259,13 +259,13 @@ const Publish = () => {
                       <Image className="mx-auto h-12 w-12 text-gray-400" />
                       <div className="flex text-sm text-gray-600">
                         <label
-                          htmlFor="cover-image"
+                          htmlFor="poster_card"
                           className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500"
                         >
                           <span>Upload a file</span>
                           <input
-                            id="cover-image"
-                            name="cover-image"
+                            id="poster_card"
+                            name="poster_card"
                             type="file"
                             accept="image/*"
                             className="sr-only"
@@ -281,6 +281,12 @@ const Publish = () => {
                   )}
                 </div>
               </div>
+              {errors.poster_card && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.poster_card}</AlertDescription>
+                </Alert>
+              )}
             </div>
 
             <div className="space-y-2">
