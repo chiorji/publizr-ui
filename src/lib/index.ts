@@ -1,11 +1,5 @@
 import { useEffect, useRef } from "react";
 
-const imageRepository = ['/field.jpg', '/laptop.jpg', '/lion.jpg', '/planet-neptune.jpg', '/workout.jpg'];
-
-export const getRandomImagePlaceholder = () => {
-  return imageRepository[Math.floor(Math.random() * imageRepository.length)];
-}
-
 function hasKey<K extends string, T extends object>(k: K, o: T): o is T & Record<K, unknown> {
   return k in o;
 }
@@ -67,3 +61,14 @@ export function useTimeout(callbackFunction: () => void, timeout?: number): void
     return () => clearTimeout(timeoutId);
   }, []);
 }
+
+export const imageExtensions: Record<string, boolean> = {
+  tiff: true,
+  tif: true,
+  bmp: true,
+  jpg: true,
+  jpeg: true,
+  gif: true,
+  png: true,
+  eps: true,
+};
