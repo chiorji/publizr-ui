@@ -12,8 +12,8 @@ import { useToast } from '../components/ui/toast/toast-context';
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('chigbogu@orji.com');
+  const [password, setPassword] = useState('@Password123');
   const toast = useToast();
   const [signInHandler, { isLoading, error }] = useLoginMutation();
 

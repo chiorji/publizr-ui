@@ -1,15 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from './store';
-import { NewPostRequest } from '../types/post-types';
+import { NewPostRequest, UpdatePostRequest } from '../types/post-types';
 const baseUrl = 'http://localhost:8080'
 
-export const apiUploadSlice = createApi({
-  reducerPath: 'apiUploadSlice',
+export const uploadAPISlice = createApi({
+  reducerPath: 'uploadAPISlice',
   baseQuery: fetchBaseQuery({
     baseUrl: `${baseUrl}/`,
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
-      const token = state.users.token;
+      const token = state.userSlice.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -17,10 +17,10 @@ export const apiUploadSlice = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ['users', 'posts'],
+  tagTypes: ['posts'],
 });
 
-export const uploadSlice = apiUploadSlice.injectEndpoints({
+export const uploadSlice = uploadAPISlice.injectEndpoints({
   endpoints: (builder) => ({
     publishPost: builder.mutation<void, NewPostRequest>({
       query: (payload) => ({
@@ -30,7 +30,16 @@ export const uploadSlice = apiUploadSlice.injectEndpoints({
       }),
       invalidatesTags: ['posts']
     }),
+
+    updatePost: builder.mutation<void, UpdatePostRequest>({
+      query: (payload) => ({
+          url: `api/posts/update/${payload.id}`,
+          method: 'PUT',
+          body: payload
+      }),
+      invalidatesTags: ['posts']
+    })
   }),
 })
 
-export const { usePublishPostMutation } = uploadSlice;
+export const { usePublishPostMutation, useUpdatePostMutation } = uploadSlice;

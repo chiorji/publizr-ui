@@ -13,7 +13,7 @@ export const BLACKLISTED_AFTER_AUTHENTICATION = [
 ]
 
 export const useRedirectIfRequireAuth = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.users);
+  const { isAuthenticated } = useSelector((state: RootState) => state.userSlice);
   const location = useLocation();
   const navigate = useNavigate();
 

@@ -2,7 +2,7 @@ import { apiSlice } from '../api-slice';
 import { Post } from '../../types/post-types';
 import { GetResponse } from '../../types';
 
-export const postSlice = apiSlice.injectEndpoints({
+export const postAPISlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     recent: builder.query<GetResponse<Post[]>, null> ({
       query: () => 'api/posts/recent',
@@ -50,4 +50,4 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
   useByAuthorIdQuery
-} = postSlice;
+} = postAPISlice;

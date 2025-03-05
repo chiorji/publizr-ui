@@ -5,7 +5,7 @@ import { RootState } from '../app/store';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state: RootState) => state.users);
+  const { isAuthenticated } = useSelector((state: RootState) => state.userSlice);
 
   const getStartedClickHandler = () => {
     if (isAuthenticated) {

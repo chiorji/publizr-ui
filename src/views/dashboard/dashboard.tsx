@@ -1,12 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { useDeletePostMutation } from '../../app/api/post-slice';
 import { processRequestError } from '../../lib';
 import { useToast } from '../../components/ui/toast/toast-context';
 import { useGetPostsByAuthorId } from '../../hooks/posts';
+import { Post } from '../../types/post-types';
 
 const Dashboard = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   const [deleteHandler] = useDeletePostMutation();
   const { data, size, isLoading } = useGetPostsByAuthorId();
 
@@ -23,6 +25,10 @@ const Dashboard = () => {
       });
     });
   };
+
+  const goToPostEditor = (post: Post) => {
+    navigate('/dashboard/update', { state: { post } })
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -83,9 +89,11 @@ const Dashboard = () => {
                   </span>
                   <div className="flex space-x-2 text-white">
                     <button
-                      disabled
                       className="p-2 bg-gray-400 text-white hover:bg-gray-800 rounded-sm"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goToPostEditor(post);
+                      }}
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>

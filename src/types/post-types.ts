@@ -37,3 +37,14 @@ export interface NewPostErrors {
   category?: string;
   [key: string]: string | undefined;
 }
+
+export interface UpdatePostRequest {
+  title: string
+  content: string
+  tags: string
+  category: number
+  status: string
+  author_id: number
+  id: number
+  excerpt?: string
+}

@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     baseUrl: `${baseUrl}/`,
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
-      const token = state.users.token;
+      const token = state.userSlice.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

@@ -1,4 +1,4 @@
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
 import { setCurrentUser, setIsAuthenticated, setToken } from '../../app/states/user-state';
@@ -8,8 +8,7 @@ import Thumbnail from './thumbnail';
 const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.users);
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
 
   const handleLogout = () => {
     persistor.flush().then(() => {
@@ -33,10 +32,8 @@ const Navigation = () => {
             <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
             {isAuthenticated && (
               <>
-                {!/dashboard/i.test(pathname) && <>
-                  <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>
-                  <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
-                </>}
+                <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>
+                <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
                 <Thumbnail
                   username={user.username}
                   email={user.email}

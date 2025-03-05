@@ -25,5 +25,3 @@ export const userSlice = createSlice({
 export const { setCurrentUser, setIsAuthenticated, setToken } = userSlice.actions;
 
 export const selectAllPosts = (state: { user: ReturnType<typeof userSlice.reducer> }) => state.user.user;
-
-export default userSlice.reducer;

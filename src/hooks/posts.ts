@@ -45,7 +45,7 @@ export const useGetRecentPosts = () => {
 }
 
 export const useGetPostsByAuthorId = () => {
-  const { id } = useSelector((state: RootState) => state.users.user);
+  const { id } = useSelector((state: RootState) => state.userSlice.user);
   const { data, isLoading, error, refetch } = useByAuthorIdQuery(id, {
     skip: !id,
     refetchOnReconnect: true,

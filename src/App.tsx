@@ -5,12 +5,14 @@ import LoginScreen from './views/login-screen'
 import SignupScreen from './views/signup-screen'
 import PostListing from './views/posts/post-listing'
 import PostDetail from './views/posts/post-detail'
-import Dashboard from './views/dashboard/dashboard';
+import DashboardHome from './views/dashboard/dashboard';
+import Dashboard from'./views/dashboard';
 import Publish from './views/posts/publish';
 import { useRedirectIfRequireAuth } from './hooks'
 import RecentPosts from './views/posts/recent-posts'
 import { Suspense } from 'react'
 import { NotFound } from './components/ui/404'
+import UpdatePost from './views/posts/update-post'
 
 const App = () => {
   useRedirectIfRequireAuth();
@@ -26,8 +28,11 @@ const App = () => {
           <Route path="/posts/recent" element={<RecentPosts />} />
           <Route path="/posts" element={<PostListing />} />
           <Route path="/posts/:slug" element={<PostDetail />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/publish" element={<Publish />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="publish" element={<Publish />} />
+            <Route path="update" element={<UpdatePost />} />
+          </Route>
           <Route path="/*" element={<NotFound />} />
           <Route path="/404" element={<NotFound />} />
         </Routes>

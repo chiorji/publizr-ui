@@ -2,7 +2,7 @@ import { GetResponse } from '../../types';
 import { Category } from '../../types/category-types';
 import { apiSlice } from '../api-slice';
 
-export const categorySlice = apiSlice.injectEndpoints({
+export const apiCategorySlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllCategories: builder.query<GetResponse<Category[]>, void>({
       query: () => '/api/categories'
@@ -26,4 +26,4 @@ export const categorySlice = apiSlice.injectEndpoints({
 });
 
 
-export const { useGetAllCategoriesQuery } = categorySlice;
+export const { useGetAllCategoriesQuery } = apiCategorySlice;
