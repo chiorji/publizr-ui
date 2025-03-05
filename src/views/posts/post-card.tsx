@@ -29,18 +29,20 @@ const PostCard = ({ data }: { data: Post }) => (
           <Calendar className="h-4 w-4 mr-2" />
           {new Date(data.posted_on).toLocaleDateString()}
         </div>
-        {data.read_time && <div className="flex items-center text-sm text-gray-500 mt-2">
+        {<div className="flex items-center text-sm text-gray-500 mt-2">
           <Clock className="h-4 w-4 mr-2" />
           {data.read_time}{" "} min{data.read_time > 1 ? "s" : ""}
-          </div>}
+        </div>}
+
         <div className="flex items-center text-sm text-gray-800 mt-2"></div>
-          {data.tags.split(',').map((tag, index) => (
+        {data.tags &&
+          data.tags.split(',').map((tag, index) => (
             <span key={data.id + index} className="mr-2 bg-gray-200 text-gray-600 rounded-full px-2 py-1 text-sm">
               {"#"}{tag.trim()}
             </span>
           ))}
-        </div>
       </div>
+    </div>
   </div>
 );
 

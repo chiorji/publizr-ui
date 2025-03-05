@@ -18,6 +18,7 @@ export const useGetAllPosts = () => {
 
 export const useGetPostById = (id: number) => {
   const { data, isLoading, error, refetch } = useByIdQuery(id, {
+    skip: !id,
     refetchOnReconnect: true,
     refetchOnMountOrArgChange: true,
   });

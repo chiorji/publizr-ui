@@ -1,10 +1,25 @@
-import { Calendar, Clock, User } from 'lucide-react';
 import { Navigate, useParams } from 'react-router-dom';
+import { Calendar, Clock, Heart, HeartOff, User } from 'lucide-react';
 import { useGetPostById } from '../../hooks/posts';
+import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../../hooks/like-hook';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 const BlogDetail = () => {
   const { slug } = useParams();
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
   const { data, isLoading } = useGetPostById(Number(slug));
+  const { handleLikes, liked, isLoading: isLiking } = useLikePost();
+  const { likes } = useGetLikeCount(Number(slug));
+  const { liked: alreadyLiked, isLoading: isLoadingLikeCheck } = checkIfUserLikedPost({
+    post_id: Number(slug),
+    user_id: user.id
+  });
+
+  const handleLikeToggle = () => {
+    if (!data) return;
+    handleLikes({ post_id: Number(slug), user_id: user.id });
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <Navigate to="/404" />;
@@ -33,6 +48,10 @@ const BlogDetail = () => {
             <Clock className="h-5 w-5 mr-2" />
             {data.read_time} {" "} min{data.read_time > 1 ? "s" : ""}
           </div>
+          <div className="flex items-center">
+            <Heart className="h-5 w-5 mr-2 text-red-500" />
+            {likes}
+          </div>
         </div>
 
         <div className="mb-6">
@@ -46,7 +65,7 @@ const BlogDetail = () => {
         </div>
 
         <div className="mt-8 flex gap-2">
-          {data.tags?.split(',').map((tag) => (
+          {data?.tags && data.tags.split(',').map((tag) => (
             <span
               key={tag}
               className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
@@ -55,6 +74,15 @@ const BlogDetail = () => {
             </span>
           ))}
         </div>
+        {isAuthenticated && <button onClick={handleLikeToggle} className="focus:outline-none mt-8 flex items-center gap-2 text-gray-800" disabled={isLiking || isLoadingLikeCheck}>
+          {(liked || alreadyLiked) ? (
+            <Heart className="text-red-500" />
+          ) : (
+            <HeartOff className="text-red-500" />
+          )}
+          {(liked || alreadyLiked) ? 'You liked this post' : 'Like this post'}
+        </button>
+        }
       </div>
     </article>
   );
