@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Post } from '../../types/post-types';
 
 const PostCard = ({ data }: { data: Post }) => (
-  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+  <Link to={`/posts/${data.id}`} className="bg-white rounded-lg shadow-lg overflow-hidden">
     <img
       src={data.url}
       alt={data.title}
@@ -13,12 +13,11 @@ const PostCard = ({ data }: { data: Post }) => (
       <div className="uppercase tracking-wide text-sm text-blue-600 font-semibold">
         {data.category}
       </div>
-      <Link
-        to={`/posts/${data.id}`}
+      <h4
         className="block mt-2 text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors"
       >
         {data.title}
-      </Link>
+      </h4>
       <p className="mt-3 text-gray-500">{data.excerpt}</p>
       <div className="mt-4">
         <div className="flex items-center text-sm text-gray-500 uppercase">
@@ -43,7 +42,7 @@ const PostCard = ({ data }: { data: Post }) => (
           ))}
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 export default PostCard;
