@@ -4,10 +4,12 @@ import { RootState, persistor } from '../../app/store';
 import { setCurrentUser, setIsAuthenticated, setToken } from '../../app/states/user-state';
 import { User } from '../../types/user-types';
 import Thumbnail from './thumbnail';
+import { useIsAdmin } from '../../hooks';
 
 const Navigation = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const isAdmin = useIsAdmin();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
   const handleLogout = () => {
@@ -29,14 +31,25 @@ const Navigation = () => {
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
+
+            {!isAdmin &&
+              <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
+            }
             {isAuthenticated && (
               <>
-                {!/(publish|\bdashboard\b)/i.test(pathname) && <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>}
-                <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
+                {!isAdmin ? <>
+                  {!/(publish|\bdashboard\b)/i.test(pathname) && <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>}
+                  <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
+                </> :
+                  <>
+                    <Link to="/admin/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
+                    <Link to="/admin" className="text-gray-600 hover:text-gray-900">Users</Link>
+                  </>
+                }
                 <Thumbnail
                   username={user.username}
                   email={user.email}
+                  role={user.role}
                   avatarUrl={'/laptop.jpg'}
                   handleLogout={handleLogout}
                 />

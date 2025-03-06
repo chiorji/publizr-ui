@@ -5,9 +5,11 @@ import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../../hooks/
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { checkIfPostIsEdited } from '../../lib';
+import { useIsAdmin } from '../../hooks';
 
 const BlogDetail = () => {
   const { slug } = useParams();
+  const isAdmin = useIsAdmin();
   const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
   const { data, isLoading } = useGetPostById(Number(slug));
   const { handleLikes, liked, isLoading: isLiking } = useLikePost();
@@ -80,7 +82,7 @@ const BlogDetail = () => {
             </span>
           ))}
         </div>
-        {isAuthenticated && <button onClick={handleLikeToggle} className="focus:outline-none mt-8 flex items-center gap-2 text-gray-800" disabled={isLiking || isLoadingLikeCheck}>
+        {isAuthenticated && !isAdmin && <button onClick={handleLikeToggle} className="focus:outline-none mt-8 flex items-center gap-2 text-gray-800" disabled={isLiking || isLoadingLikeCheck}>
           {(liked || alreadyLiked) ? (
             <Heart className="text-red-500" />
           ) : (

@@ -6,9 +6,10 @@ type Props = {
   handleLogout: () => void
   email: string
   avatarUrl: string
+  role: string
 }
 
-const Thumbnail = ({ username, email, avatarUrl, handleLogout }: Props) => {
+const Thumbnail = ({ username, email, avatarUrl, role, handleLogout }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(containerRef, () => setIsOpen(false))
@@ -26,6 +27,7 @@ const Thumbnail = ({ username, email, avatarUrl, handleLogout }: Props) => {
             <div className="mt-2 text-center">
               <p className="text-gray-700 font-bold">{username}</p>
               <p className="text-gray-500 text-sm">{email}</p>
+              <p className="text-gray-500 text-sm">{role}</p>
             </div>
           </div>
           <div className="border-t border-gray-200">

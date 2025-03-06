@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
 
 export const WHITELISTED_AFTER_AUTHENTICATION = [
-  '/dashboard'
+  '/dashboard',
+  '/admin'
 ];
 
 export const BLACKLISTED_AFTER_AUTHENTICATION = [
@@ -14,16 +15,27 @@ export const BLACKLISTED_AFTER_AUTHENTICATION = [
 
 export const useRedirectIfRequireAuth = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.userSlice);
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
 
     if (
-      (isAuthenticated && BLACKLISTED_AFTER_AUTHENTICATION.includes(location.pathname))
-      || (!isAuthenticated && WHITELISTED_AFTER_AUTHENTICATION.includes(location.pathname))
+      (isAuthenticated && BLACKLISTED_AFTER_AUTHENTICATION.includes(pathname))
+      || (!isAuthenticated && WHITELISTED_AFTER_AUTHENTICATION.includes(pathname))
     ) {
       navigate(-1);
     }
+
+    if (isAdmin && !/admin/i.test(pathname)) {
+      navigate('/admin');
+    }
   }, [location.pathname]);
 };
+
+export const useIsAdmin = () => {
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
+  if (!(isAuthenticated && /admin/i.test(user.role))) return false;
+  return true;
+}
