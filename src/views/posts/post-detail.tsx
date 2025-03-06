@@ -4,6 +4,7 @@ import { useGetPostById } from '../../hooks/posts';
 import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../../hooks/like-hook';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { checkIfPostIsEdited } from '../../lib';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -23,6 +24,7 @@ const BlogDetail = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <Navigate to="/404" />;
+  const isPostEdited = checkIfPostIsEdited(data.posted_on, data.last_updated);
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -42,8 +44,12 @@ const BlogDetail = () => {
           </div>
           <div className="flex items-center">
             <Calendar className="h-5 w-5 mr-2" />
-            {new Date(data.posted_on).toLocaleDateString()}
+            Posted on{' '}{new Date(data.posted_on).toLocaleDateString()}
           </div>
+          {isPostEdited && <div className="flex items-center">
+            <Calendar className="h-4 w-4 mr-2" />
+            Edited on{' '}{new Date(data.last_updated).toLocaleDateString()}
+          </div>}
           <div className="flex items-center">
             <Clock className="h-5 w-5 mr-2" />
             {data.read_time} {" "} min{data.read_time > 1 ? "s" : ""}

@@ -74,3 +74,7 @@ export const imageExtensions: Record<string, boolean> = {
 };
 
 export const isValidEmail = (v: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
+
+export const checkIfPostIsEdited = (postedOn: number, lastUpdated: number) => {
+  return new Date(lastUpdated) > new Date(postedOn);
+}
