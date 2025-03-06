@@ -1,4 +1,4 @@
-import React, { ComponentProps, ChangeEventHandler, ReactNode } from "react";
+import React, { ComponentProps, ChangeEventHandler, ReactNode, forwardRef } from "react";
 import { Alert, AlertDescription } from "./alert";
 import { AlertCircle } from "lucide-react";
 import { OptionContract } from "../../types";
@@ -26,13 +26,14 @@ interface SelectFieldProps extends ComponentProps<'select'> {
   error?: string
 }
 
-export const TextInput: React.FC<TextInputProps> = ({ error, label, suffix, ...rest }) => {
+export const TextInput: React.FC<TextInputProps> = forwardRef(({ error, label, suffix, ...rest }, ref) => {
   return (
     <div className="space-y-2 relative">
       <label htmlFor={rest.name} className="block text-sm font-medium text-gray-700">{label}</label>
       <input
         type="text"
         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ref={ref}
         {...rest}
       />
       {suffix && <div className="absolute rounded-sm top-[30px] right-[2px]">{suffix}</div>}
@@ -44,7 +45,7 @@ export const TextInput: React.FC<TextInputProps> = ({ error, label, suffix, ...r
       )}
     </div>
   )
-}
+})
 
 export const TextAreaInput: React.FC<TextAreaProps> = (props) => {
   const { error, label, ...rest } = props;

@@ -72,3 +72,5 @@ export const imageExtensions: Record<string, boolean> = {
   png: true,
   eps: true,
 };
+
+export const isValidEmail = (v: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);

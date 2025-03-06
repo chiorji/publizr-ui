@@ -13,6 +13,7 @@ import RecentPosts from './views/posts/recent-posts'
 import { Suspense } from 'react'
 import { NotFound } from './components/ui/404'
 import UpdatePost from './views/posts/update-post'
+import { ResetPassword } from './views/reset-password'
 
 const App = () => {
   useRedirectIfRequireAuth();
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/signup" element={<SignupScreen />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/posts/recent" element={<RecentPosts />} />
           <Route path="/posts" element={<PostListing />} />
           <Route path="/posts/:slug" element={<PostDetail />} />

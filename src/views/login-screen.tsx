@@ -70,7 +70,7 @@ const LoginScreen = () => {
                 <label htmlFor="password" className="text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                <Link to="/reset-password" className="text-sm text-blue-600 hover:underline">
                   Forgot password?
                 </Link>
               </div>
