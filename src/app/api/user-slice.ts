@@ -39,13 +39,12 @@ export const userSlice = apiSlice.injectEndpoints({
       }
     }),
 
-    resetPassword: builder.mutation<void, { email: string; password: string }>({
+    resetPassword: builder.mutation<boolean, { email: string; password: string }>({
       query: (payload) => ({
-        url: 'api/users/reset-password/',
+        url: 'api/users/reset-password',
         method: 'PUT',
         body: payload,
-      }),
-      invalidatesTags: ['users'],
+      })
     }),
   }),
 });

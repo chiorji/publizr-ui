@@ -51,12 +51,19 @@ export const ResetPassword: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValidEmail(email)) return false;
-    resetHandler({ email, password }).unwrap().then(() => {
-      navigate('/login');
-      toast?.open({
-        message: 'Password reset successfully',
-        variant: "success",
-      });
+    resetHandler({ email, password }).unwrap().then((response) => {
+      if (response) {
+        navigate('/login');
+        toast?.open({
+          message: 'Password reset successfully',
+          variant: "success",
+        });
+      } else {
+        toast?.open({
+          message: 'Password reset not successfully',
+          variant: "warning",
+        });
+      }
     }).catch((e) => {
       toast?.open({
         message: processRequestError(e, 'Password reset failed.'),
