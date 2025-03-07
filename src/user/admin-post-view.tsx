@@ -1,8 +1,8 @@
-import { useDeletePost, useFeaturePost, useGetAllPosts } from "../../hooks/posts-hook"
+import { useDeletePost, useFeaturePost, useGetAllPosts } from "../post/posts-hook"
 import { Link } from "react-router-dom";
-import { EmptyContent } from "../../components/ui/empty-content";
+import { EmptyContent } from "../components/ui/empty-content";
 import { Trash } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
 export const AdminPostView: React.FC = () => {
   const { data, isLoading, error } = useGetAllPosts();

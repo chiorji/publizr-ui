@@ -1,5 +1,5 @@
-import { Like } from "../../types/like";
-import { apiSlice } from "../api-slice";
+import { Like } from "./like-types";
+import { apiSlice } from "../app/api-slice";
 
 export const likeSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

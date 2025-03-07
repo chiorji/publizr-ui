@@ -1,11 +1,11 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { Calendar, Clock, Heart, HeartOff, User } from 'lucide-react';
-import { useGetPostById } from '../../hooks/posts-hook';
-import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../../hooks/like-hook';
+import { useGetPostById } from './posts-hook';
+import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../like/like-hook';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { checkIfPostIsEdited } from '../../lib';
-import { useIsAdmin } from '../../hooks';
+import { RootState } from '../app/store';
+import { checkIfPostIsEdited } from '../lib';
+import { useIsAdmin } from '../hooks';
 
 const BlogDetail = () => {
   const { slug } = useParams();

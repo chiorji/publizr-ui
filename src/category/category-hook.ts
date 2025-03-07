@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useGetAllCategoriesQuery } from "../app/api/category-slice";
+import { useGetAllCategoriesQuery } from "./category-slice";
 import { OptionContract } from "../types";
 
 export const useGetAllCategories = () => {

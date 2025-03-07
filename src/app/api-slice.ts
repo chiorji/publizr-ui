@@ -19,3 +19,21 @@ export const apiSlice = createApi({
   endpoints: () => ({}),
   tagTypes: ['users', 'posts', 'likes'],
 });
+
+
+export const uploadAPISlice = createApi({
+  reducerPath: 'uploadAPISlice',
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${baseUrl}/`,
+    prepareHeaders: (headers, { getState }) => {
+      const state = getState() as RootState;
+      const token = state.userSlice.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  endpoints: () => ({}),
+  tagTypes: ['posts'],
+});

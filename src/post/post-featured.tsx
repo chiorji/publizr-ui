@@ -1,6 +1,6 @@
 import { Calendar, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Post } from '../../types/post-types';
+import { Post } from './post-types';
 
 const FeaturedPost = ({ data }: { data: Post }) => (
   <div className="relative rounded-lg overflow-hidden bg-white shadow-lg mb-8">

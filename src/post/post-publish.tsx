@@ -1,17 +1,17 @@
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Tags } from 'lucide-react';
-import { NewPostFormData, NewPostErrors, NewPostRequest } from '../../types/post-types';
-import { usePublishPostMutation } from '../../app/api-upload';
-import { RootState } from '../../app/store';
+import { NewPostFormData, NewPostErrors, NewPostRequest } from './post-types';
+import { RootState } from '../app/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useToast } from '../../components/ui/toast/toast-context';
-import { imageExtensions, processRequestError } from '../../lib';
-import { useGetAllCategories } from '../../hooks/category-hook';
-import { resetNewPostFormValues } from '../../app/states/post-state';
-import { RadioInput, SelectField, TextAreaInput, TextInput } from '../../components/ui/input';
-import { FileUploader } from '../../lib/file-uploader';
+import { useToast } from '../components/ui/toast/toast-context';
+import { imageExtensions, processRequestError } from '../lib';
+import { useGetAllCategories } from '../category/category-hook';
+import { resetNewPostFormValues } from './post-state';
+import { RadioInput, SelectField, TextAreaInput, TextInput } from '../components/ui/input';
+import { FileUploader } from '../components/file-uploader';
+import { usePublishPostMutation } from './post-slice';
 
 const Publish = () => {
   const dispatch = useDispatch();

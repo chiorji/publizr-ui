@@ -3,10 +3,9 @@ import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist'
 // import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import logger from 'redux-logger';
-import { postSlice } from '../states/post-state'
-import { userSlice } from '../states/user-state'
-import { apiSlice } from '../api-slice';
-import { uploadAPISlice } from '../api-upload';
+import { postSlice } from '../post/post-state'
+import { userSlice } from '../user/user-state'
+import { apiSlice, uploadAPISlice } from './api-slice';
 
 const middlewares = [apiSlice.middleware, uploadAPISlice.middleware];
 if (process.env.NODE_ENV !== 'production') {

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TextInput } from "../components/ui/input";
 import PasswordStrengthIndicator from "../components/ui/password-strength-indicator";
 import { isValidEmail, processRequestError } from "../lib";
-import { useResetPasswordMutation } from "../app/api/user-slice";
+import { useResetPasswordMutation } from "../user/user-slice";
 import { useToast } from "../components/ui/toast/toast-context";
 
 export const ResetPassword: React.FC = () => {

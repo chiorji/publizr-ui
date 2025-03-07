@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { EmptyContent } from '../../components/ui/empty-content';
-import { useGetAllPosts } from '../../hooks/posts-hook';
+import { EmptyContent } from '../components/ui/empty-content';
+import { useGetAllPosts } from './posts-hook';
 
 const PostListing = () => {
   const { data, isLoading, error } = useGetAllPosts();

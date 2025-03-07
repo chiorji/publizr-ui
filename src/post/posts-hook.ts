@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation, useFeaturePostMutation } from "../app/api/post-slice";
+import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation, useFeaturePostMutation } from "./post-slice";
 import { RootState } from "../app/store";
-import { DeletePostParams } from "../types/post-types";
+import { DeletePostParams } from "./post-types";
 import { processRequestError } from "../lib";
 import { useToast } from "../components/ui/toast/toast-context";
 

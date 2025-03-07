@@ -1,8 +1,8 @@
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
-import { setCurrentUser, setIsAuthenticated, setToken } from '../../app/states/user-state';
-import { User } from '../../types/user-types';
+import { setCurrentUser, setIsAuthenticated, setToken } from '../../user/user-state';
+import { User } from '../../user/user-types';
 import Thumbnail from './thumbnail';
 import { useIsAdmin } from '../../hooks';
 

@@ -1,7 +1,7 @@
-import { useDeleteUser, useGetAllUsers } from "../../hooks/users-hook";
-import { EmptyContent } from "../../components/ui/empty-content";
+import { useDeleteUser, useGetAllUsers } from "./users-hook";
+import { EmptyContent } from "../components/ui/empty-content";
 import { Trash } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
 export const AdminUserView: React.FC = () => {
   const { data, isLoading, error } = useGetAllUsers();

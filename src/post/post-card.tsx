@@ -1,7 +1,7 @@
 import { Calendar, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Post } from '../../types/post-types';
-import { checkIfPostIsEdited } from '../../lib';
+import { Post } from './post-types';
+import { checkIfPostIsEdited } from '../lib';
 
 const PostCard = ({ data }: { data: Post }) => {
   const isPostEdited = checkIfPostIsEdited(data.posted_on, data.last_updated);

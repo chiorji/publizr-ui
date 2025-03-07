@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useCheckIfUserLikedPostQuery, useGetLikesCountQuery, useLikePostMutation } from "../app/api/like-slice"
-import { Like } from "../types/like";
+import { useCheckIfUserLikedPostQuery, useGetLikesCountQuery, useLikePostMutation } from "./like-slice"
+import { Like } from "./like-types";
 
 export const useLikePost = () => {
   const [liked, setLiked] = useState(false);

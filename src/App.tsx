@@ -3,18 +3,18 @@ import Navigation from './components/ui/navigation'
 import HomePage from './views/home-page'
 import LoginScreen from './views/login-screen'
 import SignupScreen from './views/signup-screen'
-import PostListing from './views/posts/post-listing'
-import PostDetail from './views/posts/post-detail'
-import DashboardHome from './views/dashboard/dashboard';
-import Publish from './views/posts/publish';
+import PostListing from './post/post-listing'
+import PostDetail from './post/post-detail'
+import DashboardHome from './user/dashboard';
+import Publish from './post/post-publish';
 import { useRedirectIfRequireAuth } from './hooks'
-import RecentPosts from './views/posts/recent-posts'
+import RecentPosts from './post/post-recent'
 import { Suspense } from 'react'
 import { NotFound } from './components/ui/404'
-import UpdatePost from './views/posts/update-post'
+import UpdatePost from './post/post-update'
 import { ResetPassword } from './views/reset-password'
-import { AdminPostView } from './views/dashboard/admin-post-view'
-import { AdminUserView } from './views/dashboard/admin-user-view'
+import { AdminPostView } from './user/admin-post-view'
+import { AdminUserView } from './user/admin-user-view'
 
 const App = () => {
   useRedirectIfRequireAuth();

@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card"
-import { useUpdatePostMutation } from "../../app/api-upload";
-import { NewPostErrors, UpdatePostRequest } from "../../types/post-types";
-import { processRequestError } from "../../lib";
-import { useToast } from "../../components/ui/toast/toast-context";
-import { RadioInput, /*SelectField,*/ TextAreaInput, TextInput } from "../../components/ui/input";
-import { useGetAllCategories } from "../../hooks/category-hook";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import { NewPostErrors, UpdatePostRequest } from "./post-types";
+import { processRequestError } from "../lib";
+import { useToast } from "../components/ui/toast/toast-context";
+import { RadioInput, /*SelectField,*/ TextAreaInput, TextInput } from "../components/ui/input";
+import { useGetAllCategories } from "../category/category-hook";
+import { useUpdatePostMutation } from "./post-slice";
 
 export default function UpdatePost() {
   const { state } = useLocation();

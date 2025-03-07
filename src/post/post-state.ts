@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { NewPostFormData, Post, UpdatePostRequest } from '../../types/post-types';
+import { NewPostFormData, Post, UpdatePostRequest } from './post-types';
 
 const newPostFormInitialValues: NewPostFormData = {
   title: 'Blockchain Beyond Bitcoin',

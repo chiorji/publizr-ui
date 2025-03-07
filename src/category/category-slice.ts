@@ -1,6 +1,6 @@
-import { GetResponse } from '../../types';
-import { Category } from '../../types/category-types';
-import { apiSlice } from '../api-slice';
+import { GetResponse } from '../types';
+import { Category } from './category-types';
+import { apiSlice } from '../app/api-slice';
 
 export const apiCategorySlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

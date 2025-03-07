@@ -1,6 +1,6 @@
-import { apiSlice } from '../api-slice';
-import { CreateAccountFormData, User, LoginSignupResponse } from '../../types/user-types';
-import { GetResponse } from '../../types';
+import { apiSlice } from '../app/api-slice';
+import { CreateAccountFormData, User, LoginSignupResponse } from './user-types';
+import { GetResponse } from '../types';
 
 export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

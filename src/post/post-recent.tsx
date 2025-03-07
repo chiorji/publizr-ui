@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import FeaturedPost from './featured-post';
+import FeaturedPost from './post-featured';
 import PostCard from './post-card';
-import { EmptyContent } from '../../components/ui/empty-content';
-import { useGetRecentPosts } from '../../hooks/posts-hook';
+import { EmptyContent } from '../components/ui/empty-content';
+import { useGetRecentPosts } from './posts-hook';
 
 const RecentPosts = () => {
   const { data, isLoading, size } = useGetRecentPosts();
