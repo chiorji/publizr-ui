@@ -48,3 +48,4 @@ export interface UpdatePostRequest {
   id: number
   excerpt?: string
 }
+export type DeletePostParams = Pick<UpdatePostRequest, 'author_id' | 'id'>;

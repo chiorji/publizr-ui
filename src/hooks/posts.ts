@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
-import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery } from "../app/api/post-slice";
+import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation } from "../app/api/post-slice";
 import { RootState } from "../app/store";
+import { DeletePostParams } from "../types/post-types";
+import { processRequestError } from "../lib";
+import { useToast } from "../components/ui/toast/toast-context";
 
 export const useGetAllPosts = () => {
   const { data, isLoading, error, refetch } = useAllQuery(null, {
@@ -60,4 +63,25 @@ export const useGetPostsByAuthorId = () => {
     refetch,
     size: data?.size ?? 0
   };
+}
+
+export const useDeletePost = () => {
+  const toast = useToast();
+  const [handler, { isLoading, error }] = useDeletePostMutation();
+
+  const handlerPostDeletion = (props: DeletePostParams) => {
+    handler(props).unwrap().then(() => {
+      toast.open({
+        message: 'Post deleted successfully',
+        variant: "success",
+      })
+    }).catch((error) => {
+      toast.open({
+        message: processRequestError(error, 'Error deleting post'),
+        variant: "destructive",
+      });
+    });
+  }
+
+  return { isLoading, error, handlerPostDeletion };
 }

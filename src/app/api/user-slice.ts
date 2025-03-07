@@ -1,5 +1,6 @@
 import { apiSlice } from '../api-slice';
 import { CreateAccountFormData, User, LoginSignupResponse} from '../../types/user-types';
+import { GetResponse } from '../../types';
 
 export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -46,7 +47,11 @@ export const userSlice = apiSlice.injectEndpoints({
         body: payload,
       })
     }),
+
+    getAllUsers: builder.query<GetResponse<User[]>, null>({
+      query: () => '/api/users'
+    })
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useResetPasswordMutation } = userSlice;
+export const { useLoginMutation, useSignupMutation, useResetPasswordMutation, useGetAllUsersQuery } = userSlice;

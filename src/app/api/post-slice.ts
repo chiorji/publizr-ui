@@ -1,10 +1,10 @@
 import { apiSlice } from '../api-slice';
-import { Post } from '../../types/post-types';
+import { DeletePostParams, Post } from '../../types/post-types';
 import { GetResponse } from '../../types';
 
 export const postAPISlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    recent: builder.query<GetResponse<Post[]>, null> ({
+    recent: builder.query<GetResponse<Post[]>, null>({
       query: () => 'api/posts/recent',
       providesTags: ['posts']
     }),
@@ -33,9 +33,9 @@ export const postAPISlice = apiSlice.injectEndpoints({
       invalidatesTags: ['posts']
     }),
 
-    deletePost: builder.mutation<void, string | number>({
-      query: (id) => ({
-        url: `api/posts/delete/${id}`,
+    deletePost: builder.mutation<void, DeletePostParams>({
+      query: (payload) => ({
+        url: `api/posts/delete?post_id=${payload.id}&author_id=${payload.author_id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['posts']

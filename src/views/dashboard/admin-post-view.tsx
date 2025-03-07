@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useGetAllPosts } from "../../hooks/posts"
+import { useDeletePost, useGetAllPosts } from "../../hooks/posts"
 import { Link } from "react-router-dom";
 import { EmptyContent } from "../../components/ui/empty-content";
 import { Trash } from "lucide-react";
@@ -7,9 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 
 export const AdminPostView: React.FC = () => {
   const { data, isLoading, error } = useGetAllPosts();
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  const { handlerPostDeletion } = useDeletePost();
 
   if (isLoading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
@@ -36,7 +33,10 @@ export const AdminPostView: React.FC = () => {
                   <span>ID: {post.id}</span>
                   <button>{post.featured ? 'Featured' : 'Feature this post'}</button>
                   <Link to={`/admin/post/${post.id}`} className="text-blue-300">Open this post</Link>
-                  <button className="ml-auto">
+                  <button className="ml-auto" onClick={() => handlerPostDeletion({
+                    author_id: post.author_id,
+                    id: post.id
+                  })}>
                     <Trash className="text-red-400 hover:text-red-500" />
                   </button>
                 </div>

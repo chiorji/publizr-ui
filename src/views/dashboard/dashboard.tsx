@@ -1,30 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { useDeletePostMutation } from '../../app/api/post-slice';
-import { processRequestError } from '../../lib';
-import { useToast } from '../../components/ui/toast/toast-context';
-import { useGetPostsByAuthorId } from '../../hooks/posts';
+import { useDeletePost, useGetPostsByAuthorId } from '../../hooks/posts';
 import { Post } from '../../types/post-types';
 
 const Dashboard = () => {
-  const toast = useToast();
   const navigate = useNavigate();
-  const [deleteHandler] = useDeletePostMutation();
+  const { handlerPostDeletion } = useDeletePost();
   const { data, size, isLoading } = useGetPostsByAuthorId();
-
-  const handlerPostDeletion = (id: string | number) => {
-    deleteHandler(id).unwrap().then(() => {
-      toast.open({
-        message: 'Post deleted successfully',
-        variant: "success",
-      })
-    }).catch((error) => {
-      toast.open({
-        message: processRequestError(error, 'Error deleting post'),
-        variant: "destructive",
-      });
-    });
-  };
 
   const goToPostEditor = (post: Post) => {
     navigate('/dashboard/update', { state: { post } })
@@ -102,7 +84,10 @@ const Dashboard = () => {
                       className="p-2 bg-red-400 hover:bg-red-600 rounded-sm"
                       onClick={(e) => {
                         e.preventDefault()
-                        handlerPostDeletion(post.id)
+                        handlerPostDeletion({
+                          author_id: post.author_id,
+                          id: post.id
+                        })
                       }}
                     >
                       <Trash2 className="w-4 h-4" />
