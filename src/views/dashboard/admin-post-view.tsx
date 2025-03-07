@@ -1,4 +1,4 @@
-import { useDeletePost, useGetAllPosts } from "../../hooks/posts"
+import { useDeletePost, useGetAllPosts } from "../../hooks/posts-hook"
 import { Link } from "react-router-dom";
 import { EmptyContent } from "../../components/ui/empty-content";
 import { Trash } from "lucide-react";

@@ -1,14 +1,12 @@
-import { useGetAllUsers } from "../../hooks/users-hook";
+import { useDeleteUser, useGetAllUsers } from "../../hooks/users-hook";
 import { EmptyContent } from "../../components/ui/empty-content";
 import { Trash } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 
 export const AdminUserView: React.FC = () => {
   const { data, isLoading, error } = useGetAllUsers();
+  const { handleDeletion, isLoading: isDeletingUser } = useDeleteUser();
 
-  const handleUserDelete = (userId: number) => {
-    console.log(userId);
-  }
 
   if (isLoading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
@@ -29,9 +27,14 @@ export const AdminUserView: React.FC = () => {
                 <span className="lowercase">{user.role}</span>
                 <span>Joined on {new Date(user.created_at).toLocaleDateString()}</span>
                 <span>ID: {user.id}</span>
-                <button onClick={() => handleUserDelete(user.id)} className="ml-auto">
-                  <Trash className="text-red-400 hover:text-red-500" />
-                </button>
+                {!/admin/i.test(user.role) &&
+                  <button
+                    onClick={() => handleDeletion(user.id)}
+                    className="ml-auto"
+                    disabled={isDeletingUser}
+                  >
+                    <Trash className="text-red-400 hover:text-red-500" />
+                  </button>}
               </li>
             ))}
           </ul>

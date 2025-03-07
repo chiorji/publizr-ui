@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { useDeletePost, useGetPostsByAuthorId } from '../../hooks/posts';
+import { useDeletePost, useGetPostsByAuthorId } from '../../hooks/posts-hook';
 import { Post } from '../../types/post-types';
 
 const Dashboard = () => {

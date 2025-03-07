@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { Calendar, Clock, Heart, HeartOff, User } from 'lucide-react';
-import { useGetPostById } from '../../hooks/posts';
+import { useGetPostById } from '../../hooks/posts-hook';
 import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../../hooks/like-hook';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';

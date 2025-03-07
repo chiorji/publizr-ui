@@ -1,5 +1,5 @@
 import { apiSlice } from '../api-slice';
-import { CreateAccountFormData, User, LoginSignupResponse} from '../../types/user-types';
+import { CreateAccountFormData, User, LoginSignupResponse } from '../../types/user-types';
 import { GetResponse } from '../../types';
 
 export const userSlice = apiSlice.injectEndpoints({
@@ -37,7 +37,8 @@ export const userSlice = apiSlice.injectEndpoints({
           data: (response.data as any).data,
           token: (response.data as any).token,
         }
-      }
+      },
+      invalidatesTags: ['users']
     }),
 
     resetPassword: builder.mutation<boolean, { email: string; password: string }>({
@@ -49,9 +50,15 @@ export const userSlice = apiSlice.injectEndpoints({
     }),
 
     getAllUsers: builder.query<GetResponse<User[]>, null>({
-      query: () => '/api/users'
+      query: () => 'api/users'
+    }),
+
+    deleteUser: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `api/users/detete?id=${id}`
+      }),
     })
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useResetPasswordMutation, useGetAllUsersQuery } = userSlice;
+export const { useLoginMutation, useSignupMutation, useResetPasswordMutation, useGetAllUsersQuery, useDeleteUserMutation } = userSlice;

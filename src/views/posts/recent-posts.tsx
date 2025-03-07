@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import FeaturedPost from './featured-post';
 import PostCard from './post-card';
 import { EmptyContent } from '../../components/ui/empty-content';
-import { useGetRecentPosts } from '../../hooks/posts';
+import { useGetRecentPosts } from '../../hooks/posts-hook';
 
 const RecentPosts = () => {
   const { data, isLoading, size } = useGetRecentPosts();
