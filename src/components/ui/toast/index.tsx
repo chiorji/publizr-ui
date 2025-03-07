@@ -7,7 +7,7 @@ import "./toasts.css";
 export function Toast({ id, message, variant, close }: Omit<AlertProps, 'children'>) {
   useTimeout(() => {
     close();
-  }, 5000);
+  }, 3000);
   const Icon = getAlertIcon(variant);
   return (
     <div

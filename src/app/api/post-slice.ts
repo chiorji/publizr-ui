@@ -35,11 +35,20 @@ export const postAPISlice = apiSlice.injectEndpoints({
 
     deletePost: builder.mutation<void, DeletePostParams>({
       query: (payload) => ({
-        url: `api/posts/delete?post_id=${payload.id}&author_id=${payload.author_id}`,
+        url: 'api/posts/delete',
         method: 'DELETE',
+        body: payload
       }),
       invalidatesTags: ['posts']
     }),
+
+    featurePost: builder.mutation<void, number> ({
+      query: (postId) => ({
+        url: `api/posts/update/feature/${postId}`,
+        method: 'PUT'
+      }),
+      invalidatesTags: ['posts']
+    })
   }),
 });
 
@@ -49,5 +58,6 @@ export const {
   useByIdQuery,
   useUpdatePostMutation,
   useDeletePostMutation,
-  useByAuthorIdQuery
+  useByAuthorIdQuery,
+  useFeaturePostMutation
 } = postAPISlice;

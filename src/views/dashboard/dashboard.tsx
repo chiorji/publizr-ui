@@ -5,7 +5,7 @@ import { Post } from '../../types/post-types';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { handlerPostDeletion } = useDeletePost();
+  const { handlePostDeletion } = useDeletePost();
   const { data, size, isLoading } = useGetPostsByAuthorId();
 
   const goToPostEditor = (post: Post) => {
@@ -84,7 +84,7 @@ const Dashboard = () => {
                       className="p-2 bg-red-400 hover:bg-red-600 rounded-sm"
                       onClick={(e) => {
                         e.preventDefault()
-                        handlerPostDeletion({
+                        handlePostDeletion({
                           author_id: post.author_id,
                           id: post.id
                         })

@@ -9,6 +9,7 @@ export interface User {
   role: USER_ROLE,
   created_at: number;
   updated_at: number;
+  is_deleted: boolean;
 }
 
 export interface CreateAccountFormData {

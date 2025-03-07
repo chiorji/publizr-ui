@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation } from "../app/api/post-slice";
+import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation, useFeaturePostMutation } from "../app/api/post-slice";
 import { RootState } from "../app/store";
 import { DeletePostParams } from "../types/post-types";
 import { processRequestError } from "../lib";
@@ -69,7 +69,7 @@ export const useDeletePost = () => {
   const toast = useToast();
   const [handler, { isLoading, error }] = useDeletePostMutation();
 
-  const handlerPostDeletion = (props: DeletePostParams) => {
+  const handlePostDeletion = (props: DeletePostParams) => {
     handler(props).unwrap().then(() => {
       toast.open({
         message: 'Post deleted successfully',
@@ -83,5 +83,26 @@ export const useDeletePost = () => {
     });
   }
 
-  return { isLoading, error, handlerPostDeletion };
+  return { isLoading, error, handlePostDeletion };
+}
+
+export const useFeaturePost = () => {
+  const toast = useToast();
+  const [handler, { isLoading, error }] = useFeaturePostMutation();
+
+  const handlePostFeaturing = (postId: number) => {
+    handler(postId).unwrap().then(() => {
+      toast.open({
+        message: 'Post feature status updated successfully',
+        variant: "success",
+      })
+    }).catch((error) => {
+      toast.open({
+        message: processRequestError(error, 'Error updating post feature status'),
+        variant: "warning",
+      });
+    });
+  }
+
+  return { isLoading, error, handlePostFeaturing };
 }
