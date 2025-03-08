@@ -1,7 +1,7 @@
 import React, { ComponentProps, ChangeEventHandler, ReactNode, forwardRef } from "react";
 import { Alert, AlertDescription } from "./alert";
 import { AlertCircle } from "lucide-react";
-import { OptionContract } from "../../types";
+import { OptionContract } from "../types";
 
 interface TextInputProps extends ComponentProps<'input'> {
   label: string

@@ -1,5 +1,5 @@
 import { useGetAllUsersQuery, useDeleteUserMutation } from "./user-slice";
-import { useToast } from "../components/ui/toast/toast-context";
+import { useToast } from "../components/toast/toast-context";
 import { processRequestError } from "../lib";
 
 export const useGetAllUsers = () => {

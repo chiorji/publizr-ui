@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { PermissionKeys } from "./roles"
 import { useRoleBasedAccess } from "./rbac-hook"
-import { NotFound } from "../components/ui/404"
+import { NotFound } from "../components/404"
 
 type ProtectedProps = {
   permission: PermissionKeys

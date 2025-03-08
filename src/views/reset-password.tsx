@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, Navigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
-import { TextInput } from "../components/ui/input";
-import PasswordStrengthIndicator from "../components/ui/password-strength-indicator";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card"
+import { TextInput } from "../components/input";
+import PasswordStrengthIndicator from "../components/password-strength-indicator";
 import { isValidEmail, processRequestError } from "../lib";
 import { useResetPasswordMutation } from "../user/user-slice";
-import { useToast } from "../components/ui/toast/toast-context";
+import { useToast } from "../components/toast/toast-context";
 import { useRoleBasedAccess } from "../rbac/rbac-hook";
 
 export const ResetPassword: React.FC = () => {

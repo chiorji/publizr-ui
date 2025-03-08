@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useGetPostsByAuthorId } from "./posts-hook";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/card";
 import PostCard from "./post-card";
 
 export const PostByAuthor: React.FC = () => {

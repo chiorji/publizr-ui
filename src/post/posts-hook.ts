@@ -3,7 +3,7 @@ import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDelet
 import { RootState } from "../app/store";
 import { DeletePostParams } from "./post-types";
 import { processRequestError } from "../lib";
-import { useToast } from "../components/ui/toast/toast-context";
+import { useToast } from "../components/toast/toast-context";
 
 export const useGetAllPosts = () => {
   const { data, isLoading, error, refetch } = useAllQuery(null, {

@@ -1,7 +1,7 @@
 import { useGetAllUsers } from "./users-hook";
-import { EmptyContent } from "../components/ui/empty-content";
+import { EmptyContent } from "../components/empty-content";
 import { UserCard } from "./user-card";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 
 export const UserList: React.FC = () => {
   const { data, isLoading, error } = useGetAllUsers();

@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../components/card"
 import { NewPostErrors, UpdatePostRequest } from "./post-types";
 import { processRequestError } from "../lib";
-import { useToast } from "../components/ui/toast/toast-context";
-import { RadioInput, /*SelectField,*/ TextAreaInput, TextInput } from "../components/ui/input";
+import { useToast } from "../components/toast/toast-context";
+import { RadioInput, /*SelectField,*/ TextAreaInput, TextInput } from "../components/input";
 import { useGetAllCategories } from "../category/category-hook";
 import { useUpdatePostMutation } from "./post-slice";
 

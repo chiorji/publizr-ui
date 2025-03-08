@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { Mail } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/card';
 import { setIsAuthenticated, setCurrentUser, setToken } from '../user/user-state';
 import { useLoginMutation } from '../user/user-slice';
 import { persistor } from '../app/store';
 import { processRequestError } from '../lib';
-import { useToast } from '../components/ui/toast/toast-context';
+import { useToast } from '../components/toast/toast-context';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
 
 const LoginScreen = () => {

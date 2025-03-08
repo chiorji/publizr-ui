@@ -1,11 +1,11 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, persistor } from '../../app/store';
-import { resetStore } from '../../user/user-state';
+import { RootState, persistor } from '../app/store';
+import { resetStore } from '../user/user-state';
 import Thumbnail from './thumbnail';
-import { useRoleBasedAccess } from '../../rbac/rbac-hook';
-import { RoleBasedNavLink } from '../../rbac/role-based-nav-link';
-import { routes } from '../../rbac/routes';
+import { useRoleBasedAccess } from '../rbac/rbac-hook';
+import { RoleBasedNavLink } from '../rbac/role-based-nav-link';
+import { routes } from '../rbac/routes';
 
 const Navigation = () => {
   const navigate = useNavigate();

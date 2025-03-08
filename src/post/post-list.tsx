@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { FeaturedPost } from './post-featured';
 import PostCard from './post-card';
-import { EmptyContent } from '../components/ui/empty-content';
+import { EmptyContent } from '../components/empty-content';
 import { useGetRecentPosts } from './posts-hook';
 
 export const PostList: React.FC = () => {

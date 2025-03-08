@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Image, AlertCircle } from 'lucide-react';
 import { imageExtensions } from "../lib";
-import { Alert, AlertDescription } from "./ui/alert";
+import { Alert, AlertDescription } from "./alert";
 
 interface FileUploaderProps {
   accept: string[];

@@ -1,13 +1,13 @@
 import { ReactElement, useMemo, useState } from "react";
 import { ToastContext } from "./toast-context";
-import { useTimeout } from "../../../lib";
+import { useTimeout } from "../../lib";
 import { AlertProps, AlertStylesProps, getAlertIcon, getAlertStyles } from "../alert";
 import "./toasts.css";
 
 export function Toast({ id, message, variant, close }: Omit<AlertProps, 'children'>) {
   useTimeout(() => {
     close();
-  }, 3000);
+  }, 2000);
   const Icon = getAlertIcon(variant);
   return (
     <div
