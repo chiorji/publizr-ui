@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/card"
 import { NewPostErrors, UpdatePostRequest } from "./post-types";
 import { processRequestError } from "../lib";
 import { useToast } from "../components/toast/toast-context";
-import { RadioInput, /*SelectField,*/ TextAreaInput, TextInput } from "../components/input";
+import { RadioInput, TextAreaInput, TextInput } from "../components/input";
 import { useGetAllCategories } from "../category/category-hook";
 import { useUpdatePostMutation } from "./post-slice";
 
@@ -32,7 +32,7 @@ export default function UpdatePost() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { author_id, category, content, id, status, title, excerpt, tags } = formValue;
+    const { author_id, category, content, id, status, title, excerpt } = formValue;
     // TODO: Fix updating categories
     const categoryId = categories.find((option) => option.label === category as unknown);
     updateHandler({
@@ -43,13 +43,13 @@ export default function UpdatePost() {
       status,
       title,
       excerpt,
-      tags
+      tags: [...new Set([formValue.tags])].map((v) => v).join(', ')
     }).unwrap().then(() => {
       toast.open({
         message: 'Successful',
         variant: "success",
       });
-      navigate('/posts')
+      navigate('/author')
     }).catch((e) => {
       toast.open({
         message: processRequestError(e, 'Failed to update post. Please try again later.'),
@@ -84,15 +84,14 @@ export default function UpdatePost() {
               onChange={handleInputChange}
             />
 
-            {/* <SelectField
-              id="category"
-              name="category"
-              selectedValue={formValue.category}
+            <TextInput
+              label='Tags (comma-separated)'
+              id="tags"
+              name="tags"
+              value={formValue.tags}
               onChange={handleInputChange}
-              label='Category *'
-              error={errors.category}
-              options={categories}
-            /> */}
+              placeholder="Add tags"
+            />
 
             <TextAreaInput
               error={errors.content}
