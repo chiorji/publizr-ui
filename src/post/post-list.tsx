@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 import { FeaturedPost } from './post-featured';
 import PostCard from './post-card';
 import { EmptyContent } from '../components/empty-content';
@@ -9,7 +8,13 @@ export const PostList: React.FC = () => {
   const { data, isLoading, size } = useGetRecentPosts();
 
   if (isLoading) return <h1>Loading...</h1>
-  if (!data || !data.length) return <EmptyContent />
+  if (!data || size === 0) return <EmptyContent message={
+    <div className='flex-col gap-4 text-gray-800 text-sm space-y-8'>
+      <h1>NO CONTENT TO DISPLAY</h1>
+      <Link to="/login" className='bg-blue-600 !text-white px-4 py-2 rounded-md !hover:bg-blue-700'>
+      Start Writing</Link>
+    </div>
+  } />
 
   const featuredPost = data.find(post => post.featured);
   const nonFeaturedPost = data.filter(post => post.id != featuredPost?.id).slice(0, 6);
@@ -25,13 +30,6 @@ export const PostList: React.FC = () => {
           <PostCard key={post.id} data={post} />
         ))}
       </div>
-
-      {size >= 6 && <div className="mt-12 text-center">
-        <Link to="/posts" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-          View All Posts
-          <ChevronRight className="ml-2 h-5 w-5" />
-        </Link>
-      </div>}
     </div>
   );
 };
