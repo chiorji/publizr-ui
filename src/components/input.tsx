@@ -70,9 +70,13 @@ export const TextAreaInput: React.FC<TextAreaProps> = (props) => {
 }
 
 export const RadioInput: React.FC<RadioInputProps> = (props) => {
-  const { error, label, active, ...rest } = props;
+  const { error, label, active, className, value, ...rest } = props;
+  const styles = value === 'Draft' ? 
+  `bg-yellow-200 text-yellow-600  ${active ? 'bg-yellow-200 font-bold shadow-lg !border-yellow-700' : ''}` 
+  : `bg-green-200 text-green-600  ${active ? 'bg-green-200 font-bold shadow-lg !border-green-700' : ''}`
   return (
-    <label className={`flex items-center px-4 py-2 border rounded-lg cursor-pointer ${active ? 'bg-green-100 text-green-800' : 'bg-white text-gray-700'}`}>
+    <label className={`flex size-8 items-center justify-center border border-gray-100 rounded-full cursor-pointer 
+    ${styles} ${className}`}>
       <input
         type="radio"
         checked={active}

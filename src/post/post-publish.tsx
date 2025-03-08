@@ -137,8 +137,8 @@ const Publish = () => {
               placeholder="Write your blog post content here..."
             />
 
-            <div className="mb-4">
-              <label className="block text-gray-700">Status</label>
+            <div className="mb-4 flex flex-col space-y-4">
+              <label className="block text-gray-800">Status *</label>
               <div className="flex items-center space-x-4">
                 <RadioInput
                   type="radio"
@@ -146,17 +146,18 @@ const Publish = () => {
                   value="Draft"
                   onChange={() => setFormData(prev => ({ ...prev, status: 'Draft' }))}
                   active={formData.status === 'Draft'}
-                  label='Draft'
+                  label='L'
                 />
 
                 <RadioInput
                   type="radio"
                   name="status"
-                  value="Draft"
+                  value="Published"
                   onChange={() => setFormData(prev => ({ ...prev, status: 'Published' }))}
                   active={formData.status === 'Published'}
-                  label='Published'
+                  label='N'
                 />
+              <span className='ml-2'>{formData.status === 'Draft' ? 'Save for Later' : 'Publish Now'}</span>
               </div>
             </div>
 

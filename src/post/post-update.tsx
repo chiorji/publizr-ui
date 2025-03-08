@@ -103,8 +103,8 @@ export default function UpdatePost() {
               placeholder="Write your blog post content here..."
             />
 
-            <div className="mb-4">
-              <label className="block text-gray-700">Status</label>
+            <div className="mb-4 flex flex-col space-y-4">
+              <label className="block text-gray-800">Status *</label>
               <div className="flex items-center space-x-4">
                 <RadioInput
                   type="radio"
@@ -112,17 +112,18 @@ export default function UpdatePost() {
                   value="Draft"
                   onChange={() => setFormValue(prev => ({ ...prev, status: 'Draft' }))}
                   active={formValue.status === 'Draft'}
-                  label='Draft'
+                  label='L'
                 />
 
                 <RadioInput
                   type="radio"
                   name="status"
-                  value="Draft"
+                  value="Published"
                   onChange={() => setFormValue(prev => ({ ...prev, status: 'Published' }))}
                   active={formValue.status === 'Published'}
-                  label='Published'
+                  label='N'
                 />
+                <span className='ml-2'>{formValue.status === 'Draft' ? 'Save for Later' : 'Publish Now'}</span>
               </div>
             </div>
 
