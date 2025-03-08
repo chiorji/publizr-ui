@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Mail } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
@@ -10,11 +10,14 @@ import { setCurrentUser, setIsAuthenticated, setToken } from '../user/user-state
 import { useToast } from '../components/ui/toast/toast-context';
 import { processRequestError } from '../lib';
 import { persistor } from '../app/store';
+import { useRoleBasedAccess } from '../rbac/rbac-hook';
 
 const SignupScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const toast = useToast()
+  const { hasPermission } = useRoleBasedAccess()
+
   const [signupHandler, { isLoading }] = useSignupMutation();
   const [formData, setFormData] = useState<CreateAccountFormData>({
     username: '',
@@ -65,7 +68,7 @@ const SignupScreen = () => {
           dispatch(setIsAuthenticated(true));
           dispatch(setCurrentUser(response.data));
           dispatch(setToken(response.token ?? ""));
-          navigate('/dashboard');
+          navigate('/author');
           toast?.open({
             message: response.message,
             variant: "success",
@@ -79,6 +82,8 @@ const SignupScreen = () => {
       });
     });
   };
+
+  if (hasPermission('post.edit')) return <Navigate to='/posts' />;
 
   return (
     <div className="min-h-screen min-w-screen bg-gray-50 flex items-center justify-center p-4">

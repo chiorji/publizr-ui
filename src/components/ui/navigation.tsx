@@ -1,22 +1,22 @@
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, persistor } from '../../app/store';
-import { setCurrentUser, setIsAuthenticated, setToken } from '../../user/user-state';
-import { User } from '../../user/user-types';
+import { resetStore } from '../../user/user-state';
 import Thumbnail from './thumbnail';
-import { useIsAdmin } from '../../hooks';
+import { useRoleBasedAccess } from '../../rbac/rbac-hook';
+import { RoleBasedNavLink } from '../../rbac/role-based-nav-link';
+import { routes } from '../../rbac/routes';
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const isAdmin = useIsAdmin();
   const dispatch = useDispatch();
+  const { hasPermission } = useRoleBasedAccess();
   const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
+    await persistor.purge();
     persistor.flush().then(() => {
-      dispatch(setIsAuthenticated(false));
-      dispatch(setCurrentUser({} as User));
-      dispatch(setToken(""));
+      dispatch(resetStore());
       navigate('/posts');
     });
   };
@@ -31,38 +31,14 @@ const Navigation = () => {
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-
-            {!isAdmin &&
-              <Link to="/posts/recent" className="text-gray-600 hover:text-gray-900">Publications</Link>
-            }
-            {isAuthenticated && (
-              <>
-                {!isAdmin ? <>
-                  {!/(publish|\bdashboard\b)/i.test(pathname) && <Link to="/dashboard/publish" className="text-gray-600 hover:text-gray-900">New Post</Link>}
-                  <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
-                </> :
-                  <>
-                    <Link to="/admin/posts" className="text-gray-600 hover:text-gray-900">Publications</Link>
-                    <Link to="/admin" className="text-gray-600 hover:text-gray-900">Users</Link>
-                  </>
-                }
-                <Thumbnail
-                  username={user.username}
-                  email={user.email}
-                  role={user.role}
-                  avatarUrl={'/laptop.jpg'}
-                  handleLogout={handleLogout}
-                />
-              </>
-            )}
-            {!isAuthenticated && (
-              <button
-                onClick={() => navigate('/login')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-              >
-                Get Started
-              </button>
-            )}
+            <RoleBasedNavLink routes={routes} role={user.role} isLoggedIn={isAuthenticated}/>
+            {hasPermission("user.edit") && <Thumbnail
+              username={user.username}
+              email={user.email}
+              role={user.role}
+              avatarUrl={'/laptop.jpg'}
+              handleLogout={handleLogout}
+            />}
           </div>
         </div>
       </div>

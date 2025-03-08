@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { Mail } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
 import { setIsAuthenticated, setCurrentUser, setToken } from '../user/user-state';
@@ -8,14 +8,16 @@ import { useLoginMutation } from '../user/user-slice';
 import { persistor } from '../app/store';
 import { processRequestError } from '../lib';
 import { useToast } from '../components/ui/toast/toast-context';
+import { useRoleBasedAccess } from '../rbac/rbac-hook';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('chigbogu@orji.com');
-  const [password, setPassword] = useState('@Password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const toast = useToast();
   const [signInHandler, { isLoading, error }] = useLoginMutation();
+  const { hasPermission } = useRoleBasedAccess()
 
   interface EmailLoginEvent extends React.FormEvent<HTMLFormElement> { }
 
@@ -27,7 +29,7 @@ const LoginScreen = () => {
           dispatch(setIsAuthenticated(true));
           dispatch(setCurrentUser(response.data));
           dispatch(setToken(response.token ?? ""));
-          navigate('/dashboard');
+          navigate('/author');
           toast?.open({
             message: response.message,
             variant: "success",
@@ -41,6 +43,8 @@ const LoginScreen = () => {
       });
     });
   };
+
+  if (hasPermission('post.edit')) return <Navigate to='/author' />;
 
   return (
     <div className="min-h-screen min-w-screen bg-gray-50 flex items-center justify-center p-4">

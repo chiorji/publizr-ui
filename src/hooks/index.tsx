@@ -11,6 +11,7 @@ export const WHITELISTED_AFTER_AUTHENTICATION = [
 export const BLACKLISTED_AFTER_AUTHENTICATION = [
   '/login',
   '/signup',
+  '/reset-password'
 ]
 
 export const useRedirectIfRequireAuth = () => {

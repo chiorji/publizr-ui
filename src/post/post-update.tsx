@@ -49,7 +49,7 @@ export default function UpdatePost() {
         message: 'Successful',
         variant: "success",
       });
-      navigate('/dashboard')
+      navigate('/posts')
     }).catch((e) => {
       toast.open({
         message: processRequestError(e, 'Failed to update post. Please try again later.'),
@@ -59,7 +59,7 @@ export default function UpdatePost() {
   }
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <Card>
+      <Card className="!shadow-none">
         <CardHeader>
           <CardTitle>Update Post</CardTitle>
         </CardHeader>

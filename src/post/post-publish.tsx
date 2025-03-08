@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
-import { Tags } from 'lucide-react';
 import { NewPostFormData, NewPostErrors, NewPostRequest } from './post-types';
 import { RootState } from '../app/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +19,6 @@ const Publish = () => {
   const [formData, setFormData] = useState<NewPostFormData>(currentPost);
   const toast = useToast();
   const navigate = useNavigate();
-  const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<NewPostErrors>(Object);
 
   const [createHandler, { isLoading }] = usePublishPostMutation();
@@ -35,26 +33,6 @@ const Publish = () => {
     if (errors[name]) {
       setErrors((prev: NewPostErrors) => ({ ...prev, [name]: undefined }));
     }
-  };
-
-  interface HandleTagAddEvent extends React.MouseEvent<HTMLButtonElement> { }
-
-  const handleTagAdd = (e: HandleTagAddEvent) => {
-    e.preventDefault();
-    if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, currentTag.trim()]
-      }));
-      setCurrentTag('');
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
   };
 
   const validateForm = (): NewPostErrors => {
@@ -80,7 +58,7 @@ const Publish = () => {
       payload.append(k, formData[k] as any);
     });
     payload.delete("tags");
-    payload.append("tags", formData.tags.join(', '))
+    payload.append("tags", [...new Set([formData.tags])].map((v) => v).join(', '))
     payload.append("author_id", `${user.id}`);
 
     createHandler(payload as unknown as NewPostRequest).unwrap().then(() => {
@@ -90,7 +68,7 @@ const Publish = () => {
         message: 'Successful',
         variant: "success",
       });
-      navigate('/dashboard')
+      navigate('/posts')
     }).catch((e) => {
       toast.open({
         message: processRequestError(e, 'Failed to create post. Please try again later.'),
@@ -101,7 +79,7 @@ const Publish = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <Card>
+      <Card className="!shadow-none">
         <CardHeader>
           <CardTitle>Create New Post</CardTitle>
         </CardHeader>
@@ -136,40 +114,14 @@ const Publish = () => {
             />
 
             <TextInput
-              label='Tags'
-              value={currentTag}
-              onChange={(e) => setCurrentTag(e.target.value)}
+              label='Tags (comma-separated)'
+              id="tags"
+              name="tags"
+              value={formData.tags}
+              onChange={handleInputChange}
               placeholder="Add tags"
-              suffix={
-                <button
-                  onClick={handleTagAdd}
-                  type="button"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
-                >
-                  <Tags className="h-4 w-4 mr-2" />
-                  Add
-                </button>
-              }
             />
-            {formData.tags.length > 0 &&
-              <div className="flex flex-wrap gap-2 mb-2">
-                {formData.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
-                  >
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => removeTag(tag)}
-                      className="ml-2 text-blue-600 hover:text-blue-800"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            }
+            
             <FileUploader
               accept={Object.keys(imageExtensions)}
               changeHandler={(file) => setFormData(prev => ({ ...prev, poster_card: file }))}

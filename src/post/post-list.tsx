@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import FeaturedPost from './post-featured';
+import { FeaturedPost } from './post-featured';
 import PostCard from './post-card';
 import { EmptyContent } from '../components/ui/empty-content';
 import { useGetRecentPosts } from './posts-hook';
 
-const RecentPosts = () => {
+export const PostList: React.FC = () => {
   const { data, isLoading, size } = useGetRecentPosts();
 
-  if(isLoading) return <h1>Loading...</h1>
-  if(!data || !data.length) return <EmptyContent />
+  if (isLoading) return <h1>Loading...</h1>
+  if (!data || !data.length) return <EmptyContent />
 
   const featuredPost = data.find(post => post.featured);
   const nonFeaturedPost = data.filter(post => post.id != featuredPost?.id).slice(0, 6);
-  
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {featuredPost && (
@@ -35,5 +35,3 @@ const RecentPosts = () => {
     </div>
   );
 };
-
-export default RecentPosts;

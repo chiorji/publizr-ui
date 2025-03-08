@@ -1,14 +1,13 @@
+import { ROLE } from "../rbac/roles";
 import { GetResponse } from "../types/index";
-
-export type USER_ROLE = 'ADMIN' | 'AUTHOR';
 export interface User {
   id: number;
   username: string;
   email: string;
   image_url: string;
-  role: USER_ROLE,
-  created_at: number;
-  updated_at: number;
+  role: keyof typeof ROLE,
+  created_at: number | null;
+  updated_at: number | null;
   is_deleted: boolean;
 }
 

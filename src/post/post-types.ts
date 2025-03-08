@@ -22,7 +22,7 @@ export interface NewPostFormData {
   category: number
   poster_card: null | File
   featured: boolean
-  tags: string[]
+  tags: string
   status: PostStatus
   excerpt?: string
 }

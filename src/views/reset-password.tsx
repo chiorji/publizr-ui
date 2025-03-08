@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 import { TextInput } from "../components/ui/input";
 import PasswordStrengthIndicator from "../components/ui/password-strength-indicator";
 import { isValidEmail, processRequestError } from "../lib";
 import { useResetPasswordMutation } from "../user/user-slice";
 import { useToast } from "../components/ui/toast/toast-context";
+import { useRoleBasedAccess } from "../rbac/rbac-hook";
 
 export const ResetPassword: React.FC = () => {
   const toast = useToast()
   const navigate = useNavigate();
+  const { hasPermission } = useRoleBasedAccess()
   const [resetHandler, { isLoading }] = useResetPasswordMutation();
   const [{ email, password, confirmPassword }, setState] = useState({
     email: '',
@@ -71,6 +73,8 @@ export const ResetPassword: React.FC = () => {
       });
     });
   }
+
+  if (hasPermission('post.edit')) return <Navigate to='/posts' />;
 
   return (
     <div className="min-h-screen min-w-screen bg-gray-50 flex items-center justify-center p-4">

@@ -9,6 +9,7 @@ import { store, persistor } from './app/store.ts'
 import { ToastProvider } from './components/ui/toast/index.tsx';
 
 const root = createRoot(document.getElementById('root')!)
+// persistor.purge();
 root.render(
   <StrictMode>
     <BrowserRouter>

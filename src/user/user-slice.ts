@@ -1,6 +1,17 @@
 import { apiSlice } from '../app/api-slice';
 import { CreateAccountFormData, User, LoginSignupResponse } from './user-types';
 import { GetResponse } from '../types';
+import { ROLE } from '../rbac/roles';
+
+const transformer = (state: User) => {
+  if (state.role in ROLE) {
+    return {
+      ...state,
+      role: state.role as keyof typeof ROLE
+    }
+  }
+  return state;
+}
 
 export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,7 +27,7 @@ export const userSlice = apiSlice.injectEndpoints({
           success: response.success,
           message: response.message,
           size: response.size,
-          data: (response.data as any).data,
+          data: transformer((response.data as any).data),
           token: (response.data as any).token,
         }
       }
@@ -34,7 +45,7 @@ export const userSlice = apiSlice.injectEndpoints({
           success: response.success,
           message: response.message,
           size: response.size,
-          data: (response.data as any).data,
+          data: transformer((response.data as any).data),
           token: (response.data as any).token,
         }
       },

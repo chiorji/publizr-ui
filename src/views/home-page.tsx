@@ -9,7 +9,7 @@ const HomePage = () => {
 
   const getStartedClickHandler = () => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate('/author');
     } else navigate('/login');
   };
 
@@ -108,7 +108,7 @@ const HomePage = () => {
                 onClick={getStartedClickHandler}
                 className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-white text-blue-600 hover:bg-blue-50"
               >
-                Get started
+                {isAuthenticated ? 'Start Writing' : 'Get Started'}
                 <ChevronRight className="ml-2 h-5 w-5" />
               </button>
             </div>

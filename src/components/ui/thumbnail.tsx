@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react';
 import { useOutsideClick } from '../../hooks/use-outside-click';
+import { ROLE } from '../../rbac/roles';
 
 type Props = {
   username: string
   handleLogout: () => void
   email: string
   avatarUrl: string
-  role: string
+  role: ROLE
 }
 
 const Thumbnail = ({ username, email, avatarUrl, role, handleLogout }: Props) => {
