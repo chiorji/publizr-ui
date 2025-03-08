@@ -13,6 +13,7 @@ export const useGetAllPosts = () => {
 
   return {
     data: data && data.data,
+    size: data?.size ?? 0,
     isLoading,
     error,
     refetch
