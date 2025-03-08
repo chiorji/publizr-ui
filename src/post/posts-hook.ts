@@ -106,3 +106,5 @@ export const useFeaturePost = () => {
 
   return { isLoading, error, handlePostFeaturing };
 }
+
+export const transformPostTags = (tags: string) => [...new Set([tags])].map((v) => v).join(', ');

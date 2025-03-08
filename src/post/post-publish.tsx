@@ -11,6 +11,7 @@ import { resetNewPostFormValues } from './post-state';
 import { RadioInput, SelectField, TextAreaInput, TextInput } from '../components/input';
 import { FileUploader } from '../components/file-uploader';
 import { usePublishPostMutation } from './post-slice';
+import { transformPostTags } from './posts-hook';
 
 const Publish = () => {
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const Publish = () => {
       payload.append(k, formData[k] as any);
     });
     payload.delete("tags");
-    payload.append("tags", [...new Set([formData.tags])].map((v) => v).join(', '))
+    payload.append("tags", transformPostTags(formData.tags))
     payload.append("author_id", `${user.id}`);
 
     createHandler(payload as unknown as NewPostRequest).unwrap().then(() => {

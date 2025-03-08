@@ -31,7 +31,7 @@ export const UserCard: React.FC<{ data: User }> = ({ data }) => {
               <button
                 onClick={() => handleDeletion(data.id)}
                 className="ml-auto"
-                disabled={!isDeletingUser}
+                disabled={isDeletingUser}
               >
                 <Trash className="text-red-400 hover:text-red-500" />
               </button>

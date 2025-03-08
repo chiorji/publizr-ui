@@ -7,6 +7,7 @@ import { useToast } from "../components/toast/toast-context";
 import { RadioInput, TextAreaInput, TextInput } from "../components/input";
 import { useGetAllCategories } from "../category/category-hook";
 import { useUpdatePostMutation } from "./post-slice";
+import { transformPostTags } from "./posts-hook";
 
 export default function UpdatePost() {
   const { state } = useLocation();
@@ -43,7 +44,7 @@ export default function UpdatePost() {
       status,
       title,
       excerpt,
-      tags: [...new Set([formValue.tags])].map((v) => v).join(', ')
+      tags: transformPostTags(formValue.tags)
     }).unwrap().then(() => {
       toast.open({
         message: 'Successful',
