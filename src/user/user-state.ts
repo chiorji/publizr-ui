@@ -11,12 +11,12 @@ type InitialState = {
 const initialState: InitialState = {
   user: {
     email: '',
-    created_at: null,
+    created_at: 0,
     id: 0,
     image_url: '',
     is_deleted: false,
     role: 'VIEWER',
-    updated_at: null,
+    updated_at: 0,
     username: ''
   } as User,
   isAuthenticated: false,

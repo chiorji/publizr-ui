@@ -12,27 +12,30 @@ export const UserCard: React.FC<{ data: User }> = ({ data }) => {
       <img
         src={'/laptop.jpg'}
         alt={data.username}
-        className="w-32 h-32 object-cover rounded-full mx-auto"
+        className="size-24 object-cover rounded-full mx-auto mb-8"
       />
-      <div className="p-4 flex flex-col gap-1">
-        <span className="font-bold">Name: {data.username}</span>
-        <span className="text-gray-500">Email: {data.email}</span>
-        <span className="text-gray-500">{data.role}</span>
-        {data.created_at && <span className="text-gray-500">Joined: {new Date(data.created_at).toLocaleString()}</span>}
+      <div className="p-4 flex flex-col gap-1 items-center">
+        <span className="font-bold">{data.username}</span>
+        <span className="text-gray-500">{data.email}</span>
         {hasPermission("user.delete") &&
           <>
-            <span>Status:{' '}
-              <span className={`${data.is_deleted ? 'text-red-400' : 'text-green-400'}`}>
-                {data.is_deleted ? 'Deleted' : 'Active'}
+            {<span className="text-gray-500">{new Date(data.created_at).toLocaleString()}</span>}
+
+            <div className="flex items-center justify-between mt-4 w-full">
+              <span className="font-bold">
+                #{data.id}{' '}
+                <span className={`!text-sm font-normal ${data.is_deleted ? 'text-red-400' : 'text-green-400'}`}>
+                  {data.is_deleted ? 'Deleted' : 'Active'}
+                </span>
               </span>
-            </span>
-            <button
-              onClick={() => handleDeletion(data.id)}
-              className="ml-auto"
-              disabled={!isDeletingUser}
-            >
-              <Trash className="text-red-400 hover:text-red-500" />
-            </button>
+              <button
+                onClick={() => handleDeletion(data.id)}
+                className="ml-auto"
+                disabled={!isDeletingUser}
+              >
+                <Trash className="text-red-400 hover:text-red-500" />
+              </button>
+            </div>
           </>}
       </div>
     </div>
