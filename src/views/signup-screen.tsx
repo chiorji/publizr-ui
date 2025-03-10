@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, FormEvent } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Mail } from 'lucide-react';
@@ -11,6 +11,8 @@ import { persistor } from '../api-store/store';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
 import { useSignupMutation } from '../auth/auth-slice';
 import { CreateAccountFormData } from '../auth/auth-types';
+import { passwordStrengthContraints, useCheckPasswordStrength } from '../hooks/use-password-strength';
+import { useInputFocus } from '../hooks/use-input-focus';
 
 const SignupScreen = () => {
   const navigate = useNavigate();
@@ -25,41 +27,17 @@ const SignupScreen = () => {
     password: '',
     confirmPassword: '',
   });
-
-  const [passwordStrength, setPasswordStrength] = useState({
-    hasMinLength: false,
-    hasNumber: false,
-    hasSpecial: false,
-    hasLetter: false
-  });
-
+  const passwordStrength = useCheckPasswordStrength(formData.password);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const [passwordFieldFocused, setPasswordFieldFocused] = useState(false);
-
-  useEffect(() => {
-    if (passwordInputRef.current) {
-      passwordInputRef.current.addEventListener('focus', () => setPasswordFieldFocused(true));
-      passwordInputRef.current.addEventListener('blur', () => setPasswordFieldFocused(false));
-    }
-  });
+  useInputFocus(passwordInputRef, (v) => setPasswordFieldFocused(v));
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormData((prev: CreateAccountFormData) => ({ ...prev, [name]: value }));
-
-    if (name === 'password') {
-      setPasswordStrength({
-        hasMinLength: value.length >= 8,
-        hasNumber: /\d/.test(value),
-        hasSpecial: /[!@#$%^&*]/.test(value),
-        hasLetter: /[a-zA-Z]/.test(value)
-      });
-    }
   };
 
-  interface EmailSignupEvent extends React.FormEvent<HTMLFormElement> { }
-
-  const handleEmailSignup = (e: EmailSignupEvent): void => {
+  const handleEmailSignup = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const { confirmPassword, ...payload } = formData;
     signupHandler(payload).unwrap().then((response) => {
@@ -143,22 +121,11 @@ const SignupScreen = () => {
               />
               {passwordFieldFocused && (
                 <div className="space-y-2 mt-2">
-                  <PasswordStrengthIndicator
-                    criteria="At least 8 characters"
-                    met={passwordStrength.hasMinLength}
-                  />
-                  <PasswordStrengthIndicator
-                    criteria="Contains a number"
-                    met={passwordStrength.hasNumber}
-                  />
-                  <PasswordStrengthIndicator
-                    criteria="Contains a special character"
-                    met={passwordStrength.hasSpecial}
-                  />
-                  <PasswordStrengthIndicator
-                    criteria="Contains a letter"
-                    met={passwordStrength.hasLetter}
-                  />
+                  {passwordStrengthContraints.map(({ criteria, met }) => <PasswordStrengthIndicator
+                    key={criteria}
+                    criteria={criteria}
+                    met={passwordStrength[met]}
+                  />)}
                 </div>
               )}
             </div>

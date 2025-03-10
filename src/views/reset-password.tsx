@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState, FormEvent, ChangeEvent } from "react"
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card"
 import { TextInput } from "../components/input";
@@ -7,6 +7,8 @@ import { isValidEmail, processRequestError } from "../lib";
 import { useToast } from "../components/toast/toast-context";
 import { useRoleBasedAccess } from "../rbac/rbac-hook";
 import { useResetPasswordMutation } from "../auth/auth-slice";
+import { useCheckPasswordStrength, passwordStrengthContraints } from "../hooks/use-password-strength";
+import { useInputFocus } from "../hooks/use-input-focus";
 
 export const ResetPassword: React.FC = () => {
   const toast = useToast()
@@ -19,38 +21,17 @@ export const ResetPassword: React.FC = () => {
     confirmPassword: ''
   })
 
-  const [passwordStrength, setPasswordStrength] = useState({
-    hasMinLength: false,
-    hasNumber: false,
-    hasSpecial: false,
-    hasLetter: false
-  });
-
+  const passwordStrength = useCheckPasswordStrength(password);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const [passwordFieldFocused, setPasswordFieldFocused] = useState(false);
+  useInputFocus(passwordInputRef, (v) => setPasswordFieldFocused(v));
 
-  useEffect(() => {
-    if (passwordInputRef.current) {
-      passwordInputRef.current.addEventListener('focus', () => setPasswordFieldFocused(true));
-      passwordInputRef.current.addEventListener('blur', () => setPasswordFieldFocused(false));
-    }
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setState((prev) => ({ ...prev, [name]: value }));
-
-    if (name === 'password') {
-      setPasswordStrength({
-        hasMinLength: value.length >= 8,
-        hasNumber: /\d/.test(value),
-        hasSpecial: /[!@#$%^&*]/.test(value),
-        hasLetter: /[a-zA-Z]/.test(value)
-      });
-    }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValidEmail(email)) return false;
     resetHandler({ email, password }).unwrap().then((response) => {
@@ -104,22 +85,11 @@ export const ResetPassword: React.FC = () => {
             />
             {passwordFieldFocused && (
               <div className="space-y-2 mt-2">
-                <PasswordStrengthIndicator
-                  criteria="At least 8 characters"
-                  met={passwordStrength.hasMinLength}
-                />
-                <PasswordStrengthIndicator
-                  criteria="Contains a number"
-                  met={passwordStrength.hasNumber}
-                />
-                <PasswordStrengthIndicator
-                  criteria="Contains a special character"
-                  met={passwordStrength.hasSpecial}
-                />
-                <PasswordStrengthIndicator
-                  criteria="Contains a letter"
-                  met={passwordStrength.hasLetter}
-                />
+                {passwordStrengthContraints.map(({ criteria, met }) => <PasswordStrengthIndicator
+                  key={criteria}
+                  criteria={criteria}
+                  met={passwordStrength[met]}
+                />)}
               </div>
             )}
             <TextInput
