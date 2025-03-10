@@ -2,12 +2,12 @@ import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/card';
 import { NewPostFormData, NewPostErrors, NewPostRequest } from './post-types';
-import { RootState } from '../app/store';
+import { RootState } from '../api-store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '../components/toast/toast-context';
 import { imageExtensions, processRequestError } from '../lib';
 import { useGetAllCategories } from '../category/category-hook';
-import { resetNewPostFormValues } from './post-state';
+import { resetFormState } from './post-state';
 import { RadioInput, SelectField, TextAreaInput, TextInput } from '../components/input';
 import { FileUploader } from '../components/file-uploader';
 import { usePublishPostMutation } from './post-slice';
@@ -15,9 +15,9 @@ import { transformPostTags } from './posts-hook';
 
 const Publish = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.userSlice.user);
-  const { currentPost } = useSelector((state: RootState) => state.postSlice);
-  const [formData, setFormData] = useState<NewPostFormData>(currentPost);
+  const user = useSelector((state: RootState) => state.authStateSlice);
+  const { formState } = useSelector((state: RootState) => state.postStateSlice);
+  const [formData, setFormData] = useState<NewPostFormData>(formState);
   const toast = useToast();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<NewPostErrors>(Object);
@@ -63,7 +63,7 @@ const Publish = () => {
     payload.append("author_id", `${user.id}`);
 
     createHandler(payload as unknown as NewPostRequest).unwrap().then(() => {
-      dispatch(resetNewPostFormValues());
+      dispatch(resetFormState());
       setErrors({});
       toast.open({
         message: 'Successful',

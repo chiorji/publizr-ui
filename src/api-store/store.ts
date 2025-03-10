@@ -1,28 +1,29 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist'
-// import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import logger from 'redux-logger';
-import { postSlice } from '../post/post-state'
-import { userSlice } from '../user/user-state'
-import { apiSlice, uploadAPISlice } from './api-slice';
+import { postStateSlice } from '../post/post-state'
+import { authSlice } from '../auth/auth-slice';
+import { authStateSlice } from '../auth/auth-state';
+import { protectedSlice, publicSlice } from './api-slice';
+import { categorySlice } from '../category/category-slice';
 
-const middlewares = [apiSlice.middleware, uploadAPISlice.middleware];
+const middlewares = [protectedSlice.middleware, publicSlice.middleware, categorySlice.middleware];
 if (process.env.NODE_ENV !== 'production') {
   middlewares.push(logger);
 }
 
 const reducers = combineReducers({
-  [apiSlice.reducerPath]: apiSlice.reducer,
-  [uploadAPISlice.reducerPath]: uploadAPISlice.reducer,
-  [userSlice.reducerPath]: userSlice.reducer,
-  [postSlice.reducerPath]: postSlice.reducer,
+  [protectedSlice.reducerPath]: protectedSlice.reducer,
+  [postStateSlice.reducerPath]: postStateSlice.reducer,
+  [authStateSlice.reducerPath]: authStateSlice.reducer,
+  [authSlice.reducerPath]: authSlice.reducer
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: [apiSlice.reducerPath],
+  blacklist: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

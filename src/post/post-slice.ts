@@ -1,32 +1,41 @@
-import { apiSlice, uploadAPISlice } from '../app/api-slice';
+import { protectedSlice } from '../api-store/api-slice';
 import { DeletePostParams, NewPostRequest, Post, UpdatePostRequest } from './post-types';
 import { GetResponse } from '../types';
 
-export const postAPISlice = apiSlice.injectEndpoints({
+export const postSlice = protectedSlice.injectEndpoints({
   endpoints: (builder) => ({
+    publishPost: builder.mutation<void, NewPostRequest>({
+      query: (payload) => ({
+        url: '/posts/publish',
+        method: 'POST',
+        body: payload
+      }),
+      invalidatesTags: ['posts']
+    }),
+
     recent: builder.query<GetResponse<Post[]>, null>({
-      query: () => 'api/posts/recent',
+      query: () => '/posts/recent',
       providesTags: ['posts']
     }),
 
     all: builder.query<GetResponse<Post[]>, null>({
-      query: () => 'api/posts',
+      query: () => '/posts',
       providesTags: ['posts']
     }),
 
     byAuthorId: builder.query<GetResponse<Post[]>, number>({
-      query: (id) => `api/posts/author/${id}`,
+      query: (id) => `/posts/author/${id}`,
       providesTags: ['posts']
     }),
 
     byId: builder.query<GetResponse<Post>, string | number>({
-      query: (id) => `api/posts/${id}`,
+      query: (id) => `/posts/${id}`,
       providesTags: ['posts']
     }),
 
     updatePost: builder.mutation<void, UpdatePostRequest>({
       query: (payload) => ({
-          url: `api/posts/update/${payload.id}`,
+          url: `/posts/update/${payload.id}`,
           method: 'PUT',
           body: payload
       }),
@@ -35,7 +44,7 @@ export const postAPISlice = apiSlice.injectEndpoints({
 
     deletePost: builder.mutation<void, DeletePostParams>({
       query: (payload) => ({
-        url: 'api/posts/delete',
+        url: '/posts/delete',
         method: 'DELETE',
         body: payload
       }),
@@ -44,7 +53,7 @@ export const postAPISlice = apiSlice.injectEndpoints({
 
     featurePost: builder.mutation<void, number> ({
       query: (postId) => ({
-        url: `api/posts/update/feature/${postId}`,
+        url: `/posts/feature/${postId}`,
         method: 'PUT'
       }),
       invalidatesTags: ['posts']
@@ -53,19 +62,6 @@ export const postAPISlice = apiSlice.injectEndpoints({
 });
 
 
-export const uploadSlice = uploadAPISlice.injectEndpoints({
-  endpoints: (builder) => ({
-    publishPost: builder.mutation<void, NewPostRequest>({
-      query: (payload) => ({
-        url: 'api/posts/publish',
-        method: 'POST',
-        body: payload
-      }),
-      invalidatesTags: ['posts']
-    }),
-  }),
-})
-
 export const {
   useRecentQuery,
   useAllQuery,
@@ -73,7 +69,6 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
   useByAuthorIdQuery,
-  useFeaturePostMutation
-} = postAPISlice;
-
-export const { usePublishPostMutation } = uploadSlice;
+  useFeaturePostMutation,
+  usePublishPostMutation
+} = postSlice;

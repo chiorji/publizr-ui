@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { Mail } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/card';
-import { setIsAuthenticated, setCurrentUser, setToken } from '../user/user-state';
-import { useLoginMutation } from '../user/user-slice';
-import { persistor } from '../app/store';
+import { setCurrentUser } from '../auth/auth-state';
+import { persistor } from '../api-store/store';
 import { processRequestError } from '../lib';
 import { useToast } from '../components/toast/toast-context';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
+import { useLoginMutation } from '../auth/auth-slice';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -26,9 +26,11 @@ const LoginScreen = () => {
     signInHandler({ email, password }).unwrap().then((response) => {
       if (response?.data) {
         persistor.flush().then(() => {
-          dispatch(setIsAuthenticated(true));
-          dispatch(setCurrentUser(response.data));
-          dispatch(setToken(response.token ?? ""));
+          dispatch(setCurrentUser({
+            ...response.data,
+            token: response.token,
+            isLoggedIn: true
+          }));
           navigate('/author');
           toast?.open({
             message: response.message,

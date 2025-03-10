@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { Mail } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/card';
 import PasswordStrengthIndicator from '../components/password-strength-indicator';
-import { CreateAccountFormData } from '../user/user-types';
-import { useSignupMutation } from '../user/user-slice';
-import { setCurrentUser, setIsAuthenticated, setToken } from '../user/user-state';
+import { setCurrentUser } from '../auth/auth-state';
 import { useToast } from '../components/toast/toast-context';
 import { processRequestError } from '../lib';
-import { persistor } from '../app/store';
+import { persistor } from '../api-store/store';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
+import { useSignupMutation } from '../auth/auth-slice';
+import { CreateAccountFormData } from '../auth/auth-types';
 
 const SignupScreen = () => {
   const navigate = useNavigate();
@@ -65,9 +65,11 @@ const SignupScreen = () => {
     signupHandler(payload).unwrap().then((response) => {
       if (response?.data) {
         persistor.flush().then(() => {
-          dispatch(setIsAuthenticated(true));
-          dispatch(setCurrentUser(response.data));
-          dispatch(setToken(response.token ?? ""));
+          dispatch(setCurrentUser({
+            ...response.data,
+            token: response.token,
+            isLoggedIn: true
+          }));
           navigate('/author');
           toast?.open({
             message: response.message,

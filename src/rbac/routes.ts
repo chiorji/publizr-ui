@@ -5,12 +5,12 @@ export const routes: RouteObject[] = [
     path: 'discover',
     name: 'discover',
     label: 'Discover',
-    permissions: 'user.read'
+    permissions: 'user.edit'
   },
   {
     path: 'posts',
     name: 'posts',
-    label: 'All',
+    label: 'Pubs',
     permissions: 'post.read'
   },
   {

@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Edit3, Users, Zap, ChevronRight } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
+import { RootState } from '../api-store/store';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state: RootState) => state.userSlice);
+  const { isLoggedIn } = useSelector((state: RootState) => state.authStateSlice);
 
   const getStartedClickHandler = () => {
-    if (isAuthenticated) {
+    if (isLoggedIn) {
       navigate('/author');
     } else navigate('/login');
   };
@@ -108,7 +108,7 @@ const HomePage = () => {
                 onClick={getStartedClickHandler}
                 className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-white text-blue-600 hover:bg-blue-50"
               >
-                {isAuthenticated ? 'Start Writing' : 'Get Started'}
+                {isLoggedIn ? 'Start Writing' : 'Get Started'}
                 <ChevronRight className="ml-2 h-5 w-5" />
               </button>
             </div>

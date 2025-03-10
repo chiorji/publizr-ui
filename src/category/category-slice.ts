@@ -1,24 +1,24 @@
 import { GetResponse } from '../types';
 import { Category } from './category-types';
-import { apiSlice } from '../app/api-slice';
+import { protectedSlice } from '../api-store/api-slice';
 
-export const apiCategorySlice = apiSlice.injectEndpoints({
+export const categorySlice = protectedSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllCategories: builder.query<GetResponse<Category[]>, void>({
-      query: () => '/api/categories'
+      query: () => '/categories'
     }),
 
     addCategory: builder.mutation<void, string>({
       query: (name) => ({
-        url: '/api/categories',
+        url: '/categories',
         method: 'POST',
-        body: JSON.stringify({ name }),
+        body: { name },
       }),
     }),
 
     deleteCategory: builder.mutation<void, number>({
       query: (id) => ({
-        url: `/api/categories/${id}`,
+        url: `/categories/${id}`,
         method: 'DELETE',
       }),
     })
@@ -26,4 +26,4 @@ export const apiCategorySlice = apiSlice.injectEndpoints({
 });
 
 
-export const { useGetAllCategoriesQuery } = apiCategorySlice;
+export const { useGetAllCategoriesQuery } = categorySlice;

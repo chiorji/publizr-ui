@@ -3,7 +3,7 @@ import { Calendar, Clock, Edit2, Heart, HeartOff, Trash2, User, Star, StarOff, T
 import { useDeletePost, useFeaturePost, useGetPostById } from './posts-hook';
 import { checkIfUserLikedPost, useGetLikeCount, useLikePost } from '../like/like-hook';
 import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
+import { RootState } from '../api-store/store';
 import { checkIfPostIsEdited } from '../lib';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
 import { Post } from './post-types';
@@ -13,28 +13,28 @@ const BlogDetail = () => {
   const navigate = useNavigate();
   const { handlePostDeletion } = useDeletePost();
   const { handlePostFeaturing } = useFeaturePost();
-  const { user } = useSelector((state: RootState) => state.userSlice);
+  const { id: user_id } = useSelector((state: RootState) => state.authStateSlice);
   const { data, isLoading } = useGetPostById(Number(slug));
   const { handleLikes, liked, isLoading: isLiking } = useLikePost();
   const { likes } = useGetLikeCount(Number(slug));
   const { liked: alreadyLiked, isLoading: isLoadingLikeCheck } = checkIfUserLikedPost({
     post_id: Number(slug),
-    user_id: user.id
+    user_id
   });
 
   const { hasPermission } = useRoleBasedAccess();
-  const isPostAuthor = data?.author_id === user.id;
+  const isPostAuthor = data?.author_id === user_id;
   const canLikePost = hasPermission('post.edit');
   const canDeletePost = hasPermission('post.delete');
   const canDeleteAllPost = hasPermission('post.all.delete');
   const canFeaturePost = hasPermission("post.feature");
 
-  const canLikeAndEditPost = canLikePost && data?.author_id === user.id;
+  const canLikeAndEditPost = canLikePost && data?.author_id === user_id;
   const canLikeAndDeletePost = canDeletePost && (isPostAuthor || canDeleteAllPost);
 
   const handleLikeToggle = () => {
     if (!data) return;
-    handleLikes({ post_id: Number(slug), user_id: user.id });
+    handleLikes({ post_id: Number(slug), user_id });
   };
 
   const goToPostEditor = (post: Post) => {

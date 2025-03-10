@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useAllQuery, useByIdQuery, useRecentQuery, useByAuthorIdQuery, useDeletePostMutation, useFeaturePostMutation } from "./post-slice";
-import { RootState } from "../app/store";
+import { RootState } from "../api-store/store";
 import { DeletePostParams } from "./post-types";
 import { processRequestError } from "../lib";
 import { useToast } from "../components/toast/toast-context";
@@ -50,7 +50,7 @@ export const useGetRecentPosts = () => {
 }
 
 export const useGetPostsByAuthorId = () => {
-  const { id } = useSelector((state: RootState) => state.userSlice.user);
+  const { id } = useSelector((state: RootState) => state.authStateSlice);
   const { data, isLoading, error, refetch } = useByAuthorIdQuery(id, {
     skip: !id,
     refetchOnReconnect: true,

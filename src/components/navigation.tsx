@@ -1,17 +1,17 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, persistor } from '../app/store';
-import { resetStore } from '../user/user-state';
+import { RootState, persistor } from '../api-store/store';
 import Thumbnail from './thumbnail';
 import { useRoleBasedAccess } from '../rbac/rbac-hook';
 import { RoleBasedNavLink } from '../rbac/role-based-nav-link';
 import { routes } from '../rbac/routes';
+import { resetStore } from '../auth/auth-state';
 
 const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasPermission } = useRoleBasedAccess();
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.userSlice);
+  const { isLoggedIn, ...user  } = useSelector((state: RootState) => state.authStateSlice);
 
   const handleLogout = async () => {
     await persistor.purge();
@@ -31,7 +31,7 @@ const Navigation = () => {
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <RoleBasedNavLink routes={routes} role={user.role} isLoggedIn={isAuthenticated}/>
+            <RoleBasedNavLink routes={routes} role={user.role} isLoggedIn={isLoggedIn}/>
             {hasPermission("user.edit") && <Thumbnail
               username={user.username}
               email={user.email}

@@ -4,9 +4,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TextInput } from "../components/input";
 import PasswordStrengthIndicator from "../components/password-strength-indicator";
 import { isValidEmail, processRequestError } from "../lib";
-import { useResetPasswordMutation } from "../user/user-slice";
 import { useToast } from "../components/toast/toast-context";
 import { useRoleBasedAccess } from "../rbac/rbac-hook";
+import { useResetPasswordMutation } from "../auth/auth-slice";
 
 export const ResetPassword: React.FC = () => {
   const toast = useToast()

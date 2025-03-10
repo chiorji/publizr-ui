@@ -25,7 +25,7 @@ export const UserCard: React.FC<{ data: User }> = ({ data }) => {
               <span className="font-bold">
                 #{data.id}{' '}
                 <span className={`!text-sm font-normal ${data.is_deleted ? 'text-red-400' : 'text-green-400'}`}>
-                  {data.is_deleted ? 'Deleted' : 'Active'}
+                  {data.is_deleted ? 'Inactive' : 'Active'}
                 </span>
               </span>
               <button

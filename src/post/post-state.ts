@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { NewPostFormData, Post, UpdatePostRequest } from './post-types';
+import { NewPostFormData } from './post-types';
 
 const newPostFormInitialValues: NewPostFormData = {
   title: 'Blockchain Beyond Bitcoin',
@@ -13,39 +13,21 @@ const newPostFormInitialValues: NewPostFormData = {
   featured: false,
 }
 
-export const postSlice = createSlice({
-  name: 'postSlice',
+export const postStateSlice = createSlice({
+  name: 'postStateSlice',
   initialState: {
-    total: 0,
-    message: "",
-    data: [] as Post[],
-    isEditingPost: false,
-    currentPost: newPostFormInitialValues,
-    currentEdit: { } as UpdatePostRequest
+    formState: newPostFormInitialValues,
   },
   reducers: {
-    setPosts: (state, action: PayloadAction<Post[]>) => {
-      state.data = action.payload;
+
+    setCurrentFormState: (state, action: PayloadAction<NewPostFormData>) => {
+      state.formState = action.payload;
     },
 
-    setEditingPost: (state, action: PayloadAction<boolean>) => {
-      state.isEditingPost = action.payload;
-    },
-
-    setCurrentPost: (state, action: PayloadAction<NewPostFormData>) => {
-      state.currentPost = action.payload;
-    },
-
-    setCurrentEdit: (state, action: PayloadAction<UpdatePostRequest>) => {
-      state.currentEdit = action.payload;
-    },
-
-    resetNewPostFormValues: (state) => {
-      state.currentPost = newPostFormInitialValues;
+    resetFormState: (state) => {
+      state.formState = newPostFormInitialValues;
     }
   },
 });
 
-export const { setPosts, setEditingPost, setCurrentPost, setCurrentEdit, resetNewPostFormValues } = postSlice.actions;
-
-export const selectAllPosts = (state: { post: ReturnType<typeof postSlice.reducer> }) => state.post.data;
+export const { setCurrentFormState, resetFormState } = postStateSlice.actions;

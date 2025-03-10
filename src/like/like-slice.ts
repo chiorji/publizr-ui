@@ -1,11 +1,11 @@
 import { Like } from "./like-types";
-import { apiSlice } from "../app/api-slice";
+import { protectedSlice } from "../api-store/api-slice";
 
-export const likeSlice = apiSlice.injectEndpoints({
+export const likeSlice = protectedSlice.injectEndpoints({
   endpoints: (builder) => ({
     likePost: builder.mutation<boolean, Like>({
       query: (payload) => ({
-        url: 'api/likes/like',
+        url: '/likes/like',
         method: 'POST',
         body: payload
       }),
@@ -13,13 +13,13 @@ export const likeSlice = apiSlice.injectEndpoints({
     }),
 
     getLikesCount: builder.query<number, number>({
-      query: (postId) => `api/likes/${postId}`,
+      query: (postId) => `/likes/${postId}`,
       providesTags: ['likes']
     }),
 
     checkIfUserLikedPost: builder.query<boolean, Like>({
       query: (payload) => ({
-        url: `api/likes/check?user_id=${payload.user_id}&post_id=${payload.post_id}`,
+        url: `/likes/check?user_id=${payload.user_id}&post_id=${payload.post_id}`,
         method: 'GET'
       }),
       providesTags: ['likes']
